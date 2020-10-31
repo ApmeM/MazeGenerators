@@ -7,8 +7,8 @@
     <TargetFramework>net48</TargetFramework>
     <TargetFrameworks>net48</TargetFrameworks> 
     <DefineConstants>Bridge</DefineConstants> 
-    <AssemblyName>PluginTemplate</AssemblyName> 
-    <RootNamespace>PluginTemplate</RootNamespace>
+    <AssemblyName>MazeGenerators</AssemblyName> 
+    <RootNamespace>MazeGenerators</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="obj\**" />
@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-    <_Parameter1>PluginTemplate.Tests</_Parameter1>
+    <_Parameter1>MazeGenerators.Tests</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
 

@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>PluginTemplate-BridgeNet</id>
+    <id>MazeGenerators-BridgeNet</id>
     <version>1.0.0</version>
-    <title>PluginTemplate for Bridge.Net</title>
+    <title>MazeGenerators for Bridge.Net</title>
     <authors>ApmeM</authors>
     <owners>ApmeM</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>PluginTemplate is a template to build and publish .net and bridge.net projects.</description>
+    <description>MazeGenerators is a set of helper to generate different type of mazes..</description>
     <copyright>Copyright © ApmeM 2019</copyright>
     <dependencies>
       <group targetFramework="net48">
@@ -15,10 +15,10 @@
         <dependency id="Bridge" version="17.6.0" />
       </group>
     </dependencies>
-    <repository type="git" url="https://github.com/ApmeM/PluginTemplate.git" />        
+    <repository type="git" url="https://github.com/ApmeM/MazeGenerators.git" />        
   </metadata>
   <files>
-     <file src="bin\Release\net48\PluginTemplate.dll" target="lib/net48" />
+     <file src="bin\Release\net48\MazeGenerators.dll" target="lib/net48" />
      <file src="bin\Release\net48\bridge\**\*.*" target="content" /> 
   </files>
 </package>

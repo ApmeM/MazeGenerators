@@ -37,10 +37,10 @@ jobs:
       run: dotnet test --verbosity normal
 
     - name: Remove File
-      run: Remove-Item –path ./PluginTemplate/obj –recurse
+      run: Remove-Item –path ./MazeGenerators/obj –recurse
 
     - name: Restore packages with nuget
-      run: msbuild ./PluginTemplate/PluginTemplate-BridgeNet.csproj /restore /property:Configuration=Release
+      run: msbuild ./MazeGenerators/MazeGenerators-BridgeNet.csproj /restore /property:Configuration=Release
 
     - name: Build with msbuild
-      run: msbuild ./PluginTemplate/PluginTemplate-BridgeNet.csproj /property:Configuration=Release
+      run: msbuild ./MazeGenerators/MazeGenerators-BridgeNet.csproj /property:Configuration=Release

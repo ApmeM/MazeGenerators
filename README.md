@@ -1,13 +1,7 @@
-#PluginTemplate
+#MazeGenerators
 ==========
-PluginTemplate is a project structure template for MyONez plugin libraries
+MazeGenerators is a set of helper to generate different type of mazes.
 
-- Project contatins tests and main project with links to eachother.
-- Create nuget package for .net
-- Create nuget package for bridge.net
+##Credits
 
-Just replace "PluginTemplate" everywhere (filenames and files content) and push to git.
-
-Once pushed build github action will try to build it agains ,net and bridge.net and run .net tests
-
-To create a release add a tag v1.0.0 to git ad push it.
+- [**Rooms and mazes**](https://journal.stuffwithstuff.com/2014/12/21/rooms-and-mazes/) - How to generate maze with rooms
