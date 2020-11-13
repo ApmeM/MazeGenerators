@@ -1,7 +1,5 @@
-﻿namespace MazeGenerators
+﻿namespace MazeGenerators.Utils
 {
-    using MazeGenerators.Utils;
-
     public class Directions
     {
         public static readonly Vector2[] CardinalDirs = {

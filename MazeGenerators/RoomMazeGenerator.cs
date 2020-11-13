@@ -5,6 +5,8 @@
     using System.Linq;
 
     using MazeGenerators.Utils;
+    using MazeGenerators.Utils.DeadendRemover;
+    using MazeGenerators.Utils.RegionConnector;
 
     /// The random dungeon generator.
     ///
@@ -35,13 +37,24 @@
     /// Described here: https://journal.stuffwithstuff.com/2014/12/21/rooms-and-mazes/
     public class RoomMazeGenerator
     {
-        public class Result
+        public class Result : IDeadEndRemoverResult, IRegionConnectorResult, ITreeMazeBuilderResult
         {
-            public List<Vector2> Junctions;
-
-            public List<Rectangle> Rooms;
-
+            /// <summary>
+            /// Actual generated maze data
+            /// </summary>
             public int?[,] Regions;
+
+            /// <summary>
+            /// Junctions between different branches of a tree maze.
+            /// Output number depens on <see cref="Settings.ExtraConnectorChance"/>.
+            /// </summary>
+            public List<Vector2> Junctions { get; set; }
+
+            /// <summary>
+            /// List of generated rooms.
+            /// Output number depends on <see cref="Settings.NumRoomTries"/>
+            /// </summary>
+            public List<Rectangle> Rooms;
 
             public int? GetTile(Vector2 pos)
             {
@@ -64,33 +77,70 @@
             }
         }
 
-        public class Settings
+        public class Settings : IDeadEndRemoverSettings, IRegionConnectorSettings, ITreeMazeBuilderSettings
         {
-            public Settings(int width, int height)
-            {
-                this.Width = width;
-                this.Height = height;
-            }
+            /// <summary>
+            /// Width of the maze. 
+            /// Must be odd-sized. 
+            /// Left and Right columns will always contains walls.
+            /// </summary>
+            public int Width { get; set; } = 21;
 
-            public int Width;
+            /// <summary>
+            /// Height of the maze. 
+            /// Must be odd-sized. 
+            /// Left and Right columns will always contains walls.
+            /// </summary>
+            public int Height { get; set; } = 21;
 
-            public int Height;
+            /// <summary>
+            /// Random generator. 
+            /// You can change it to your system wide random. 
+            /// Or set with specified seed to make it more predictable.
+            /// </summary>
+            public Random Random { get; set; } = new Random();
 
-            public Random Random = new Random();
+            /// <summary>
+            /// Possible directions when building paths across maze.
+            /// Can be <see cref="Utils.Directions.CardinalDirs"/>, <see cref="Utils.Directions.CompassDirs"/> or any custom array of normalized vectors.
+            /// </summary>
+            public Vector2[] Directions { get; set; } = Utils.Directions.CardinalDirs;
 
-            public Vector2[] Directions = MazeGenerators.Directions.CardinalDirs;
-
+            /// <summary>
+            /// Number of tries to add a room.
+            /// Number of rooms will probably be less then this number.
+            /// - When <see cref="this.PreventOverlappedRooms"/> is true - some tries will fail.
+            /// - When <see cref="this.PreventOverlappedRooms"/> is false - some rooms will contain eachother and will be invisible.
+            /// </summary>
             public int NumRoomTries = 100;
 
-            /// The inverse chance of adding a connector between two regions that have
-            /// already been joined. Increasing this leads to more loosely connected
-            /// dungeons.
-            public int ExtraConnectorChance = 20;
+            /// <summary>
+            /// Specify if rooms overlapping is prevented or not.
+            /// </summary>
+            public bool PreventOverlappedRooms = true;
 
-            /// Increasing this allows rooms to be larger.
-            public int RoomExtraSize = 0;
+            /// <summary>
+            /// Specify room size.
+            /// Size become random from 0 to <see cref="RoomSize"/> and made odd-sized.
+            /// </summary>
+            public int RoomSize = 2;
 
-            public int WindingPercent = 0;
+            /// <summary>
+            /// Chance to turn direction during tree maze generation between rooms.
+            /// The less this value the longer stright paths will be generated.
+            /// </summary>
+            public int WindingPercent { get; set; } = 0;
+
+            /// <summary>
+            /// Specify The number of additional passages to make maze not single-connected.
+            ///  Increasing this leads to more loosely connected maze.
+            /// </summary>
+            public int AdditionalPassages { get; set; } = 10;
+
+            /// <summary>
+            /// Specify if deadends from tree maze generation should be removed.
+            /// </summary>
+            public bool RemoveDeadEnds { get; set; } = true;
         }
 
         public Result Generate(Settings settings)
@@ -126,71 +176,16 @@
                     if (result.GetTile(pos).HasValue)
                         continue;
                     regionId++;
-                    this.GrowMaze(result, settings, pos, regionId);
+                    TreeMazeBuilderAlgorythm.GrowMaze(result, settings, pos, regionId);
                 }
             }
 
             regionId++;
             this.ConnectRegions(result, settings, regionId);
-            this.RemoveDeadEnds(result, settings);
+            RegionConnectorAlgorythm.ConnectRegions(result, settings, regionId);
+            DeadEndRemoverAlgorythm.RemoveDeadEnds(result, settings);
 
             return result;
-        }
-
-        /// Implementation of the "growing tree" algorithm from here:
-        /// http://www.astrolog.org/labyrnth/algrithm.htm.
-        private void GrowMaze(Result result, Settings settings, Vector2 start, int regionId)
-        {
-            var cells = new List<Vector2>();
-
-            result.SetTile(start, regionId);
-
-            cells.Add(start);
-
-            Vector2? lastDir = null;
-
-            while (cells.Count > 0)
-            {
-                var cell = cells[cells.Count - 1];
-
-                // See which adjacent cells are open.
-                var unmadeCells = new List<Vector2>();
-
-                foreach (var dir in settings.Directions)
-                {
-                    if (this.CanCarve(result, cell, dir))
-                        unmadeCells.Add(dir);
-                }
-
-                if (unmadeCells.Count != 0)
-                {
-                    // Based on how "windy" passages are, try to prefer carving in the
-                    // same direction.
-                    Vector2 dir;
-                    if (lastDir != null && unmadeCells.Contains(lastDir.Value) && settings.Random.Next(100) > settings.WindingPercent)
-                    {
-                        dir = lastDir.Value;
-                    }
-                    else
-                    {
-                        dir = unmadeCells[settings.Random.Next(unmadeCells.Count)];
-                    }
-
-                    result.SetTile(cell + dir, regionId);
-                    result.SetTile(cell + dir * 2, regionId);
-
-                    cells.Add(cell + dir * 2);
-                    lastDir = dir;
-                }
-                else
-                {
-                    // No adjacent un carved cells.
-                    cells.RemoveAt(cells.Count - 1);
-
-                    // This path has ended.
-                    lastDir = null;
-                }
-            }
         }
 
         /// Places rooms ignoring the existing maze corridors.
@@ -201,7 +196,7 @@
             // - It avoids creating rooms that are too rectangular: too tall and
             //   narrow or too wide and flat.
             // TODO: This isn't very flexible or tunable. Do something better here.
-            var size = (settings.Random.Next(2 + settings.RoomExtraSize) + 1) * 2 + 1;
+            var size = (settings.Random.Next(settings.RoomSize) + 1) * 2 + 1;
             var rectangularity = settings.Random.Next(1 + size / 2) * 2;
             var width = size;
             var height = size;
@@ -220,12 +215,15 @@
             var room = new Rectangle(x, y, width, height);
 
             var overlaps = false;
-            foreach (var other in result.Rooms)
+            if (settings.PreventOverlappedRooms)
             {
-                if (room.Intersects(other))
+                foreach (var other in result.Rooms)
                 {
-                    overlaps = true;
-                    break;
+                    if (room.Intersects(other))
+                    {
+                        overlaps = true;
+                        break;
+                    }
                 }
             }
 
@@ -333,78 +331,9 @@
                         if (tmpRegions2.Count > 1)
                             return false;
 
-                        // This connecter isn't needed, but connect it occasionally so that the
-                        // dungeon isn't singly-connected.
-                        if (settings.Random.Next(100) < settings.ExtraConnectorChance)
-                        {
-                            result.SetTile(pos, connectorId);
-                            result.Junctions.Add(pos);
-                        }
-
                         return true;
                     });
             }
-        }
-
-        private void RemoveDeadEnds(Result result, Settings settings)
-        {
-            var done = false;
-
-            while (!done)
-            {
-                done = true;
-
-                for (var x = 0; x < result.Regions.GetLength(0); x++)
-                for (var y = 0; y < result.Regions.GetLength(1); y++)
-                {
-                    var pos = new Vector2(x, y);
-                    if (!result.GetTile(pos).HasValue)
-                    {
-                        continue;
-                    }
-
-                    // If it only has one exit, it's a dead end.
-                    var exits = 0;
-                    foreach (var dir in settings.Directions)
-                    {
-                        if (!result.IsInRegion(pos + dir))
-                        {
-                            continue;
-                        }
-
-                        if (!result.GetTile(pos + dir).HasValue)
-                        {
-                            continue;
-                        }
-
-                        exits++;
-                    }
-
-                    if (exits != 1)
-                    {
-                        continue;
-                    }
-
-                    done = false;
-                    result.RemoveTile(pos);
-                }
-            }
-        }
-
-        /// Gets whether or not an opening can be carved from the given starting
-        /// [Cell] at [pos] to the adjacent Cell facing [direction]. Returns `true`
-        /// if the starting Cell is in bounds and the destination Cell is filled
-        /// (or out of bounds).
-        private bool CanCarve(Result result, Vector2 pos, Vector2 direction)
-        {
-            // Must end in bounds.
-            var block = pos + direction * 3;
-            if (!result.IsInRegion(block))
-                return false;
-
-            // Destination must not be open.
-            var end = pos + direction * 2;
-            return !result.GetTile(end).HasValue;
         }
     }
 }

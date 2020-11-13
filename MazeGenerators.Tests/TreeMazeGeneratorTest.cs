@@ -19,9 +19,13 @@
         public void TreeMazeGenerator_Generate_SomeMaze()
         {
             var result = this.target.Generate(
-                new TreeMazeGenerator.Settings(21, 21)
+                new TreeMazeGenerator.Settings
                 {
-                    Random = new Random(0)
+                    Width = 21,
+                    Height = 21,
+                    Random = new Random(0),
+                    AdditionalPassages = 0,
+                    RemoveDeadEnds = false
                 });
 
             Assert.AreEqual(@"
@@ -45,6 +49,44 @@
 # #   #     # #     #
 # # ### ### # # ### #
 # #       #     #   #
+#####################
+", MazePrinter.Print(result.Regions));
+        }
+
+        [Test]
+        public void TreeMazeGenerator_GenerateWithoutRoomsAndDeadEnds_EmptyMaze()
+        {
+            var result = this.target.Generate(
+                new TreeMazeGenerator.Settings
+                {
+                    Width = 21,
+                    Height = 21,
+                    Random = new Random(0),
+                    AdditionalPassages = 0,
+                    RemoveDeadEnds = true
+                });
+
+            Assert.AreEqual(@"
+#####################
+#####################
+#####################
+#####################
+#####################
+#####################
+#####################
+#####################
+#####################
+#####################
+#####################
+#####################
+#####################
+############# #######
+#####################
+#####################
+#####################
+#####################
+#####################
+#####################
 #####################
 ", MazePrinter.Print(result.Regions));
         }
