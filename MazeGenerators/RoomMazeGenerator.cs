@@ -121,9 +121,24 @@
 
             /// <summary>
             /// Specify room size.
-            /// Size become random from 0 to <see cref="RoomSize"/> and made odd-sized.
+            /// Size become random from <see cref="MinRoomSize"/> to <see cref="MaxRoomSize"/> and made odd-sized.
+            /// With width/height difference not bigger then <see cref="MaxWidthHeightRoomSizeDifference"/>
             /// </summary>
-            public int RoomSize = 2;
+            public int MinRoomSize = 2;
+
+            /// <summary>
+            /// Specify room size.
+            /// Size become random from <see cref="MinRoomSize"/> to <see cref="MaxRoomSize"/> and made odd-sized.
+            /// With width/height difference not bigger then <see cref="MaxWidthHeightRoomSizeDifference"/>
+            /// </summary>
+            public int MaxRoomSize = 5;
+
+            /// <summary>
+            /// Specify maximum difference between room width and height to prevent long narrow rooms.
+            /// Size become random from <see cref="MinRoomSize"/> to <see cref="MaxRoomSize"/> and made odd-sized.
+            /// With width/height difference not bigger then <see cref="MaxWidthHeightRoomSizeDifference"/>
+            /// </summary>
+            public int MaxWidthHeightRoomSizeDifference = 5;
 
             /// <summary>
             /// Chance to turn direction during tree maze generation between rooms.
@@ -191,23 +206,18 @@
         /// Places rooms ignoring the existing maze corridors.
         private bool TryAddRooms(Result result, Settings settings, int regionId)
         {
-            // Pick a random room size. The funny math here does two things:
-            // - It makes sure rooms are odd-sized to line up with maze.
-            // - It avoids creating rooms that are too rectangular: too tall and
-            //   narrow or too wide and flat.
-            // TODO: This isn't very flexible or tunable. Do something better here.
-            var size = (settings.Random.Next(settings.RoomSize) + 1) * 2 + 1;
-            var rectangularity = settings.Random.Next(1 + size / 2) * 2;
-            var width = size;
-            var height = size;
-            if (settings.Random.Next(100) < 50)
+            var minRoomSize = settings.MinRoomSize / 2 * 2 + 1;
+            var maxRoomSize = (settings.MaxRoomSize + 1) / 2 * 2 - 1;
+            var roomLength = maxRoomSize - minRoomSize;
+
+            if (roomLength < 0)
             {
-                width += rectangularity;
+                throw new Exception("MaxRoomSize cant be less then MinRoomSize.");
             }
-            else
-            {
-                height += rectangularity;
-            }
+
+            var width = (settings.Random.Next(roomLength + 1) + minRoomSize) / 2 * 2 + 1;
+            var maxDifference = settings.Random.Next(Math.Min(settings.MaxWidthHeightRoomSizeDifference, roomLength));
+            var height = Math.Min(maxRoomSize, Math.Max(minRoomSize, (maxDifference - maxDifference / 2 + width) / 2 * 2 + 1));
 
             var x = settings.Random.Next((result.Regions.GetLength(0) - width) / 2) * 2 + 1;
             var y = settings.Random.Next((result.Regions.GetLength(1) - height) / 2) * 2 + 1;
