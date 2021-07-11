@@ -24,7 +24,7 @@
                     Width = 21,
                     Height = 21,
                     Random = new Random(0),
-                    AdditionalPassages = 0,
+                    AdditionalPassagesTries = 0,
                     RemoveDeadEnds = false
                 });
 
@@ -62,7 +62,7 @@
                     Width = 21,
                     Height = 21,
                     Random = new Random(0),
-                    AdditionalPassages = 0,
+                    AdditionalPassagesTries = 0,
                     RemoveDeadEnds = true
                 });
 

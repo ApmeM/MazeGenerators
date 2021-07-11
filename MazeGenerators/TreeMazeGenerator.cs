@@ -18,7 +18,7 @@
 
             /// <summary>
             /// Junctions between different branches of a tree maze.
-            /// Equal to <see cref="Settings.AdditionalPassages"/> number.
+            /// Equal to <see cref="Settings.AdditionalPassagesTries"/> number.
             /// </summary>
             public List<Vector2> Junctions { get; set; }
 
@@ -80,13 +80,13 @@
 
             /// <summary>
             /// Specify The number of additional passages to make maze not single-connected.
-            /// If <see cref="AdditionalPassages"/> set to 0 and <see cref="RemoveDeadEnds"/> is true - you will get empty maze as without additional passages tree maze is only deadends.
+            /// If <see cref="AdditionalPassagesTries"/> set to 0 and <see cref="RemoveDeadEnds"/> is true - you will get empty maze as without additional passages tree maze is only deadends.
             /// </summary>
-            public int AdditionalPassages { get; set; } = 20;
+            public int AdditionalPassagesTries { get; set; } = 20;
 
             /// <summary>
             /// Specify if deadends from tree maze generation should be removed.
-            /// If <see cref="AdditionalPassages"/> set to 0 and <see cref="RemoveDeadEnds"/> is true - you will get empty maze as without additional passages tree maze is only deadends.
+            /// If <see cref="AdditionalPassagesTries"/> set to 0 and <see cref="RemoveDeadEnds"/> is true - you will get empty maze as without additional passages tree maze is only deadends.
             /// </summary>
             public bool RemoveDeadEnds { get; set; } = true;
         }

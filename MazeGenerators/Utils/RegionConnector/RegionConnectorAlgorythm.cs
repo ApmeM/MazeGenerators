@@ -4,7 +4,7 @@
     {
         internal static void ConnectRegions(IRegionConnectorResult result, IRegionConnectorSettings settings, int connectorId)
         {
-            for (var i = 0; i < settings.AdditionalPassages; i++)
+            for (var i = 0; i < settings.AdditionalPassagesTries; i++)
             {
                 var pos = new Vector2(
                     settings.Random.Next(settings.Width - 2) + 1,
@@ -13,7 +13,6 @@
                 // Can't already be part of a region.
                 if (result.GetTile(pos).HasValue)
                 {
-                    i--;
                     continue;
                 }
 
@@ -37,7 +36,6 @@
 
                 if (!found)
                 {
-                    i--;
                     continue;
                 }
 

@@ -8,7 +8,7 @@ namespace MazeGenerators.Utils.RegionConnector
         int Height { get; }
         Vector2[] Directions { get; }
         bool RemoveDeadEnds { get; }
-        int AdditionalPassages { get; }
+        int AdditionalPassagesTries { get; }
         Random Random { get; }
     }
 }

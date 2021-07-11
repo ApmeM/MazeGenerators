@@ -150,7 +150,7 @@
             /// Specify The number of additional passages to make maze not single-connected.
             ///  Increasing this leads to more loosely connected maze.
             /// </summary>
-            public int AdditionalPassages { get; set; } = 10;
+            public int AdditionalPassagesTries { get; set; } = 10;
 
             /// <summary>
             /// Specify if deadends from tree maze generation should be removed.

@@ -30,24 +30,24 @@
             Assert.AreEqual(@"
 #####################
 ###           #     #
-### #  #### # #     #
-### #       # #     #
+### ####### # #     #
+### #####   # #     #
 ### ##### # # #     #
-###       #         #
-#   ####### # #######
-# # #     #         #
-# # #     # ####### #
-# # #     # #     # #
-# # #     # #     # #
-# #       #       # #
-# # # #######     # #
-# # #       #     # #
-# # # ##### ####### #
-#   # ##    #       #
-# ### ## ##   ##### #
-# ### #   # ####### #
-# ### #   # ####### #
-#     #             #
+###       # #       #
+### ####### #########
+### #     #         #
+### #     # ####### #
+### #     # #     # #
+### #     # #     # #
+###       #       # #
+##### #######     # #
+#####       #     # #
+########### ####### #
+########    ####### #
+######## ## ####### #
+#######   # ####### #
+#######   # ####### #
+#######   #         #
 #####################
 ", MazePrinter.Print(result.Regions));
         }
@@ -61,7 +61,7 @@
                     Width = 21,
                     Height = 21,
                     Random = new Random(0),
-                    AdditionalPassages = 0,
+                    AdditionalPassagesTries = 0,
                     RemoveDeadEnds = false,
                     NumRoomTries = 0,
                     WindingPercent = 100
@@ -128,7 +128,6 @@
                 }));
         }
 
-
         [Test]
         public void RoomMazeGenerator_GenerateRoomsWithEqualSizeValues_AllRoomsHaveEqualSizes()
         {
@@ -148,5 +147,19 @@
             }
         }
 
+        [Test]
+        public void RoomMazeGenerator_TooManyAdditionalPassages_NotAllJunctionsGenerated()
+        {
+            var result = this.target.Generate(new RoomMazeGenerator.Settings
+            {
+                Width = 11,
+                Height = 11,
+                MinRoomSize = 3,
+                MaxRoomSize = 3,
+                AdditionalPassagesTries = 100,
+            });
+
+            Assert.Less(result.Junctions.Count, 100);
+        }
     }
 }
