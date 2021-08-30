@@ -1,8 +1,11 @@
-﻿namespace MazeGenerators.Utils.DeadendRemover
+﻿using MazeGenerators.Common;
+using MazeGenerators.Utils;
+
+namespace MazeGenerators.DeadEndRemover
 {
-    internal class DeadEndRemoverAlgorythm
+    public class DeadEndRemoverAlgorithm
     {
-        internal static void RemoveDeadEnds(IDeadEndRemoverResult result, IDeadEndRemoverSettings settings)
+        public static void RemoveDeadEnds(IDeadEndRemoverResult result, IDeadEndRemoverSettings settings)
         {
             if (!settings.RemoveDeadEnds)
             {
@@ -19,7 +22,7 @@
                     for (var y = 0; y < settings.Height; y++)
                     {
                         var pos = new Vector2(x, y);
-                        if (!result.GetTile(pos).HasValue)
+                        if (!CommonAlgorithm.GetTile(result, pos).HasValue)
                         {
                             continue;
                         }
@@ -28,12 +31,12 @@
                         var exits = 0;
                         foreach (var dir in settings.Directions)
                         {
-                            if (!result.IsInRegion(pos + dir))
+                            if (!CommonAlgorithm.IsInRegion(result, pos + dir))
                             {
                                 continue;
                             }
 
-                            if (!result.GetTile(pos + dir).HasValue)
+                            if (!CommonAlgorithm.GetTile(result, pos + dir).HasValue)
                             {
                                 continue;
                             }
@@ -47,7 +50,7 @@
                         }
 
                         done = false;
-                        result.RemoveTile(pos);
+                        CommonAlgorithm.RemoveTile(result, pos);
                     }
             }
         }

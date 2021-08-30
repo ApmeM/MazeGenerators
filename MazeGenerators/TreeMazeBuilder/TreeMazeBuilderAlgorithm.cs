@@ -1,15 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using MazeGenerators.Common;
+using MazeGenerators.Utils;
+using System.Collections.Generic;
 
-namespace MazeGenerators.Utils.RegionConnector
+namespace MazeGenerators.TreeMazeBuilder
 {
-    internal class TreeMazeBuilderAlgorythm
+    public class TreeMazeBuilderAlgorithm
     {
-        internal static void GrowMaze(ITreeMazeBuilderResult result, ITreeMazeBuilderSettings settings, Vector2 start, int regionId)
+        public static void GrowMaze(ITreeMazeBuilderResult result, ITreeMazeBuilderSettings settings)
+        {
+            // Fill in all of the empty space with mazes.
+            for (var x = 1; x < settings.Width; x += 2)
+            {
+                for (var y = 1; y < settings.Height; y += 2)
+                {
+                    var pos = new Vector2(x, y);
+                    if (CommonAlgorithm.GetTile(result, pos).HasValue)
+                        continue;
+                    GrowSingleMazeTree(result, settings, pos);
+                }
+            }
+        }
+
+        private static void GrowSingleMazeTree(ITreeMazeBuilderResult result, ITreeMazeBuilderSettings settings, Vector2 start)
         {
             var cells = new List<Vector2>();
 
-            result.SetTile(start, regionId);
-
+            CommonAlgorithm.SetTile(result, start, settings.MazeTileId);
+            
             cells.Add(start);
 
             Vector2? lastDir = null;
@@ -38,8 +55,8 @@ namespace MazeGenerators.Utils.RegionConnector
                         dir = unmadeCells[settings.Random.Next(unmadeCells.Count)];
                     }
 
-                    result.SetTile(cell + dir, regionId);
-                    result.SetTile(cell + dir * 2, regionId);
+                    CommonAlgorithm.SetTile(result, cell + dir, settings.MazeTileId);
+                    CommonAlgorithm.SetTile(result, cell + dir * 2, settings.MazeTileId);
 
                     cells.Add(cell + dir * 2);
                     lastDir = dir;
@@ -61,12 +78,12 @@ namespace MazeGenerators.Utils.RegionConnector
         {
             // Must end in bounds.
             var block = pos + direction * 3;
-            if (!result.IsInRegion(block))
+            if (!CommonAlgorithm.IsInRegion(result, block))
                 return false;
 
             // Destination must not be open.
             var end = pos + direction * 2;
-            return !result.GetTile(end).HasValue;
+            return !CommonAlgorithm.GetTile(result, end).HasValue;
         }
     }
 }
