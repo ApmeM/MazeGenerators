@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using MazeGenerators.Common;
     using MazeGenerators.DeadEndRemover;
     using MazeGenerators.RegionConnector;
@@ -61,11 +62,31 @@
         public Result Generate(Settings settings)
         {
             var result = new Result();
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             CommonAlgorithm.GenerateField(result, settings);
+            sw.Stop();
+            Console.WriteLine($"GenerateField : {sw.ElapsedMilliseconds}");
+            sw.Reset();
+            sw.Start();
             RoomGeneratorAlgorithm.GenerateRooms(result, settings);
+            sw.Stop();
+            Console.WriteLine($"GenerateRooms : {sw.ElapsedMilliseconds}");
+            sw.Reset();
+            sw.Start();
             TreeMazeBuilderAlgorithm.GrowMaze(result, settings);
+            sw.Stop();
+            Console.WriteLine($"GrowMaze : {sw.ElapsedMilliseconds}");
+            sw.Reset();
+            sw.Start();
             RegionConnectorAlgorithm.GenerateConnectors(result, settings);
+            sw.Stop();
+            Console.WriteLine($"GenerateConnectors : {sw.ElapsedMilliseconds}");
+            sw.Reset();
+            sw.Start();
             DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
+            sw.Stop();
+            Console.WriteLine($"RemoveDeadEnds : {sw.ElapsedMilliseconds}");
             return result;
         }
 
@@ -252,7 +273,7 @@
 #####################
 #####################
 #####################
-################# ###
+########### #########
 #####################
 #####################
 #####################

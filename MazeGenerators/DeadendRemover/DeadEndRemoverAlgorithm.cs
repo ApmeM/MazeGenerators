@@ -12,23 +12,21 @@ namespace MazeGenerators.DeadEndRemover
                 return;
             }
 
-            var done = false;
-
-            while (!done)
-            {
-                done = true;
-
-                for (var x = 0; x < settings.Width; x++)
-                    for (var y = 0; y < settings.Height; y++)
+            for (var x = 0; x < settings.Width; x++)
+                for (var y = 0; y < settings.Height; y++)
+                {
+                    var pos = new Vector2(x, y);
+                    if (!CommonAlgorithm.GetTile(result, pos).HasValue)
                     {
-                        var pos = new Vector2(x, y);
-                        if (!CommonAlgorithm.GetTile(result, pos).HasValue)
-                        {
-                            continue;
-                        }
+                        continue;
+                    }
 
-                        // If it only has one exit, it's a dead end.
-                        var exits = 0;
+                    // If it only has one exit, it's a dead end.
+                    int exits;
+                    do
+                    {
+                        exits = 0;
+                        Vector2 lastExitPosition = new Vector2(0, 0);
                         foreach (var dir in settings.Directions)
                         {
                             if (!CommonAlgorithm.IsInRegion(result, pos + dir))
@@ -42,17 +40,16 @@ namespace MazeGenerators.DeadEndRemover
                             }
 
                             exits++;
+                            lastExitPosition = pos + dir;
                         }
 
-                        if (exits != 1)
+                        if (exits == 1)
                         {
-                            continue;
+                            CommonAlgorithm.RemoveTile(result, pos);
+                            pos = lastExitPosition;
                         }
-
-                        done = false;
-                        CommonAlgorithm.RemoveTile(result, pos);
-                    }
-            }
+                    } while (exits == 1);
+                }
         }
     }
 }
