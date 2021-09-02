@@ -54,14 +54,29 @@ Then call algorithms itself in a required order:
         public Result Generate(Settings settings)
         {
             var result = new Result();
-            CommonAlgorithm.GenerateField(result, settings); // Create field and check input parameters for correctness.
-            RoomGeneratorAlgorithm.GenerateRooms(result, settings); // Generate unconnected rooms
-            TreeMazeBuilderAlgorithm.GrowMaze(result, settings); // Generate unconnected maze paths in free spaces
-            RegionConnectorAlgorithm.GenerateConnectors(result, settings); // Generate connectors between rooms and paths
-            DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings); // Remove dead ends - path tiles that have less then two paths connected
+            CommonAlgorithm.GenerateField(result, settings);
+            RoomGeneratorAlgorithm.GenerateRooms(result, settings);
+            TreeMazeBuilderAlgorithm.GrowMaze(result, settings);
+            RegionConnectorAlgorithm.GenerateConnectors(result, settings);
+            DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
             return result;
         }
 ```
+
+Algorithms
+==========
+
+CommonAlgorithm - Create field and check input parameters for correctness.
+
+RoomGeneratorAlgorithm - Generate unconnected rooms
+
+TreeMazeBuilderAlgorithm - Generate unconnected maze paths in free spaces
+
+RegionConnectorAlgorithm - Generate connectors between rooms and paths
+
+DeadEndRemoverAlgorithm - Remove dead ends - path tiles that have less then two paths connected
+
+StringParserAlgorithm - Print and parse maze to/from string
 
 Credits
 ==========
