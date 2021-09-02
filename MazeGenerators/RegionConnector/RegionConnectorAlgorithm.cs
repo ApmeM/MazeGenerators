@@ -17,16 +17,21 @@ namespace MazeGenerators.RegionConnector
 
         private static void AddRandomConnectors(IRegionConnectorResult result, IRegionConnectorSettings settings, HashSet<Vector2> possibleConnectors)
         {
-            var connectorsList = possibleConnectors.ToList();
             for (var i = 0; i < settings.AdditionalPassagesTries; i++)
             {
-                var pos = connectorsList[settings.Random.Next(possibleConnectors.Count)];
+                if (possibleConnectors.Count == 0)
+                {
+                    break;
+                }
+
+                var pos = possibleConnectors.Skip(settings.Random.Next(possibleConnectors.Count)).First();
                 foreach (var dir in settings.Directions)
                 {
                     var loc = pos + dir;
                     // Do not allow 2 connectors next to each other.
                     possibleConnectors.Remove(loc);
                 }
+                possibleConnectors.Remove(pos);
 
                 CommonAlgorithm.SetTile(result, pos, settings.JunctionTileId);
                 result.Junctions.Add(pos);
@@ -94,6 +99,14 @@ namespace MazeGenerators.RegionConnector
                 CommonAlgorithm.SetTile(result, connector, settings.JunctionTileId);
                 result.Junctions.Add(connector);
 
+                foreach (var dir in settings.Directions)
+                {
+                    var loc = connector + dir;
+                    // Do not allow 2 connectors next to each other.
+                    possibleConnectors.Remove(loc);
+                }
+                possibleConnectors.Remove(connector);
+
                 // Merge the connected regions. We'll pick one region (arbitrarily) and
                 // map all of the other regions to its index.
                 var tmpRegions = regionConnectors[connector].Select((region) => merged[region]).ToList();
@@ -122,18 +135,7 @@ namespace MazeGenerators.RegionConnector
                     (pos) =>
                     {
                         // If the connector no longer spans different regions, we don't need it.
-                        var tmpRegions2 = regionConnectors[pos].Select((region) => merged[region]).ToLookup(a => a, a => a);
-
-                        if (tmpRegions2.Count > 1)
-                            return false;
-
-                        foreach (var dir in settings.Directions)
-                        {
-                            var loc = pos + dir;
-                            // Do not allow 2 connectors next to each other.
-                            possibleConnectors.Remove(loc);
-                        }
-                        return true;
+                        return regionConnectors[pos].Select((region) => merged[region]).ToLookup(a => a, a => a).Count <= 1;
                     });
             }
         }

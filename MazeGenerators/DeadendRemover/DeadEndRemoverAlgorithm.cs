@@ -7,11 +7,6 @@ namespace MazeGenerators.DeadEndRemover
     {
         public static void RemoveDeadEnds(IDeadEndRemoverResult result, IDeadEndRemoverSettings settings)
         {
-            if (!settings.RemoveDeadEnds)
-            {
-                return;
-            }
-
             for (var x = 0; x < settings.Width; x++)
                 for (var y = 0; y < settings.Height; y++)
                 {
@@ -43,7 +38,10 @@ namespace MazeGenerators.DeadEndRemover
                             lastExitPosition = pos + dir;
                         }
 
-                        if (exits == 1)
+                        if (exits == 0)
+                        {
+                            CommonAlgorithm.RemoveTile(result, pos);
+                        } else if (exits == 1)
                         {
                             CommonAlgorithm.RemoveTile(result, pos);
                             pos = lastExitPosition;

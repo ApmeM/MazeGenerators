@@ -48,8 +48,6 @@
 
             public int AdditionalPassagesTries { get; set; } = 10;
 
-            public bool RemoveDeadEnds { get; set; } = true;
-
             public int RoomTileId { get; set; } = 1;
 
             public int MazeTileId { get; set; } = 1;
@@ -59,7 +57,7 @@
             public string MazeText { get; set; }
         }
 
-        public Result Generate(Settings settings)
+        public Result Generate(Settings settings, bool needDeadendRemover = true)
         {
             var result = new Result();
             Stopwatch sw = new Stopwatch();
@@ -82,11 +80,14 @@
             RegionConnectorAlgorithm.GenerateConnectors(result, settings);
             sw.Stop();
             Console.WriteLine($"GenerateConnectors : {sw.ElapsedMilliseconds}");
-            sw.Reset();
-            sw.Start();
-            DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
-            sw.Stop();
-            Console.WriteLine($"RemoveDeadEnds : {sw.ElapsedMilliseconds}");
+            if (needDeadendRemover)
+            {
+                sw.Reset();
+                sw.Start();
+                DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
+                sw.Stop();
+                Console.WriteLine($"RemoveDeadEnds : {sw.ElapsedMilliseconds}");
+            }
             return result;
         }
 
@@ -106,23 +107,23 @@
             Assert.AreEqual(@"
 #####################
 # -           #     #
-# # ####-## # #     #
-# # -     - # #     #
-# # ##### # # #     #
+# # ###-### - #     #
+# # ###   # # #     #
+# # ##### # - #     #
 # #       # # -     #
 # # ####### #########
 # # #     #         #
 # # #     # ####### #
-# - #     # #     # #
 # # #     # #     # #
-# # -     # -     # #
-# # #########     # #
-# - #       #     # #
-# ### #-### ####### #
-# ### -     #       #
-# ### ##-## # ##### #
-# ### #   # #    ## #
-# ### #   # ####-## #
+# # #     # #     - #
+# # -     - -     # #
+# # #####-###     # #
+# # #       #     # #
+# # # ##### ####### #
+# # - ##    #       #
+# - # ##-## # ##### #
+# ### #   # - ##### #
+# ### #   # ####### #
 #     #   #         #
 #####################
 ", "\r\n" + StringParserAlgorithm.Stringify(result, settings));
@@ -137,12 +138,11 @@
                 Height = 21,
                 Random = new Random(0),
                 AdditionalPassagesTries = 0,
-                RemoveDeadEnds = false,
                 NumRoomTries = 0,
                 WindingPercent = 100
             };
 
-            var result = this.Generate(settings);
+            var result = this.Generate(settings, false);
 
             Assert.AreEqual(@"
 #####################
@@ -170,65 +170,6 @@
         }
 
         [Test]
-        public void RoomMazeGenerator_GenerateRoomsWithSizeLimit_AllRoomsShouldFitCriteria()
-        {
-            var settings = new Settings
-            {
-                Width = 201,
-                Height = 201,
-                MinRoomSize = 10,
-                MaxRoomSize = 100,
-                MaxWidthHeightRoomSizeDifference = 20
-            };
-
-            var result = this.Generate(settings);
-
-            foreach (var r in result.Rooms)
-            {
-                Assert.LessOrEqual(r.Width, 100);
-                Assert.LessOrEqual(r.Height, 100);
-                Assert.GreaterOrEqual(r.Width, 10);
-                Assert.GreaterOrEqual(r.Height, 10);
-                Assert.LessOrEqual(Math.Abs(r.Height - r.Width), 20);
-            }
-        }
-
-        [Test]
-        public void RoomMazeGenerator_RoomSizeValuesInvalid_ThrowsException()
-        {
-            var settings = new Settings
-            {
-                Width = 201,
-                Height = 201,
-                MinRoomSize = 1000,
-                MaxRoomSize = 100,
-                MaxWidthHeightRoomSizeDifference = 20
-            };
-
-            Assert.Throws<Exception>(() => { this.Generate(settings); });
-        }
-
-        [Test]
-        public void RoomMazeGenerator_GenerateRoomsWithEqualSizeValues_AllRoomsHaveEqualSizes()
-        {
-            var settings = new Settings
-            {
-                Width = 201,
-                Height = 201,
-                MinRoomSize = 11,
-                MaxRoomSize = 11,
-                MaxWidthHeightRoomSizeDifference = 20
-            };
-
-            var result = this.Generate(settings);
-            foreach (var r in result.Rooms)
-            {
-                Assert.AreEqual(r.Width, 11);
-                Assert.AreEqual(r.Height, 11);
-            }
-        }
-
-        [Test]
         public void RoomMazeGenerator_TooManyAdditionalPassages_NotAllJunctionsGenerated()
         {
             var settings = new Settings
@@ -240,13 +181,11 @@
                 MaxRoomSize = 3,
                 AdditionalPassagesTries = 100,
             };
-            
+
             var result = this.Generate(settings);
-            
-            Assert.LessOrEqual(result.Junctions.Count, 105);
+
+            Assert.LessOrEqual(result.Junctions.Count, 20);
         }
-
-
 
         [Test]
         public void TreeMazeGenerator_GenerateWithoutRoomsAndDeadEnds_EmptyMaze()
@@ -257,7 +196,6 @@
                 Height = 21,
                 Random = new Random(0),
                 AdditionalPassagesTries = 0,
-                RemoveDeadEnds = true,
                 NumRoomTries = 0,
             };
             
@@ -273,7 +211,7 @@
 #####################
 #####################
 #####################
-########### #########
+#####################
 #####################
 #####################
 #####################

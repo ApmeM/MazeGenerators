@@ -23,17 +23,17 @@ namespace MazeGenerators.TreeMazeBuilder
 
         private static void GrowSingleMazeTree(ITreeMazeBuilderResult result, ITreeMazeBuilderSettings settings, Vector2 start)
         {
-            var cells = new List<Vector2>();
+            var cells = new Stack<Vector2>();
 
             CommonAlgorithm.SetTile(result, start, settings.MazeTileId);
             
-            cells.Add(start);
+            cells.Push(start);
 
             Vector2? lastDir = null;
 
             while (cells.Count > 0)
             {
-                var cell = cells[cells.Count - 1];
+                var cell = cells.Peek();
 
                 var unmadeCells = new List<Vector2>();
 
@@ -58,12 +58,12 @@ namespace MazeGenerators.TreeMazeBuilder
                     CommonAlgorithm.SetTile(result, cell + dir, settings.MazeTileId);
                     CommonAlgorithm.SetTile(result, cell + dir * 2, settings.MazeTileId);
 
-                    cells.Add(cell + dir * 2);
+                    cells.Push(cell + dir * 2);
                     lastDir = dir;
                 }
                 else
                 {
-                    cells.RemoveAt(cells.Count - 1);
+                    cells.Pop();
                     lastDir = null;
                 }
             }
