@@ -27,5 +27,10 @@
         {
             return this.X * this.X + this.Y * this.Y;
         }
+
+        public override string ToString()
+        {
+            return $"{X}x{Y}";
+        }
     }
 }

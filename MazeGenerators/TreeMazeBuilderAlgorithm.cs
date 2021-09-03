@@ -1,12 +1,11 @@
-﻿using MazeGenerators.Common;
-using MazeGenerators.Utils;
+﻿using MazeGenerators.Utils;
 using System.Collections.Generic;
 
-namespace MazeGenerators.TreeMazeBuilder
+namespace MazeGenerators
 {
     public class TreeMazeBuilderAlgorithm
     {
-        public static void GrowMaze(ITreeMazeBuilderResult result, ITreeMazeBuilderSettings settings)
+        public static void GrowMaze(GeneratorResult result, GeneratorSettings settings)
         {
             // Fill in all of the empty space with mazes.
             for (var x = 1; x < settings.Width; x += 2)
@@ -21,12 +20,12 @@ namespace MazeGenerators.TreeMazeBuilder
             }
         }
 
-        private static void GrowSingleMazeTree(ITreeMazeBuilderResult result, ITreeMazeBuilderSettings settings, Vector2 start)
+        private static void GrowSingleMazeTree(GeneratorResult result, GeneratorSettings settings, Vector2 start)
         {
             var cells = new Stack<Vector2>();
 
             CommonAlgorithm.SetTile(result, start, settings.MazeTileId);
-            
+
             cells.Push(start);
 
             Vector2? lastDir = null;
@@ -74,7 +73,7 @@ namespace MazeGenerators.TreeMazeBuilder
         /// [Cell] at [pos] to the adjacent Cell facing [direction]. Returns `true`
         /// if the starting Cell is in bounds and the destination Cell is filled
         /// (or out of bounds).
-        private static bool CanCarve(ITreeMazeBuilderResult result, Vector2 pos, Vector2 direction)
+        private static bool CanCarve(GeneratorResult result, Vector2 pos, Vector2 direction)
         {
             // Must end in bounds.
             var block = pos + direction * 3;

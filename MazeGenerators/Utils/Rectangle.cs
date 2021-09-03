@@ -20,5 +20,10 @@
             return value.X < this.X + this.Width && this.X < value.X + value.Width && value.Y < this.Y + this.Height
                    && this.Y < value.Y + value.Height;
         }
+
+        public override string ToString()
+        {
+            return $"{X}x{Y} {Width}x{Height}";
+        }
     }
 }

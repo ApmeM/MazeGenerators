@@ -1,13 +1,12 @@
-﻿using MazeGenerators.Common;
-using MazeGenerators.Utils;
+﻿using MazeGenerators.Utils;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MazeGenerators.RegionConnector
+namespace MazeGenerators
 {
     public class RegionConnectorAlgorithm
     {
-        public static void GenerateConnectors(IRegionConnectorResult result, IRegionConnectorSettings settings)
+        public static void GenerateConnectors(GeneratorResult result, GeneratorSettings settings)
         {
             var possibleConnectors = GetPossibleConnectorPositions(result, settings);
 
@@ -15,7 +14,7 @@ namespace MazeGenerators.RegionConnector
             AddRandomConnectors(result, settings, possibleConnectors);
         }
 
-        private static void AddRandomConnectors(IRegionConnectorResult result, IRegionConnectorSettings settings, HashSet<Vector2> possibleConnectors)
+        private static void AddRandomConnectors(GeneratorResult result, GeneratorSettings settings, HashSet<Vector2> possibleConnectors)
         {
             for (var i = 0; i < settings.AdditionalPassagesTries; i++)
             {
@@ -38,7 +37,7 @@ namespace MazeGenerators.RegionConnector
             }
         }
 
-        private static void ConnectRegions(IRegionConnectorResult result, IRegionConnectorSettings settings, HashSet<Vector2> possibleConnectors)
+        private static void ConnectRegions(GeneratorResult result, GeneratorSettings settings, HashSet<Vector2> possibleConnectors)
         {
             var regions = new int?[settings.Width, settings.Height];
             var regionId = 0;
@@ -140,7 +139,7 @@ namespace MazeGenerators.RegionConnector
             }
         }
 
-        private static bool FloodFill(IRegionConnectorResult result, IRegionConnectorSettings settings, int?[,] regions, Vector2 pos, int color)
+        private static bool FloodFill(GeneratorResult result, GeneratorSettings settings, int?[,] regions, Vector2 pos, int color)
         {
             if (!CommonAlgorithm.IsInRegion(result, pos))
             {
@@ -166,7 +165,7 @@ namespace MazeGenerators.RegionConnector
             return true;
         }
 
-        private static HashSet<Vector2> GetPossibleConnectorPositions(IRegionConnectorResult result, IRegionConnectorSettings settings)
+        private static HashSet<Vector2> GetPossibleConnectorPositions(GeneratorResult result, GeneratorSettings settings)
         {
             var connectorRegions = new HashSet<Vector2>();
             for (var x = 0; x < settings.Width; x++)

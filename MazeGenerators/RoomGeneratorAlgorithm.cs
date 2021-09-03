@@ -1,12 +1,11 @@
-﻿using MazeGenerators.Common;
-using MazeGenerators.Utils;
+﻿using MazeGenerators.Utils;
 using System;
 
-namespace MazeGenerators.RoomGenerator
+namespace MazeGenerators
 {
     public class RoomGeneratorAlgorithm
     {
-        public static void GenerateRooms(IRoomGeneratorResult result, IRoomGeneratorSettings settings)
+        public static void GenerateRooms(GeneratorResult result, GeneratorSettings settings)
         {
             for (var i = 0; i < settings.NumRoomTries; i++)
             {
@@ -44,15 +43,20 @@ namespace MazeGenerators.RoomGenerator
                 if (overlaps)
                     continue;
 
-                result.Rooms.Add(room);
-
-                for (var i1 = x; i1 < x + width; i1++)
-                    for (var j1 = y; j1 < y + height; j1++)
-                    {
-                        var pos = new Vector2(i1, j1);
-                        CommonAlgorithm.SetTile(result, pos, settings.RoomTileId);
-                    }
+                AddRoom(result, settings, room);
             }
+        }
+
+        public static void AddRoom(GeneratorResult result, GeneratorSettings settings, Rectangle room)
+        {
+            for (var i1 = room.X; i1 < room.X + room.Width; i1++)
+                for (var j1 = room.Y; j1 < room.Y + room.Height; j1++)
+                {
+                    var pos = new Vector2(i1, j1);
+                    CommonAlgorithm.SetTile(result, pos, settings.RoomTileId);
+                }
+
+            result.Rooms.Add(room);
         }
     }
 }

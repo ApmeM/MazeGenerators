@@ -1,65 +1,17 @@
 ﻿namespace MazeGenerators.Tests
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
-    using MazeGenerators.Common;
-    using MazeGenerators.DeadEndRemover;
-    using MazeGenerators.RegionConnector;
-    using MazeGenerators.RoomGenerator;
-    using MazeGenerators.StringParser;
-    using MazeGenerators.TreeMazeBuilder;
+    using MazeGenerators;
     using MazeGenerators.Utils;
     using NUnit.Framework;
 
     [TestFixture]
     public class FullMazeGeneratorTest
     {
-        public class Result : IRoomGeneratorResult, IDeadEndRemoverResult, IRegionConnectorResult, ITreeMazeBuilderResult, IStringParserResult
+        public GeneratorResult Generate(GeneratorSettings settings, bool needDeadendRemover = true)
         {
-            public int?[,] Paths { get; set; }
-
-            public List<Vector2> Junctions { get; } = new List<Vector2>();
-
-            public List<Rectangle> Rooms { get; } = new List<Rectangle>();
-        }
-
-        public class Settings : IRoomGeneratorSettings, IDeadEndRemoverSettings, IRegionConnectorSettings, ITreeMazeBuilderSettings, IStringParserSettings
-        {
-            public int Width { get; set; } = 21;
-
-            public int Height { get; set; } = 21;
-
-            public Random Random { get; set; } = new Random();
-
-            public Vector2[] Directions { get; set; } = Utils.Directions.CardinalDirs;
-
-            public int NumRoomTries { get; set; } = 100;
-
-            public bool PreventOverlappedRooms { get; set; } = true;
-
-            public int MinRoomSize { get; set; } = 2;
-
-            public int MaxRoomSize { get; set; } = 5;
-
-            public int MaxWidthHeightRoomSizeDifference { get; set; } = 5;
-
-            public int WindingPercent { get; set; } = 0;
-
-            public int AdditionalPassagesTries { get; set; } = 10;
-
-            public int RoomTileId { get; set; } = 1;
-
-            public int MazeTileId { get; set; } = 1;
-
-            public int JunctionTileId { get; set; } = 1;
-
-            public string MazeText { get; set; }
-        }
-
-        public Result Generate(Settings settings, bool needDeadendRemover = true)
-        {
-            var result = new Result();
+            var result = new GeneratorResult();
             Stopwatch sw = new Stopwatch();
             sw.Start();
             CommonAlgorithm.GenerateField(result, settings);
@@ -94,7 +46,7 @@
         [Test]
         public void RoomMazeGenerator_Generate_SomeMaze()
         {
-            var settings = new Settings
+            var settings = new GeneratorSettings
             {
                 Width = 21,
                 Height = 21,
@@ -132,7 +84,7 @@
         [Test]
         public void RoomMazeGenerator_GenerateWithoutRooms_SameAsTreeMazeGenerator()
         {
-            var settings = new Settings
+            var settings = new GeneratorSettings
             {
                 Width = 21,
                 Height = 21,
@@ -172,7 +124,7 @@
         [Test]
         public void RoomMazeGenerator_TooManyAdditionalPassages_NotAllJunctionsGenerated()
         {
-            var settings = new Settings
+            var settings = new GeneratorSettings
             {
                 Width = 11,
                 Height = 11,
@@ -190,7 +142,7 @@
         [Test]
         public void TreeMazeGenerator_GenerateWithoutRoomsAndDeadEnds_EmptyMaze()
         {
-            var settings = new Settings
+            var settings = new GeneratorSettings
             {
                 Width = 21,
                 Height = 21,

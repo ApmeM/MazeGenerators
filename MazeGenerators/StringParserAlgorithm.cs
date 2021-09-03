@@ -1,15 +1,14 @@
-﻿using MazeGenerators.Common;
-using MazeGenerators.Utils;
+﻿using MazeGenerators.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace MazeGenerators.StringParser
+namespace MazeGenerators
 {
     public class StringParserAlgorithm
     {
-        public static void Parse(IStringParserResult result, IStringParserSettings settings)
+        public static void Parse(GeneratorResult result, GeneratorSettings settings)
         {
             var reader = new StringReader(settings.MazeText);
             for (var y = 0; y < settings.Height; y++)
@@ -38,7 +37,7 @@ namespace MazeGenerators.StringParser
             }
         }
 
-        public static string Stringify(IStringParserResult result, IStringParserSettings settings)
+        public static string Stringify(GeneratorResult result, GeneratorSettings settings)
         {
             var hash = new HashSet<Vector2>(result.Junctions);
             var sb = new StringBuilder();

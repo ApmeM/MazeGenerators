@@ -1,40 +1,17 @@
 ﻿namespace MazeGenerators.Tests
 {
     using System;
-    using System.Collections.Generic;
-    using MazeGenerators.Common;
-    using MazeGenerators.RoomGenerator;
-    using MazeGenerators.StringParser;
+    using MazeGenerators;
     using MazeGenerators.Utils;
     using NUnit.Framework;
 
     [TestFixture]
     public class RoomGeneratorAlgorithmTest
     {
-        public class Result : IRoomGeneratorResult
-        {
-            public int?[,] Paths { get; set; }
-            public List<Rectangle> Rooms { get; set; } = new List<Rectangle>();
-        }
-
-        public class Settings : IRoomGeneratorSettings
-        {
-            public int Width { get; set; }
-            public int Height { get; set; }
-            public Random Random => new Random(0);
-            public int NumRoomTries { get; set; } = 10;
-            public int MinRoomSize { get; set; } = 2;
-            public int MaxRoomSize { get; set; } = 4;
-            public int MaxWidthHeightRoomSizeDifference { get; set; } = 3;
-            public bool PreventOverlappedRooms { get; set; }
-            public int RoomTileId { get; set; } = 3;
-        }
-
-
         [Test]
         public void GenerateRooms_RoomSizeValuesInvalid_ThrowsException()
         {
-            var settings = new Settings
+            var settings = new GeneratorSettings
             {
                 Width = 201,
                 Height = 201,
@@ -43,7 +20,7 @@
                 MaxWidthHeightRoomSizeDifference = 20
             };
 
-            var result = new Result();
+            var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
             Assert.Throws<Exception>(() =>
             {
@@ -54,7 +31,7 @@
         [Test]
         public void GenerateRooms_EqualSizeValues_AllRoomsHaveEqualSizes()
         {
-            var settings = new Settings
+            var settings = new GeneratorSettings
             {
                 Width = 201,
                 Height = 201,
@@ -63,7 +40,7 @@
                 MaxWidthHeightRoomSizeDifference = 20
             };
 
-            var result = new Result();
+            var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
             RoomGeneratorAlgorithm.GenerateRooms(result, settings);
 
@@ -77,7 +54,7 @@
         [Test]
         public void GenerateRooms_SizeLimit_AllRoomsShouldFitCriteria()
         {
-            var settings = new Settings
+            var settings = new GeneratorSettings
             {
                 Width = 201,
                 Height = 201,
@@ -86,7 +63,7 @@
                 MaxWidthHeightRoomSizeDifference = 20
             };
 
-            var result = new Result();
+            var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
             RoomGeneratorAlgorithm.GenerateRooms(result, settings);
 
@@ -98,6 +75,45 @@
                 Assert.GreaterOrEqual(r.Height, 10);
                 Assert.LessOrEqual(Math.Abs(r.Height - r.Width), 20);
             }
+        }
+
+        [Test]
+        public void AddRoom_OutOfRange_Exception()
+        {
+            var settings = new GeneratorSettings
+            {
+                Width = 7,
+                Height = 7,
+            };
+
+            var result = new GeneratorResult();
+            CommonAlgorithm.GenerateField(result, settings);
+            Assert.Throws<IndexOutOfRangeException>(() => RoomGeneratorAlgorithm.AddRoom(result, settings, new Rectangle(4, 4, 8, 8)));
+        }
+
+        [Test]
+        public void AddRoom_ValidValues_RoomAndPathAdded()
+        {
+            var settings = new GeneratorSettings
+            {
+                Width = 7,
+                Height = 7,
+            };
+
+            var result = new GeneratorResult();
+            CommonAlgorithm.GenerateField(result, settings);
+            RoomGeneratorAlgorithm.AddRoom(result, settings, new Rectangle(2, 2, 2, 2));
+
+            Assert.AreEqual(1, result.Rooms.Count);
+            Assert.AreEqual(new Rectangle(2, 2, 2, 2), result.Rooms[0]);
+            Assert.AreEqual(
+"#######\r\n" +
+"#######\r\n" +
+"##  ###\r\n" +
+"##  ###\r\n" +
+"#######\r\n" +
+"#######\r\n" +
+"#######\r\n", StringParserAlgorithm.Stringify(result, settings));
         }
     }
 }

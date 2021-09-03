@@ -1,38 +1,17 @@
 ﻿namespace MazeGenerators.Tests
 {
-    using System;
-    using System.Collections.Generic;
-    using MazeGenerators.Common;
-    using MazeGenerators.RegionConnector;
-    using MazeGenerators.StringParser;
+    using MazeGenerators;
     using MazeGenerators.Utils;
     using NUnit.Framework;
+    using System;
 
     [TestFixture]
     public class RegionConnectorAlgorithmTest
     {
-        public class Result : IRegionConnectorResult, IStringParserResult
-        {
-            public int?[,] Paths { get; set; }
-            public List<Vector2> Junctions { get; set; } = new List<Vector2>();
-        }
-
-        public class Settings : IRegionConnectorSettings, IStringParserSettings
-        {
-            public int Width { get; set; }
-            public int Height { get; set; }
-            public Vector2[] Directions => Utils.Directions.CardinalDirs;
-            public string MazeText { get; set; }
-            public int MazeTileId { get; set; } = 1;
-            public int JunctionTileId { get; set; } = 2;
-            public int AdditionalPassagesTries { get; set; }
-            public Random Random => new Random(0);
-        }
-
         [Test]
         public void GenerateConnectors_SingleArea_NothingChanged()
         {
-            var settings = new Settings
+            var settings = new GeneratorSettings
             {
                 Width = 3,
                 Height = 5,
@@ -43,7 +22,7 @@
                 "# #\n" +
                 "###\n"
             };
-            var result = new Result();
+            var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
             StringParserAlgorithm.Parse(result, settings);
             RegionConnectorAlgorithm.GenerateConnectors(result, settings);
@@ -59,7 +38,7 @@
         [Test]
         public void GenerateConnectors_MultipleAreas_ConnectorGenerated()
         {
-            var settings = new Settings
+            var settings = new GeneratorSettings
             {
                 Width = 3,
                 Height = 5,
@@ -70,7 +49,7 @@
                 "# #\n" +
                 "###\n"
             };
-            var result = new Result();
+            var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
             StringParserAlgorithm.Parse(result, settings);
             RegionConnectorAlgorithm.GenerateConnectors(result, settings);
@@ -87,11 +66,12 @@
         [Test]
         public void GenerateConnectors_RandomConnectorsRequested_ConnectorsAdded()
         {
-            var settings = new Settings
+            var settings = new GeneratorSettings
             {
                 Width = 5,
                 Height = 5,
                 AdditionalPassagesTries = 100,
+                Random = new Random(0),
                 MazeText =
                 "#####\n" +
                 "#   #\n" +
@@ -100,7 +80,7 @@
                 "#####\n"
             };
 
-            var result = new Result();
+            var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
             StringParserAlgorithm.Parse(result, settings);
             RegionConnectorAlgorithm.GenerateConnectors(result, settings);

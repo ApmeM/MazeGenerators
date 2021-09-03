@@ -1,11 +1,10 @@
-﻿using MazeGenerators.Common;
-using MazeGenerators.Utils;
+﻿using MazeGenerators.Utils;
 
-namespace MazeGenerators.DeadEndRemover
+namespace MazeGenerators
 {
     public class DeadEndRemoverAlgorithm
     {
-        public static void RemoveDeadEnds(IDeadEndRemoverResult result, IDeadEndRemoverSettings settings)
+        public static void RemoveDeadEnds(GeneratorResult result, GeneratorSettings settings)
         {
             for (var x = 0; x < settings.Width; x++)
                 for (var y = 0; y < settings.Height; y++)
@@ -21,7 +20,7 @@ namespace MazeGenerators.DeadEndRemover
                     do
                     {
                         exits = 0;
-                        Vector2 lastExitPosition = new Vector2(0, 0);
+                        var lastExitPosition = new Vector2(0, 0);
                         foreach (var dir in settings.Directions)
                         {
                             if (!CommonAlgorithm.IsInRegion(result, pos + dir))
@@ -41,7 +40,8 @@ namespace MazeGenerators.DeadEndRemover
                         if (exits == 0)
                         {
                             CommonAlgorithm.RemoveTile(result, pos);
-                        } else if (exits == 1)
+                        }
+                        else if (exits == 1)
                         {
                             CommonAlgorithm.RemoveTile(result, pos);
                             pos = lastExitPosition;
