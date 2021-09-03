@@ -18,42 +18,14 @@ Regular tree maze.
 Usage
 ==========
 
-First define a class for settigns and results.
-Those classes should implement different settings and results interfaces depending on what type of algorithms are required.
+Fill in GeneratorSettings data with required values.
+
+Call different maze generator algorithms in a required order:
 
 ```
-        public class Result : IRoomGeneratorResult, IDeadEndRemoverResult, IRegionConnectorResult, ITreeMazeBuilderResult
+        public GeneratorResult Generate(GeneratorSettings settings)
         {
-            public int?[,] Paths { get; set; }
-            public List<Vector2> Junctions { get; } = new List<Vector2>();
-            public List<Rectangle> Rooms { get; } = new List<Rectangle>();
-        }
-
-        public class Settings : IRoomGeneratorSettings, IDeadEndRemoverSettings, IRegionConnectorSettings, ITreeMazeBuilderSettings
-        {
-            public int Width { get; set; } = 21;
-            public int Height { get; set; } = 21;
-            public Random Random { get; set; } = new Random();
-            public Vector2[] Directions { get; set; } = Utils.Directions.CardinalDirs;
-            public int NumRoomTries { get; set; } = 100;
-            public bool PreventOverlappedRooms { get; set; } = true;
-            public int MinRoomSize { get; set; } = 2;
-            public int MaxRoomSize { get; set; } = 5;
-            public int MaxWidthHeightRoomSizeDifference { get; set; } = 5;
-            public int WindingPercent { get; set; } = 0;
-            public int AdditionalPassagesTries { get; set; } = 10;
-            public bool RemoveDeadEnds { get; set; } = true;
-            public int RoomTileId { get; set; } = 1;
-            public int MazeTileId { get; set; } = 1;
-            public int JunctionTileId { get; set; } = 1;
-        }
-```
-
-Then call algorithms itself in a required order:
-```
-        public Result Generate(Settings settings)
-        {
-            var result = new Result();
+            var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
             RoomGeneratorAlgorithm.GenerateRooms(result, settings);
             TreeMazeBuilderAlgorithm.GrowMaze(result, settings);
@@ -77,6 +49,8 @@ RegionConnectorAlgorithm - Generate connectors between rooms and paths
 DeadEndRemoverAlgorithm - Remove dead ends - path tiles that have less then two paths connected
 
 StringParserAlgorithm - Print and parse maze to/from string
+
+MirroringAlgorithm - Mirror existing maze Horizontally/Vertically/Both or rotate it around center
 
 Credits
 ==========
