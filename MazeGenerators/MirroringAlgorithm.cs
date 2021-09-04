@@ -104,7 +104,7 @@ namespace MazeGenerators
 
                         for (var i = 0; i < oldRoomsCount; i++)
                         {
-                            result.Rooms.Add(new Rectangle(result.Paths.GetLength(1) - result.Rooms[i].Y - 1, result.Rooms[i].X, result.Rooms[i].Height, result.Rooms[i].Width));
+                            result.Rooms.Add(new Rectangle(result.Paths.GetLength(1) - result.Rooms[i].Y - result.Rooms[i].Height, result.Rooms[i].X, result.Rooms[i].Height, result.Rooms[i].Width));
                             result.Rooms.Add(new Rectangle(result.Paths.GetLength(0) - result.Rooms[i].X - result.Rooms[i].Width, result.Paths.GetLength(1) - result.Rooms[i].Y - result.Rooms[i].Height, result.Rooms[i].Width, result.Rooms[i].Height));
                             result.Rooms.Add(new Rectangle(result.Rooms[i].Y, result.Paths.GetLength(0) - result.Rooms[i].X - result.Rooms[i].Width, result.Rooms[i].Height, result.Rooms[i].Width));
                         }

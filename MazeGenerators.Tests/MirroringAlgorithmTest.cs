@@ -183,17 +183,37 @@
             Assert.AreEqual(new Rectangle(5, 9, 3, 1), result.Rooms[2]);
             Assert.AreEqual(new Rectangle(1, 5, 1, 3), result.Rooms[3]);
         }
+
+        [Test]
+        public void Mirror_FullMazeIsRoom_Mirrored()
+        {
+            var settings = new GeneratorSettings
+            {
+                Width = 5,
+                Height = 5,
+                Mirror = GeneratorSettings.MirrorDirection.Rotate,
+            };
+            var result = new GeneratorResult();
+            CommonAlgorithm.GenerateField(result, settings);
+            RoomGeneratorAlgorithm.AddRoom(result, settings, new Rectangle(1, 1, 3, 3));
+            MirroringAlgorithm.Mirror(result, settings);
+
+            Assert.AreEqual(
+"#######\r\n" +
+"#     #\r\n" +
+"#     #\r\n" +
+"#     #\r\n" +
+"#     #\r\n" +
+"#     #\r\n" +
+"#######\r\n", StringParserAlgorithm.Stringify(result, settings));
+            Assert.AreEqual(7, settings.Width);
+            Assert.AreEqual(7, settings.Height);
+            Assert.AreEqual(0, result.Junctions.Count);
+            Assert.AreEqual(4, result.Rooms.Count);
+            Assert.AreEqual(new Rectangle(1, 1, 3, 3), result.Rooms[0]);
+            Assert.AreEqual(new Rectangle(3, 1, 3, 3), result.Rooms[1]);
+            Assert.AreEqual(new Rectangle(3, 3, 3, 3), result.Rooms[2]);
+            Assert.AreEqual(new Rectangle(1, 3, 3, 3), result.Rooms[3]);
+        }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
