@@ -7,6 +7,7 @@ namespace MazeGenerators
     {
         public static void GenerateRooms(GeneratorResult result, GeneratorSettings settings)
         {
+            var roomsGemerated = 0;
             for (var i = 0; i < settings.NumRoomTries; i++)
             {
                 var minRoomSize = settings.MinRoomSize / 2 * 2 + 1;
@@ -44,6 +45,11 @@ namespace MazeGenerators
                     continue;
 
                 AddRoom(result, settings, room);
+                roomsGemerated++;
+                if (roomsGemerated >= settings.TargetRoomCount)
+                {
+                    break;
+                }
             }
         }
 

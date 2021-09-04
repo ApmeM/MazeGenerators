@@ -78,6 +78,26 @@
         }
 
         [Test]
+        public void GenerateRooms_LimitNumberOfGeneratedRooms_CreatedRequiredNumber()
+        {
+            var settings = new GeneratorSettings
+            {
+                Width = 201,
+                Height = 201,
+                MinRoomSize = 10,
+                MaxRoomSize = 11,
+                MaxWidthHeightRoomSizeDifference = 20,
+                TargetRoomCount = 2
+            };
+
+            var result = new GeneratorResult();
+            CommonAlgorithm.GenerateField(result, settings);
+            RoomGeneratorAlgorithm.GenerateRooms(result, settings);
+
+            Assert.AreEqual(2, result.Rooms.Count);
+        }
+
+        [Test]
         public void AddRoom_OutOfRange_Exception()
         {
             var settings = new GeneratorSettings

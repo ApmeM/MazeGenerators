@@ -22,6 +22,8 @@ namespace MazeGenerators.Utils
 
         public int NumRoomTries { get; set; } = 100;
 
+        public int TargetRoomCount { get; set; } = 4;
+
         public bool PreventOverlappedRooms { get; set; } = true;
 
         public int MinRoomSize { get; set; } = 2;
