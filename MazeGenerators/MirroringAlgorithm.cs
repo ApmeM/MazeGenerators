@@ -14,7 +14,7 @@ namespace MazeGenerators
                 case GeneratorSettings.MirrorDirection.Horizontal:
                     {
                         settings.Width = settings.Width * 2 - 3;
-                        result.Paths = new int?[result.Paths.GetLength(0) * 2 - 3, result.Paths.GetLength(1)];
+                        result.Paths = new int[result.Paths.GetLength(0) * 2 - 3, result.Paths.GetLength(1)];
                         for (var x = 0; x < oldPath.GetLength(0) - 1; x++)
                             for (var y = 0; y < oldPath.GetLength(1) - 1; y++)
                             {
@@ -35,7 +35,7 @@ namespace MazeGenerators
                 case GeneratorSettings.MirrorDirection.Vertical:
                     {
                         settings.Height = settings.Height * 2 - 3;
-                        result.Paths = new int?[result.Paths.GetLength(0), result.Paths.GetLength(1) * 2 - 3];
+                        result.Paths = new int[result.Paths.GetLength(0), result.Paths.GetLength(1) * 2 - 3];
                         for (var x = 0; x < oldPath.GetLength(0) - 1; x++)
                             for (var y = 0; y < oldPath.GetLength(1) - 1; y++)
                             {
@@ -57,7 +57,7 @@ namespace MazeGenerators
                     {
                         settings.Width = settings.Width * 2 - 3;
                         settings.Height = settings.Height * 2 - 3;
-                        result.Paths = new int?[result.Paths.GetLength(0) * 2 - 3, result.Paths.GetLength(1) * 2 - 3];
+                        result.Paths = new int[result.Paths.GetLength(0) * 2 - 3, result.Paths.GetLength(1) * 2 - 3];
                         for (var x = 0; x < oldPath.GetLength(0) - 1; x++)
                             for (var y = 0; y < oldPath.GetLength(1) - 1; y++)
                             {
@@ -92,7 +92,7 @@ namespace MazeGenerators
 
                         settings.Width = settings.Width * 2 - 3;
                         settings.Height = settings.Height * 2 - 3;
-                        result.Paths = new int?[result.Paths.GetLength(0) * 2 - 3, result.Paths.GetLength(1) * 2 - 3];
+                        result.Paths = new int[result.Paths.GetLength(0) * 2 - 3, result.Paths.GetLength(1) * 2 - 3];
                         for (var x = 0; x < oldPath.GetLength(0) - 1; x++)
                             for (var y = 0; y < oldPath.GetLength(1) - 1; y++)
                             {

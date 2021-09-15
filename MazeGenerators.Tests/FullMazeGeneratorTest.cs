@@ -51,7 +51,8 @@
                 Width = 21,
                 Height = 21,
                 Random = new Random(0),
-                NumRoomTries = 10
+                NumRoomTries = 10,
+                WallTileId = 33
             };
 
             var result = this.Generate(settings);

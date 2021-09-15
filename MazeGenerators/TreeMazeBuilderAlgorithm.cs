@@ -13,7 +13,7 @@ namespace MazeGenerators
                 for (var y = 1; y < settings.Height; y += 2)
                 {
                     var pos = new Vector2(x, y);
-                    if (CommonAlgorithm.GetTile(result, pos).HasValue)
+                    if (CommonAlgorithm.GetTile(result, pos) != settings.WallTileId)
                         continue;
                     GrowSingleMazeTree(result, settings, pos);
                 }
@@ -38,7 +38,7 @@ namespace MazeGenerators
 
                 foreach (var dir in settings.Directions)
                 {
-                    if (CanCarve(result, cell, dir))
+                    if (CanCarve(result, settings, cell, dir))
                         unmadeCells.Add(dir);
                 }
 
@@ -73,7 +73,7 @@ namespace MazeGenerators
         /// [Cell] at [pos] to the adjacent Cell facing [direction]. Returns `true`
         /// if the starting Cell is in bounds and the destination Cell is filled
         /// (or out of bounds).
-        private static bool CanCarve(GeneratorResult result, Vector2 pos, Vector2 direction)
+        private static bool CanCarve(GeneratorResult result, GeneratorSettings settings, Vector2 pos, Vector2 direction)
         {
             // Must end in bounds.
             var block = pos + direction * 3;
@@ -82,7 +82,7 @@ namespace MazeGenerators
 
             // Destination must not be open.
             var end = pos + direction * 2;
-            return !CommonAlgorithm.GetTile(result, end).HasValue;
+            return CommonAlgorithm.GetTile(result, end) == settings.WallTileId;
         }
     }
 }

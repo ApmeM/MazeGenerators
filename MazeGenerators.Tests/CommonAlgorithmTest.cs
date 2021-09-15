@@ -81,7 +81,8 @@
             var settings = new GeneratorSettings
             {
                 Width = 3,
-                Height = 5
+                Height = 5,
+                WallTileId = 123
             };
             var result = new GeneratorResult();
 
@@ -89,7 +90,7 @@
 
             var tile = CommonAlgorithm.GetTile(result, new Vector2(1, 1));
             
-            Assert.IsNull(tile);
+            Assert.AreEqual(tile, settings.WallTileId);
         }
 
         [Test]
@@ -123,25 +124,6 @@
             var tile = CommonAlgorithm.GetTile(result, new Vector2(1, 1));
 
             Assert.AreEqual(11, tile);
-        }
-
-        [Test]
-        public void RemoveTile_WasSet_NullInGetTile()
-        {
-            var settings = new GeneratorSettings
-            {
-                Width = 3,
-                Height = 5
-            };
-            var result = new GeneratorResult();
-
-            CommonAlgorithm.GenerateField(result, settings);
-            CommonAlgorithm.SetTile(result, new Vector2(1, 1), 11);
-            CommonAlgorithm.RemoveTile(result, new Vector2(1, 1));
-
-            var tile = CommonAlgorithm.GetTile(result, new Vector2(1, 1));
-
-            Assert.IsNull(tile);
         }
     }
 }

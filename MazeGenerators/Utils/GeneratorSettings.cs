@@ -38,6 +38,8 @@ namespace MazeGenerators.Utils
 
         public int RoomTileId { get; set; } = 1;
 
+        public int WallTileId { get; set; } = 0;
+
         public int MazeTileId { get; set; } = 1;
 
         public int JunctionTileId { get; set; } = 1;

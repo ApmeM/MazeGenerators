@@ -28,7 +28,7 @@ namespace MazeGenerators
                             CommonAlgorithm.SetTile(result, pos, settings.MazeTileId);
                             break;
                         case '#':
-                            CommonAlgorithm.RemoveTile(result, pos);
+                            CommonAlgorithm.SetTile(result, pos, settings.WallTileId);
                             break;
                         default:
                             throw new Exception("Unexpected character.");
@@ -51,7 +51,7 @@ namespace MazeGenerators
                     {
                         sb.Append("-");
                     }
-                    else if (tile.HasValue)
+                    else if (tile != settings.WallTileId)
                     {
                         sb.Append(" ");
                     }
