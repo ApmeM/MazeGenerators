@@ -82,7 +82,8 @@
             {
                 Width = 3,
                 Height = 5,
-                WallTileId = 123
+                WallTileId = 123,
+                EmptyTileId = 321
             };
             var result = new GeneratorResult();
 
@@ -90,7 +91,7 @@
 
             var tile = CommonAlgorithm.GetTile(result, new Vector2(1, 1));
             
-            Assert.AreEqual(tile, settings.WallTileId);
+            Assert.AreEqual(tile, settings.EmptyTileId);
         }
 
         [Test]

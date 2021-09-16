@@ -22,13 +22,13 @@
             CommonAlgorithm.GenerateField(result, settings);
             TreeMazeBuilderAlgorithm.GrowMaze(result, settings);
             Assert.AreEqual(
-"#######\r\n" +
-"# #   #\r\n" +
-"# # # #\r\n" +
-"# # # #\r\n" +
-"# ### #\r\n" +
-"#     #\r\n" +
-"#######\r\n", StringParserAlgorithm.Stringify(result, settings));
+"       \r\n" +
+" . ... \r\n" +
+" . . . \r\n" +
+" . . . \r\n" +
+" .   . \r\n" +
+" ..... \r\n" +
+"       \r\n", StringParserAlgorithm.Stringify(result, settings));
         }
 
         [Test]
@@ -45,13 +45,13 @@
             CommonAlgorithm.GenerateField(result, settings);
             TreeMazeBuilderAlgorithm.GrowMaze(result, settings);
             Assert.AreEqual(
-"#######\r\n" +
-"# #   #\r\n" +
-"# ### #\r\n" +
-"# #   #\r\n" +
-"# # # #\r\n" +
-"#   # #\r\n" +
-"#######\r\n", StringParserAlgorithm.Stringify(result, settings));
+"       \r\n" +
+" . ... \r\n" +
+" .   . \r\n" +
+" . ... \r\n" +
+" . . . \r\n" +
+" ... . \r\n" +
+"       \r\n", StringParserAlgorithm.Stringify(result, settings));
         }
 
     }

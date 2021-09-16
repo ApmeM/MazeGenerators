@@ -10,7 +10,7 @@ namespace MazeGenerators
                 for (var y = 0; y < settings.Height; y++)
                 {
                     var pos = new Vector2(x, y);
-                    if (CommonAlgorithm.GetTile(result, pos) == settings.WallTileId)
+                    if (CommonAlgorithm.GetTile(result, pos) == settings.EmptyTileId)
                     {
                         continue;
                     }
@@ -28,7 +28,7 @@ namespace MazeGenerators
                                 continue;
                             }
 
-                            if (CommonAlgorithm.GetTile(result, pos + dir) == settings.WallTileId)
+                            if (CommonAlgorithm.GetTile(result, pos + dir) == settings.EmptyTileId)
                             {
                                 continue;
                             }
@@ -39,11 +39,11 @@ namespace MazeGenerators
 
                         if (exits == 0)
                         {
-                            CommonAlgorithm.SetTile(result, pos, settings.WallTileId);
+                            CommonAlgorithm.SetTile(result, pos, settings.EmptyTileId);
                         }
                         else if (exits == 1)
                         {
-                            CommonAlgorithm.SetTile(result, pos, settings.WallTileId);
+                            CommonAlgorithm.SetTile(result, pos, settings.EmptyTileId);
                             pos = lastExitPosition;
                         }
                     } while (exits == 1);

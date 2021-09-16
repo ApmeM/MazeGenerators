@@ -15,22 +15,22 @@
                 Width = 3,
                 Height = 5,
                 MazeText = 
-                "###\n" +
-                "# #\n" +
-                "# #\n" +
-                "# #\n" +
-                "###\n"
+                "   \n" +
+                " . \n" +
+                " . \n" +
+                " . \n" +
+                "   \n"
             };
             var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
             StringParserAlgorithm.Parse(result, settings);
             DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
             Assert.AreEqual(
-"###\r\n" +
-"###\r\n" + 
-"###\r\n" + 
-"###\r\n" + 
-"###\r\n", StringParserAlgorithm.Stringify(result, settings));
+"   \r\n" +
+"   \r\n" + 
+"   \r\n" + 
+"   \r\n" + 
+"   \r\n", StringParserAlgorithm.Stringify(result, settings));
         }
 
         [Test]
@@ -41,22 +41,22 @@
                 Width = 5,
                 Height = 5,
                 MazeText =
-                "#####\n" +
-                "#   #\n" +
-                "# # #\n" +
-                "#   #\n" +
-                "#####\n"
+                "     \n" +
+                " ... \n" +
+                " . . \n" +
+                " ... \n" +
+                "     \n"
             };
             var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
             StringParserAlgorithm.Parse(result, settings);
             DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
             Assert.AreEqual(
-"#####\r\n" +
-"#   #\r\n" +
-"# # #\r\n" +
-"#   #\r\n" +
-"#####\r\n", StringParserAlgorithm.Stringify(result, settings));
+"     \r\n" +
+" ... \r\n" +
+" . . \r\n" +
+" ... \r\n" +
+"     \r\n", StringParserAlgorithm.Stringify(result, settings));
         }
 
         [Test]
@@ -67,22 +67,22 @@
                 Width = 5,
                 Height = 5,
                 MazeText =
-                "#####\n" +
-                "#   #\n" +
-                "#  ##\n" +
-                "#   #\n" +
-                "#####\n"
+                "     \n" +
+                " ... \n" +
+                " ..  \n" +
+                " ... \n" +
+                "     \n"
             };
             var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
             StringParserAlgorithm.Parse(result, settings);
             DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
             Assert.AreEqual(
-"#####\r\n" +
-"#  ##\r\n" +
-"#  ##\r\n" +
-"#  ##\r\n" +
-"#####\r\n", StringParserAlgorithm.Stringify(result, settings));
+"     \r\n" +
+" ..  \r\n" +
+" ..  \r\n" +
+" ..  \r\n" +
+"     \r\n", StringParserAlgorithm.Stringify(result, settings));
         }
     }
 }

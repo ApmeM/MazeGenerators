@@ -31,6 +31,7 @@ Call different maze generator algorithms in a required order:
             TreeMazeBuilderAlgorithm.GrowMaze(result, settings);
             RegionConnectorAlgorithm.GenerateConnectors(result, settings);
             DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
+            WallSurroundingAlgorithm.BuildWalls(result, settings);
             return result;
         }
 ```
@@ -51,6 +52,8 @@ DeadEndRemoverAlgorithm - Remove dead ends - path tiles that have less then two 
 StringParserAlgorithm - Print and parse maze to/from string
 
 MirroringAlgorithm - Mirror existing maze Horizontally/Vertically/Both or rotate it around center
+
+WallSurroundingAlgorithm - Build walls around all passages, junctions and rooms
 
 Credits
 ==========

@@ -55,11 +55,10 @@ namespace MazeGenerators
 
         public static void AddRoom(GeneratorResult result, GeneratorSettings settings, Rectangle room)
         {
-            for (var i1 = room.X; i1 < room.X + room.Width; i1++)
-                for (var j1 = room.Y; j1 < room.Y + room.Height; j1++)
+            for (var x = room.X; x < room.X + room.Width; x++)
+                for (var y = room.Y; y < room.Y + room.Height; y++)
                 {
-                    var pos = new Vector2(i1, j1);
-                    CommonAlgorithm.SetTile(result, pos, settings.RoomTileId);
+                    CommonAlgorithm.SetTile(result, new Vector2(x, y), settings.RoomTileId);
                 }
 
             result.Rooms.Add(room);

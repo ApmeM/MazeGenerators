@@ -36,13 +36,15 @@ namespace MazeGenerators.Utils
 
         public int AdditionalPassagesTries { get; set; } = 10;
 
-        public int RoomTileId { get; set; } = 1;
+        public int EmptyTileId { get; set; } = 0;
 
-        public int WallTileId { get; set; } = 0;
+        public int WallTileId { get; set; } = 1;
 
-        public int MazeTileId { get; set; } = 1;
+        public int MazeTileId { get; set; } = 2;
 
-        public int JunctionTileId { get; set; } = 1;
+        public int RoomTileId { get; set; } = 3;
+
+        public int JunctionTileId { get; set; } = 4;
 
         public string MazeText { get; set; }
 

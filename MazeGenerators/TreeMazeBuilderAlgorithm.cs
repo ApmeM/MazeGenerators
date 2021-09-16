@@ -13,7 +13,7 @@ namespace MazeGenerators
                 for (var y = 1; y < settings.Height; y += 2)
                 {
                     var pos = new Vector2(x, y);
-                    if (CommonAlgorithm.GetTile(result, pos) != settings.WallTileId)
+                    if (CommonAlgorithm.GetTile(result, pos) != settings.EmptyTileId)
                         continue;
                     GrowSingleMazeTree(result, settings, pos);
                 }
@@ -82,7 +82,7 @@ namespace MazeGenerators
 
             // Destination must not be open.
             var end = pos + direction * 2;
-            return CommonAlgorithm.GetTile(result, end) == settings.WallTileId;
+            return CommonAlgorithm.GetTile(result, end) == settings.EmptyTileId;
         }
     }
 }

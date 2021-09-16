@@ -151,7 +151,7 @@ namespace MazeGenerators
                 return false;
             }
 
-            if (result.Paths[pos.X, pos.Y] == settings.WallTileId)
+            if (result.Paths[pos.X, pos.Y] == settings.EmptyTileId)
             {
                 return false;
             }
@@ -173,7 +173,7 @@ namespace MazeGenerators
                 {
                     var pos = new Vector2(x, y);
 
-                    if (CommonAlgorithm.GetTile(result, pos) != settings.WallTileId)
+                    if (CommonAlgorithm.GetTile(result, pos) != settings.EmptyTileId)
                     {
                         continue;
                     }
@@ -190,7 +190,7 @@ namespace MazeGenerators
 
                         var region1 = CommonAlgorithm.GetTile(result, loc1);
                         var region2 = CommonAlgorithm.GetTile(result, loc2);
-                        if (region1 != settings.WallTileId && region2 != settings.WallTileId)
+                        if (region1 != settings.EmptyTileId && region2 != settings.EmptyTileId)
                         {
                             found = true;
                         }

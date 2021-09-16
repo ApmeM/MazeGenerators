@@ -127,13 +127,13 @@
             Assert.AreEqual(1, result.Rooms.Count);
             Assert.AreEqual(new Rectangle(2, 2, 2, 2), result.Rooms[0]);
             Assert.AreEqual(
-"#######\r\n" +
-"#######\r\n" +
-"##  ###\r\n" +
-"##  ###\r\n" +
-"#######\r\n" +
-"#######\r\n" +
-"#######\r\n", StringParserAlgorithm.Stringify(result, settings));
+"       \r\n" +
+"       \r\n" +
+"  ..   \r\n" +
+"  ..   \r\n" +
+"       \r\n" +
+"       \r\n" +
+"       \r\n", StringParserAlgorithm.Stringify(result, settings));
         }
     }
 }

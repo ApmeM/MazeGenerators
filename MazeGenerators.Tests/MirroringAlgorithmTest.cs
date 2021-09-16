@@ -33,7 +33,7 @@
 
             Assert.AreEqual(
 "###########\r\n" +
-"# #     # #\r\n" +
+"# #.....# #\r\n" +
 "# ### ### #\r\n" +
 "# #     # #\r\n" +
 "# #-# #-# #\r\n" +
@@ -57,7 +57,7 @@
                 Mirror = GeneratorSettings.MirrorDirection.Vertical,
                 MazeText =
                 "#######\n" +
-                "# #####\n" +
+                "#.#####\n" +
                 "# ### #\n" +
                 "# #   #\n" +
                 "# #-# #\n" +
@@ -72,7 +72,7 @@
 
             Assert.AreEqual(
 "#######\r\n" +
-"# #   #\r\n" +
+"#.#...#\r\n" +
 "# ### #\r\n" +
 "# #   #\r\n" +
 "# #-# #\r\n" +
@@ -80,7 +80,7 @@
 "# #-# #\r\n" +
 "# #   #\r\n" +
 "# ### #\r\n" +
-"# #   #\r\n" +
+"#.#...#\r\n" +
 "#######\r\n", StringParserAlgorithm.Stringify(result, settings));
             Assert.AreEqual(7, settings.Width);
             Assert.AreEqual(11, settings.Height);
@@ -100,7 +100,7 @@
                 Mirror = GeneratorSettings.MirrorDirection.Both,
                 MazeText =
                 "#######\n" +
-                "# #####\n" +
+                "#.#####\n" +
                 "# ### #\n" +
                 "# #   #\n" +
                 "# #-# #\n" +
@@ -115,7 +115,7 @@
 
             Assert.AreEqual(
 "###########\r\n" +
-"# #     # #\r\n" +
+"#.#.....#.#\r\n" +
 "# ### ### #\r\n" +
 "# #     # #\r\n" +
 "# #-# #-# #\r\n" +
@@ -123,7 +123,7 @@
 "# #-# #-# #\r\n" +
 "# #     # #\r\n" +
 "# ### ### #\r\n" +
-"# #     # #\r\n" +
+"#.#.....#.#\r\n" +
 "###########\r\n", StringParserAlgorithm.Stringify(result, settings));
             Assert.AreEqual(11, settings.Width);
             Assert.AreEqual(11, settings.Height);
@@ -147,7 +147,7 @@
                 Mirror = GeneratorSettings.MirrorDirection.Rotate,
                 MazeText =
                 "#######\n" +
-                "# #####\n" +
+                "#.#####\n" +
                 "# ### #\n" +
                 "# #   #\n" +
                 "# #-# #\n" +
@@ -162,15 +162,15 @@
 
             Assert.AreEqual(
 "###########\r\n" +
-"# #       #\r\n" +
+"#.#...   .#\r\n" +
 "# ### #####\r\n" +
-"# #   - # #\r\n" +
-"# #-# # # #\r\n" +
-"#    #    #\r\n" +
-"# # # #-# #\r\n" +
-"# # -   # #\r\n" +
+"# #   - #.#\r\n" +
+"# #-# # #.#\r\n" +
+"#.   #   .#\r\n" +
+"#.# # #-# #\r\n" +
+"#.# -   # #\r\n" +
 "##### ### #\r\n" +
-"#       # #\r\n" +
+"#.   ...#.#\r\n" +
 "###########\r\n", StringParserAlgorithm.Stringify(result, settings));
             Assert.AreEqual(11, settings.Width);
             Assert.AreEqual(11, settings.Height);
@@ -199,13 +199,13 @@
             MirroringAlgorithm.Mirror(result, settings);
 
             Assert.AreEqual(
-"#######\r\n" +
-"#     #\r\n" +
-"#     #\r\n" +
-"#     #\r\n" +
-"#     #\r\n" +
-"#     #\r\n" +
-"#######\r\n", StringParserAlgorithm.Stringify(result, settings));
+"       \r\n" +
+" ..... \r\n" +
+" ..... \r\n" +
+" ..... \r\n" +
+" ..... \r\n" +
+" ..... \r\n" +
+"       \r\n", StringParserAlgorithm.Stringify(result, settings));
             Assert.AreEqual(7, settings.Width);
             Assert.AreEqual(7, settings.Height);
             Assert.AreEqual(0, result.Junctions.Count);

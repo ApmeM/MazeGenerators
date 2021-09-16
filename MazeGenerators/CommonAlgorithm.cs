@@ -16,7 +16,7 @@ namespace MazeGenerators
             for (var x = 0; x < settings.Width; x++)
                 for (var y = 0; y < settings.Height; y++)
                 {
-                    SetTile(result, new Vector2(x, y), settings.WallTileId);
+                    SetTile(result, new Vector2(x, y), settings.EmptyTileId);
                 }
         }
 

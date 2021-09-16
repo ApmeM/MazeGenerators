@@ -16,7 +16,7 @@ namespace MazeGenerators
                         settings.Width = settings.Width * 2 - 3;
                         result.Paths = new int[result.Paths.GetLength(0) * 2 - 3, result.Paths.GetLength(1)];
                         for (var x = 0; x < oldPath.GetLength(0) - 1; x++)
-                            for (var y = 0; y < oldPath.GetLength(1) - 1; y++)
+                            for (var y = 0; y < oldPath.GetLength(1); y++)
                             {
                                 result.Paths[x, y] = oldPath[x, y];
                                 result.Paths[result.Paths.GetLength(0) - x - 1, y] = oldPath[x, y];
@@ -36,7 +36,7 @@ namespace MazeGenerators
                     {
                         settings.Height = settings.Height * 2 - 3;
                         result.Paths = new int[result.Paths.GetLength(0), result.Paths.GetLength(1) * 2 - 3];
-                        for (var x = 0; x < oldPath.GetLength(0) - 1; x++)
+                        for (var x = 0; x < oldPath.GetLength(0); x++)
                             for (var y = 0; y < oldPath.GetLength(1) - 1; y++)
                             {
                                 result.Paths[x, y] = oldPath[x, y];

@@ -24,11 +24,14 @@ namespace MazeGenerators
                             CommonAlgorithm.SetTile(result, pos, settings.JunctionTileId);
                             result.Junctions.Add(pos);
                             break;
-                        case ' ':
+                        case '.':
                             CommonAlgorithm.SetTile(result, pos, settings.MazeTileId);
                             break;
                         case '#':
                             CommonAlgorithm.SetTile(result, pos, settings.WallTileId);
+                            break;
+                        case ' ':
+                            CommonAlgorithm.SetTile(result, pos, settings.EmptyTileId);
                             break;
                         default:
                             throw new Exception("Unexpected character.");
@@ -51,13 +54,17 @@ namespace MazeGenerators
                     {
                         sb.Append("-");
                     }
-                    else if (tile != settings.WallTileId)
+                    else if (tile == settings.WallTileId)
+                    {
+                        sb.Append("#");
+                    }
+                    else if (tile == settings.EmptyTileId)
                     {
                         sb.Append(" ");
                     }
                     else
                     {
-                        sb.Append("#");
+                        sb.Append(".");
                     }
                 }
 
