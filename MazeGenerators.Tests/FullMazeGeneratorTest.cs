@@ -1,13 +1,12 @@
 ﻿namespace MazeGenerators.Tests
 {
     using System;
-    using System.Diagnostics;
     using MazeGenerators;
     using MazeGenerators.Utils;
     using NUnit.Framework;
 
     [TestFixture]
-    public class FullMazeGeneratorTest
+    public class FluentTest
     {
         [Test]
         public void RoomMazeGenerator_Generate_SomeMaze()
@@ -19,13 +18,15 @@
                 Random = new Random(0),
             };
 
-            var result = new GeneratorResult();
-            FieldGeneratorAlgorithm.GenerateField(result, settings);
-            RoomGeneratorAlgorithm.GenerateRooms(result, settings, 10, 4, true, 2, 5, 5);
-            TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 0);
-            RegionConnectorAlgorithm.GenerateConnectors(result, settings, 10);
-            DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
-            WallSurroundingAlgorithm.BuildWalls(result, settings);
+            var result = Fluent
+                .Build(settings)
+                .GenerateField()
+                .GenerateRooms(10, 4, true, 2, 5, 5)
+                .GrowMaze(0)
+                .GenerateConnectors(10)
+                .RemoveDeadEnds()
+                .BuildWalls()
+                .Stringify();
 
             Assert.AreEqual(@"
 #####################
@@ -49,7 +50,7 @@
 #.###.#...#.#######.#
 #.....#...#.........#
 #####################
-".Replace("\r\n", "\n"), "\n" + StringParserAlgorithm.Stringify(result, settings));
+".Replace("\r\n", "\n"), "\n" + result);
         }
 
         [Test]
@@ -62,12 +63,15 @@
                 Random = new Random(0),
             };
 
-            var result = new GeneratorResult();
-            FieldGeneratorAlgorithm.GenerateField(result, settings);
-            RoomGeneratorAlgorithm.GenerateRooms(result, settings, 0, 4, true, 2, 5, 5);
-            TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 100);
-            RegionConnectorAlgorithm.GenerateConnectors(result, settings, 0);
-            WallSurroundingAlgorithm.BuildWalls(result, settings);
+
+            var result = Fluent
+                .Build(settings)
+                .GenerateField()
+                .GenerateRooms(0, 4, true, 2, 5, 5)
+                .GrowMaze(100)
+                .GenerateConnectors(0)
+                .BuildWalls()
+                .Stringify();
 
             Assert.AreEqual(@"
 #####################
@@ -91,7 +95,7 @@
 #.#.###.###.#.#.###.#
 #.#.......#.....#...#
 #####################
-".Replace("\r\n", "\n"), "\n" + StringParserAlgorithm.Stringify(result, settings));
+".Replace("\r\n", "\n"), "\n" + result);
         }
 
         [Test]
@@ -103,15 +107,16 @@
                 Height = 11,
             };
 
-            var result = new GeneratorResult();
-            FieldGeneratorAlgorithm.GenerateField(result, settings);
-            RoomGeneratorAlgorithm.GenerateRooms(result, settings, 5, 4, true, 2, 3, 3);
-            TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 0);
-            RegionConnectorAlgorithm.GenerateConnectors(result, settings, 100);
-            DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
-            WallSurroundingAlgorithm.BuildWalls(result, settings);
+            var result = Fluent
+                .Build(settings)
+                .GenerateField()
+                .GenerateRooms(5, 4, true, 2, 3, 3)
+                .GrowMaze(0)
+                .GenerateConnectors(100)
+                .RemoveDeadEnds()
+                .BuildWalls();
 
-            Assert.LessOrEqual(result.Junctions.Count, 20);
+            Assert.LessOrEqual(result.result.Junctions.Count, 20);
         }
 
         [Test]
@@ -123,15 +128,16 @@
                 Height = 21,
                 Random = new Random(0),
             };
-            
-            var result = new GeneratorResult();
-            FieldGeneratorAlgorithm.GenerateField(result, settings);
-            RoomGeneratorAlgorithm.GenerateRooms(result, settings, 0, 4, true, 2, 5, 5);
-            TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 0);
-            RegionConnectorAlgorithm.GenerateConnectors(result, settings, 0);
-            DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
-            WallSurroundingAlgorithm.BuildWalls(result, settings);
 
+            var result = Fluent
+                .Build(settings)
+                .GenerateField()
+                .GenerateRooms(0, 4, true, 2, 5, 5)
+                .GrowMaze(0)
+                .GenerateConnectors(0)
+                .RemoveDeadEnds()
+                .BuildWalls()
+                .Stringify();
 
             Assert.AreEqual(@"
                      
@@ -155,7 +161,7 @@
                      
                      
                      
-".Replace("\r\n", "\n"), "\n" + StringParserAlgorithm.Stringify(result, settings));
+".Replace("\r\n", "\n"), "\n" + result);
         }
     }
 }

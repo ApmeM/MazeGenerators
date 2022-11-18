@@ -20,38 +20,52 @@ Usage
 
 Fill in GeneratorSettings data with required values.
 
-Call different maze generator algorithms in a required order:
-
 ```
+        // Call different maze generator algorithms in a required order:
         public GeneratorResult Generate(GeneratorSettings settings)
         {
             var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
-            RoomGeneratorAlgorithm.GenerateRooms(result, settings);
-            TreeMazeBuilderAlgorithm.GrowMaze(result, settings);
-            RegionConnectorAlgorithm.GenerateConnectors(result, settings);
+            RoomGeneratorAlgorithm.GenerateRooms(result, settings, 0, 4, true, 2, 5, 5);
+            TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 0);
+            RegionConnectorAlgorithm.GenerateConnectors(result, settings, 0);
             DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
             WallSurroundingAlgorithm.BuildWalls(result, settings);
             return result;
+        }
+
+        // Or usimg fluent syntax
+        public GeneratorResult GenerateFluent(GeneratorSettings settings)
+        {
+            
+            return Fluent
+                .Build(settings)
+                .GenerateField()
+                .GenerateRooms(0, 4, true, 2, 5, 5)
+                .GrowMaze(0)
+                .GenerateConnectors(0)
+                .RemoveDeadEnds()
+                .BuildWalls()
+                .result;
         }
 ```
 
 Algorithms
 ==========
 
-CommonAlgorithm - Create field and check input parameters for correctness.
+DeadEndRemoverAlgorithm - Remove dead ends - path tiles that have less then two paths connected
 
-RoomGeneratorAlgorithm - Generate unconnected rooms
+FieldGeneratorAlgorithm - Create field and check input parameters for correctness.
 
-TreeMazeBuilderAlgorithm - Generate unconnected maze paths in free spaces
+MirroringAlgorithm - Mirror existing maze Horizontally/Vertically/Both or rotate it around center
 
 RegionConnectorAlgorithm - Generate connectors between rooms and paths
 
-DeadEndRemoverAlgorithm - Remove dead ends - path tiles that have less then two paths connected
+RoomGeneratorAlgorithm - Generate unconnected rooms
 
 StringParserAlgorithm - Print and parse maze to/from string
 
-MirroringAlgorithm - Mirror existing maze Horizontally/Vertically/Both or rotate it around center
+TreeMazeBuilderAlgorithm - Generate unconnected maze paths in free spaces
 
 WallSurroundingAlgorithm - Build walls around all passages, junctions and rooms
 
