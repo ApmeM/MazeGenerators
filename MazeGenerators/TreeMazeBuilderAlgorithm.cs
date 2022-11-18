@@ -1,4 +1,5 @@
 ﻿using MazeGenerators.Utils;
+using System;
 using System.Collections.Generic;
 
 namespace MazeGenerators
@@ -7,6 +8,11 @@ namespace MazeGenerators
     {
         public static void GrowMaze(GeneratorResult result, GeneratorSettings settings, int windingPercent = 0)
         {
+            if (settings.Width % 2 == 0 || settings.Height % 2 == 0)
+            {
+                throw new Exception("The map must be odd-sized.");
+            }
+
             // Fill in all of the empty space with mazes.
             for (var x = 1; x < settings.Width; x += 2)
             {

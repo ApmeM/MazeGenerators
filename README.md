@@ -53,6 +53,8 @@ Fill in GeneratorSettings data with required values.
 Algorithms
 ==========
 
+CustomDrawAlgorithm - Add custom shapes of any type (fillrect, rectngle, point)
+
 DeadEndRemoverAlgorithm - Remove dead ends - path tiles that have less then two paths connected
 
 FieldGeneratorAlgorithm - Create field and check input parameters for correctness.

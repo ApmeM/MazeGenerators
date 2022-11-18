@@ -26,7 +26,8 @@
 "# #-# #\n" +
 "#   ###\n" +
 "#######\n");
-            RoomGeneratorAlgorithm.AddRoom(result, settings, new Rectangle(3, 1, 3, 1));
+            CustomDrawAlgorithm.AddFillRectangle(result, settings, new Rectangle(3, 1, 3, 1), settings.RoomTileId);
+            result.Rooms.Add(new Rectangle(3, 1, 3, 1));
             MirroringAlgorithm.Mirror(result, settings, MirroringAlgorithm.MirrorDirection.Horizontal);
 
             Assert.AreEqual(
@@ -63,7 +64,8 @@
 "# #-# #\n" +
 "#   ###\n" +
 "#######\n");
-            RoomGeneratorAlgorithm.AddRoom(result, settings, new Rectangle(3, 1, 3, 1));
+            CustomDrawAlgorithm.AddFillRectangle(result, settings, new Rectangle(3, 1, 3, 1), settings.RoomTileId);
+            result.Rooms.Add(new Rectangle(3, 1, 3, 1));
             MirroringAlgorithm.Mirror(result, settings, MirroringAlgorithm.MirrorDirection.Vertical);
 
             Assert.AreEqual(
@@ -96,7 +98,7 @@
             };
             var result = new GeneratorResult();
             FieldGeneratorAlgorithm.GenerateField(result, settings);
-            StringParserAlgorithm.Parse(result, settings, 
+            StringParserAlgorithm.Parse(result, settings,
 "#######\n" +
 "#.#####\n" +
 "# ### #\n" +
@@ -104,7 +106,8 @@
 "# #-# #\n" +
 "#   ###\n" +
 "#######\n");
-            RoomGeneratorAlgorithm.AddRoom(result, settings, new Rectangle(3, 1, 3, 1));
+            CustomDrawAlgorithm.AddFillRectangle(result, settings, new Rectangle(3, 1, 3, 1), settings.RoomTileId);
+            result.Rooms.Add(new Rectangle(3, 1, 3, 1));
             MirroringAlgorithm.Mirror(result, settings, MirroringAlgorithm.MirrorDirection.Both);
 
             Assert.AreEqual(
@@ -141,7 +144,7 @@
             };
             var result = new GeneratorResult();
             FieldGeneratorAlgorithm.GenerateField(result, settings);
-            StringParserAlgorithm.Parse(result, settings, 
+            StringParserAlgorithm.Parse(result, settings,
 "#######\n" +
 "#.#####\n" +
 "# ### #\n" +
@@ -149,7 +152,8 @@
 "# #-# #\n" +
 "#   ###\n" +
 "#######\n");
-            RoomGeneratorAlgorithm.AddRoom(result, settings, new Rectangle(3, 1, 3, 1));
+            CustomDrawAlgorithm.AddFillRectangle(result, settings, new Rectangle(3, 1, 3, 1), settings.RoomTileId);
+            result.Rooms.Add(new Rectangle(3, 1, 3, 1));
             MirroringAlgorithm.Mirror(result, settings, MirroringAlgorithm.MirrorDirection.Rotate);
 
             Assert.AreEqual(
@@ -186,7 +190,8 @@
             };
             var result = new GeneratorResult();
             FieldGeneratorAlgorithm.GenerateField(result, settings);
-            RoomGeneratorAlgorithm.AddRoom(result, settings, new Rectangle(1, 1, 3, 3));
+            CustomDrawAlgorithm.AddFillRectangle(result, settings, new Rectangle(1, 1, 3, 3), settings.RoomTileId);
+            result.Rooms.Add(new Rectangle(1, 1, 3, 3));
             MirroringAlgorithm.Mirror(result, settings, MirroringAlgorithm.MirrorDirection.Rotate);
 
             Assert.AreEqual(
@@ -205,6 +210,41 @@
             Assert.AreEqual(new Rectangle(3, 1, 3, 3), result.Rooms[1]);
             Assert.AreEqual(new Rectangle(3, 3, 3, 3), result.Rooms[2]);
             Assert.AreEqual(new Rectangle(1, 3, 3, 3), result.Rooms[3]);
+        }
+
+        
+        [Test]
+        public void Mirror_EvenSized_Mirrored()
+        {
+            var settings = new GeneratorSettings
+            {
+                Width = 6,
+                Height = 6,
+            };
+            var result = new GeneratorResult();
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
+            StringParserAlgorithm.Parse(result, settings,
+"######\n" +
+"#    #\n" +
+"# ####\n" +
+"# ####\n" +
+"# ####\n" +
+"# ####\n" +
+"######\n");
+            MirroringAlgorithm.Mirror(result, settings, MirroringAlgorithm.MirrorDirection.Rotate);
+
+            Assert.AreEqual(
+"#########\n" +
+"#       #\n" +
+"# ##### #\n" +
+"# ##### #\n" +
+"# ##### #\n" +
+"# ##### #\n" +
+"# ##### #\n" +
+"#       #\n" +
+"#########\n", StringParserAlgorithm.Stringify(result, settings));
+            Assert.AreEqual(9, settings.Width);
+            Assert.AreEqual(9, settings.Height);
         }
     }
 }

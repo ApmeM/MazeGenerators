@@ -9,6 +9,34 @@
     public class TreeMazeBuilderAlgorithmTest
     {
         [Test]
+        public void GenerateField_InvalidHeight_ExceptionThrown()
+        {
+            var settings = new GeneratorSettings
+            {
+                Width = 3,
+                Height = 4
+            };
+            var result = new GeneratorResult();
+
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
+            Assert.Throws<Exception>(() => { TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 0); });
+        }
+
+        [Test]
+        public void GenerateField_InvalidWidth_ExceptionThrown()
+        {
+            var settings = new GeneratorSettings
+            {
+                Width = 2,
+                Height = 5
+            };
+            var result = new GeneratorResult();
+
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
+            Assert.Throws<Exception>(() => { TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 0); });
+        }
+
+        [Test]
         public void GrowMaze_NoWinding_StrightLine()
         {
             var settings = new GeneratorSettings

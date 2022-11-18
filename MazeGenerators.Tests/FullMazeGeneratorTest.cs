@@ -54,6 +54,38 @@
         }
 
         [Test]
+        public void RoomMazeGenerator_CustomPaint_SomeMaze()
+        {
+            var settings = new GeneratorSettings
+            {
+                Width = 13,
+                Height = 9,
+                Random = new Random(0),
+            };
+
+            var result = Fluent
+                .Build(settings)
+                .GenerateField()
+                .AddFillRectangle(new Rectangle(1, 1, 3, 4), settings.RoomTileId)
+                .AddRectangle(new Rectangle(5, 1, 7, 7), settings.RoomTileId)
+                .AddPoint(new Vector2(7, 3), settings.RoomTileId)
+                .BuildWalls()
+                .Stringify();
+
+            Assert.AreEqual(@"
+#############
+#...#.......#
+#...#.#####.#
+#...#.#.# #.#
+#...#.### #.#
+#####.#   #.#
+    #.#####.#
+    #.......#
+    #########
+".Replace("\r\n", "\n"), "\n" + result);
+        }
+
+        [Test]
         public void RoomMazeGenerator_GenerateWithoutRooms_SameAsTreeMazeGenerator()
         {
             var settings = new GeneratorSettings

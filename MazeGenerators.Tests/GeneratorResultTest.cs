@@ -53,7 +53,7 @@
             var result = new GeneratorResult();
 
             FieldGeneratorAlgorithm.GenerateField(result, settings);
-            result.SetTile(new Vector2(1, 1), 11);
+            CustomDrawAlgorithm.AddPoint(result, settings, new Vector2(1, 1), 11);
 
             var tile = result.GetTile(new Vector2(1, 1));
 

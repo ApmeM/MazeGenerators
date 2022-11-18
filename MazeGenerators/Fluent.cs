@@ -71,5 +71,23 @@ namespace MazeGenerators
             WallSurroundingAlgorithm.BuildWalls(result, settings);
             return this;
         }
+
+        public Fluent AddFillRectangle(Rectangle room, int tileId)
+        {
+            CustomDrawAlgorithm.AddFillRectangle(result, settings, room, tileId);
+            return this;
+        }
+
+        public Fluent AddRectangle(Rectangle room, int tileId)
+        {
+            CustomDrawAlgorithm.AddRectangle(result, settings, room, tileId);
+            return this;
+        }
+
+        public Fluent AddPoint(Vector2 point, int tileId)
+        {
+            CustomDrawAlgorithm.AddPoint(result, settings, point, tileId);
+            return this;
+        }
     }
 }

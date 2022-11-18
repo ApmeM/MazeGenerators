@@ -44,24 +44,14 @@ namespace MazeGenerators
                 if (overlaps)
                     continue;
 
-                AddRoom(result, settings, room);
+                CustomDrawAlgorithm.AddFillRectangle(result, settings, room, settings.RoomTileId);
+                result.Rooms.Add(room);
                 roomsGemerated++;
                 if (roomsGemerated >= targetRoomCount)
                 {
                     break;
                 }
             }
-        }
-
-        public static void AddRoom(GeneratorResult result, GeneratorSettings settings, Rectangle room)
-        {
-            for (var x = room.X; x < room.X + room.Width; x++)
-                for (var y = room.Y; y < room.Y + room.Height; y++)
-                {
-                    result.SetTile(new Vector2(x, y), settings.RoomTileId);
-                }
-
-            result.Rooms.Add(room);
         }
     }
 }

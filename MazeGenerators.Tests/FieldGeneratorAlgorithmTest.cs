@@ -23,19 +23,6 @@
         }
 
         [Test]
-        public void GenerateField_InvalidWidth_ExceptionThrown()
-        {
-            var settings = new GeneratorSettings
-            {
-                Width = 2,
-                Height = 5
-            };
-            var result = new GeneratorResult();
-
-            Assert.Throws<Exception>(() => { FieldGeneratorAlgorithm.GenerateField(result, settings); });
-        }
-
-        [Test]
         public void GenerateField_NegativeWidth_ExceptionThrown()
         {
             var settings = new GeneratorSettings
@@ -46,20 +33,6 @@
             var result = new GeneratorResult();
 
             Assert.Throws<OverflowException>(() => { FieldGeneratorAlgorithm.GenerateField(result, settings); });
-        }
-
-
-        [Test]
-        public void GenerateField_InvalidHeight_ExceptionThrown()
-        {
-            var settings = new GeneratorSettings
-            {
-                Width = 3,
-                Height = 4
-            };
-            var result = new GeneratorResult();
-
-            Assert.Throws<Exception>(() => { FieldGeneratorAlgorithm.GenerateField(result, settings); });
         }
 
         [Test]

@@ -83,44 +83,5 @@
 
             Assert.AreEqual(2, result.Rooms.Count);
         }
-
-        [Test]
-        public void AddRoom_OutOfRange_Exception()
-        {
-            var settings = new GeneratorSettings
-            {
-                Width = 7,
-                Height = 7,
-            };
-
-            var result = new GeneratorResult();
-            FieldGeneratorAlgorithm.GenerateField(result, settings);
-            Assert.Throws<IndexOutOfRangeException>(() => RoomGeneratorAlgorithm.AddRoom(result, settings, new Rectangle(4, 4, 8, 8)));
-        }
-
-        [Test]
-        public void AddRoom_ValidValues_RoomAndPathAdded()
-        {
-            var settings = new GeneratorSettings
-            {
-                Width = 7,
-                Height = 7,
-            };
-
-            var result = new GeneratorResult();
-            FieldGeneratorAlgorithm.GenerateField(result, settings);
-            RoomGeneratorAlgorithm.AddRoom(result, settings, new Rectangle(2, 2, 2, 2));
-
-            Assert.AreEqual(1, result.Rooms.Count);
-            Assert.AreEqual(new Rectangle(2, 2, 2, 2), result.Rooms[0]);
-            Assert.AreEqual(
-"       \n" +
-"       \n" +
-"  ..   \n" +
-"  ..   \n" +
-"       \n" +
-"       \n" +
-"       \n", StringParserAlgorithm.Stringify(result, settings));
-        }
     }
 }
