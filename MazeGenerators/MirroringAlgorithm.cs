@@ -4,14 +4,22 @@ namespace MazeGenerators
 {
     public class MirroringAlgorithm
     {
-        public static void Mirror(GeneratorResult result, GeneratorSettings settings)
+        public enum MirrorDirection
+        {
+            Horizontal,
+            Vertical,
+            Both,
+            Rotate
+        }
+
+        public static void Mirror(GeneratorResult result, GeneratorSettings settings, MirrorDirection mirror)
         {
             var oldPath = result.Paths;
             var oldRoomsCount = result.Rooms.Count;
             var oldJunctionsCount = result.Junctions.Count;
-            switch (settings.Mirror)
+            switch (mirror)
             {
-                case GeneratorSettings.MirrorDirection.Horizontal:
+                case MirrorDirection.Horizontal:
                     {
                         settings.Width = settings.Width * 2 - 3;
                         result.Paths = new int[result.Paths.GetLength(0) * 2 - 3, result.Paths.GetLength(1)];
@@ -32,7 +40,7 @@ namespace MazeGenerators
 
                         break;
                     }
-                case GeneratorSettings.MirrorDirection.Vertical:
+                case MirrorDirection.Vertical:
                     {
                         settings.Height = settings.Height * 2 - 3;
                         result.Paths = new int[result.Paths.GetLength(0), result.Paths.GetLength(1) * 2 - 3];
@@ -53,7 +61,7 @@ namespace MazeGenerators
 
                         break;
                     }
-                case GeneratorSettings.MirrorDirection.Both:
+                case MirrorDirection.Both:
                     {
                         settings.Width = settings.Width * 2 - 3;
                         settings.Height = settings.Height * 2 - 3;
@@ -83,7 +91,7 @@ namespace MazeGenerators
 
                         break;
                     }
-                case GeneratorSettings.MirrorDirection.Rotate:
+                case MirrorDirection.Rotate:
                     {
                         if (result.Paths.GetLength(0) != result.Paths.GetLength(1))
                         {

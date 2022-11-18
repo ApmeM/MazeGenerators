@@ -5,7 +5,7 @@ namespace MazeGenerators
 {
     public class TreeMazeBuilderAlgorithm
     {
-        public static void GrowMaze(GeneratorResult result, GeneratorSettings settings)
+        public static void GrowMaze(GeneratorResult result, GeneratorSettings settings, int windingPercent = 0)
         {
             // Fill in all of the empty space with mazes.
             for (var x = 1; x < settings.Width; x += 2)
@@ -15,12 +15,12 @@ namespace MazeGenerators
                     var pos = new Vector2(x, y);
                     if (CommonAlgorithm.GetTile(result, pos) != settings.EmptyTileId)
                         continue;
-                    GrowSingleMazeTree(result, settings, pos);
+                    GrowSingleMazeTree(result, settings, pos, windingPercent);
                 }
             }
         }
 
-        private static void GrowSingleMazeTree(GeneratorResult result, GeneratorSettings settings, Vector2 start)
+        private static void GrowSingleMazeTree(GeneratorResult result, GeneratorSettings settings, Vector2 start, int windingPercent)
         {
             var cells = new Stack<Vector2>();
 
@@ -45,7 +45,7 @@ namespace MazeGenerators
                 if (unmadeCells.Count != 0)
                 {
                     Vector2 dir;
-                    if (lastDir != null && unmadeCells.Contains(lastDir.Value) && settings.Random.Next(100) > settings.WindingPercent)
+                    if (lastDir != null && unmadeCells.Contains(lastDir.Value) && settings.Random.Next(100) > windingPercent)
                     {
                         dir = lastDir.Value;
                     }

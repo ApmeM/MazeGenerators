@@ -6,17 +6,17 @@ namespace MazeGenerators
 {
     public class RegionConnectorAlgorithm
     {
-        public static void GenerateConnectors(GeneratorResult result, GeneratorSettings settings)
+        public static void GenerateConnectors(GeneratorResult result, GeneratorSettings settings, int additionalPassagesTries = 10)
         {
             var possibleConnectors = GetPossibleConnectorPositions(result, settings);
 
             ConnectRegions(result, settings, possibleConnectors);
-            AddRandomConnectors(result, settings, possibleConnectors);
+            AddRandomConnectors(result, settings, possibleConnectors, additionalPassagesTries);
         }
 
-        private static void AddRandomConnectors(GeneratorResult result, GeneratorSettings settings, HashSet<Vector2> possibleConnectors)
+        private static void AddRandomConnectors(GeneratorResult result, GeneratorSettings settings, HashSet<Vector2> possibleConnectors, int additionalPassagesTries)
         {
-            for (var i = 0; i < settings.AdditionalPassagesTries; i++)
+            for (var i = 0; i < additionalPassagesTries; i++)
             {
                 if (possibleConnectors.Count == 0)
                 {

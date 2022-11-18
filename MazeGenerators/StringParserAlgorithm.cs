@@ -8,9 +8,9 @@ namespace MazeGenerators
 {
     public class StringParserAlgorithm
     {
-        public static void Parse(GeneratorResult result, GeneratorSettings settings)
+        public static void Parse(GeneratorResult result, GeneratorSettings settings, string mazeText)
         {
-            var reader = new StringReader(settings.MazeText);
+            var reader = new StringReader(mazeText);
             for (var y = 0; y < settings.Height; y++)
             {
                 var line = reader.ReadLine();
@@ -68,7 +68,7 @@ namespace MazeGenerators
                     }
                 }
 
-                sb.AppendLine();
+                sb.Append("\n");
             }
 
             return sb.ToString();

@@ -16,19 +16,18 @@
                 Width = 7,
                 Height = 7,
                 Random = new Random(0),
-                WindingPercent = 0
             };
             var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
-            TreeMazeBuilderAlgorithm.GrowMaze(result, settings);
+            TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 0);
             Assert.AreEqual(
-"       \r\n" +
-" . ... \r\n" +
-" . . . \r\n" +
-" . . . \r\n" +
-" .   . \r\n" +
-" ..... \r\n" +
-"       \r\n", StringParserAlgorithm.Stringify(result, settings));
+"       \n" +
+" . ... \n" +
+" . . . \n" +
+" . . . \n" +
+" .   . \n" +
+" ..... \n" +
+"       \n", StringParserAlgorithm.Stringify(result, settings));
         }
 
         [Test]
@@ -38,20 +37,19 @@
             {
                 Width = 7,
                 Height = 7,
-                WindingPercent = 100,
                 Random = new Random(0)
             };
             var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
-            TreeMazeBuilderAlgorithm.GrowMaze(result, settings);
+            TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 100);
             Assert.AreEqual(
-"       \r\n" +
-" . ... \r\n" +
-" .   . \r\n" +
-" . ... \r\n" +
-" . . . \r\n" +
-" ... . \r\n" +
-"       \r\n", StringParserAlgorithm.Stringify(result, settings));
+"       \n" +
+" . ... \n" +
+" .   . \n" +
+" . ... \n" +
+" . . . \n" +
+" ... . \n" +
+"       \n", StringParserAlgorithm.Stringify(result, settings));
         }
 
     }

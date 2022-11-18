@@ -15,16 +15,13 @@
             {
                 Width = 201,
                 Height = 201,
-                MinRoomSize = 1000,
-                MaxRoomSize = 100,
-                MaxWidthHeightRoomSizeDifference = 20
             };
 
             var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
             Assert.Throws<Exception>(() =>
             {
-                RoomGeneratorAlgorithm.GenerateRooms(result, settings);
+                RoomGeneratorAlgorithm.GenerateRooms(result, settings, 100, 4, true, 1000, 100, 20);
             });
         }
 
@@ -35,14 +32,11 @@
             {
                 Width = 201,
                 Height = 201,
-                MinRoomSize = 11,
-                MaxRoomSize = 11,
-                MaxWidthHeightRoomSizeDifference = 20
             };
 
             var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
-            RoomGeneratorAlgorithm.GenerateRooms(result, settings);
+            RoomGeneratorAlgorithm.GenerateRooms(result, settings, 100, 4, true, 11, 11, 20);
 
             foreach (var r in result.Rooms)
             {
@@ -58,14 +52,11 @@
             {
                 Width = 201,
                 Height = 201,
-                MinRoomSize = 10,
-                MaxRoomSize = 100,
-                MaxWidthHeightRoomSizeDifference = 20
             };
 
             var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
-            RoomGeneratorAlgorithm.GenerateRooms(result, settings);
+            RoomGeneratorAlgorithm.GenerateRooms(result, settings, 100, 4, true, 10, 100, 20);
 
             foreach (var r in result.Rooms)
             {
@@ -84,15 +75,11 @@
             {
                 Width = 201,
                 Height = 201,
-                MinRoomSize = 10,
-                MaxRoomSize = 11,
-                MaxWidthHeightRoomSizeDifference = 20,
-                TargetRoomCount = 2
             };
 
             var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
-            RoomGeneratorAlgorithm.GenerateRooms(result, settings);
+            RoomGeneratorAlgorithm.GenerateRooms(result, settings, 100, 2, true, 10, 11, 20);
 
             Assert.AreEqual(2, result.Rooms.Count);
         }
@@ -127,13 +114,13 @@
             Assert.AreEqual(1, result.Rooms.Count);
             Assert.AreEqual(new Rectangle(2, 2, 2, 2), result.Rooms[0]);
             Assert.AreEqual(
-"       \r\n" +
-"       \r\n" +
-"  ..   \r\n" +
-"  ..   \r\n" +
-"       \r\n" +
-"       \r\n" +
-"       \r\n", StringParserAlgorithm.Stringify(result, settings));
+"       \n" +
+"       \n" +
+"  ..   \n" +
+"  ..   \n" +
+"       \n" +
+"       \n" +
+"       \n", StringParserAlgorithm.Stringify(result, settings));
         }
     }
 }

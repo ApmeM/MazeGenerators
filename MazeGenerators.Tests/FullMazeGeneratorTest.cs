@@ -9,45 +9,6 @@
     [TestFixture]
     public class FullMazeGeneratorTest
     {
-        public GeneratorResult Generate(GeneratorSettings settings, bool needDeadendRemover = true)
-        {
-            var result = new GeneratorResult();
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            CommonAlgorithm.GenerateField(result, settings);
-            sw.Stop();
-            Console.WriteLine($"GenerateField : {sw.ElapsedMilliseconds}");
-            sw.Reset();
-            sw.Start();
-            RoomGeneratorAlgorithm.GenerateRooms(result, settings);
-            sw.Stop();
-            Console.WriteLine($"GenerateRooms : {sw.ElapsedMilliseconds}");
-            sw.Reset();
-            sw.Start();
-            TreeMazeBuilderAlgorithm.GrowMaze(result, settings);
-            sw.Stop();
-            Console.WriteLine($"GrowMaze : {sw.ElapsedMilliseconds}");
-            sw.Reset();
-            sw.Start();
-            RegionConnectorAlgorithm.GenerateConnectors(result, settings);
-            sw.Stop();
-            Console.WriteLine($"GenerateConnectors : {sw.ElapsedMilliseconds}");
-            if (needDeadendRemover)
-            {
-                sw.Reset();
-                sw.Start();
-                DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
-                sw.Stop();
-                Console.WriteLine($"RemoveDeadEnds : {sw.ElapsedMilliseconds}");
-            }
-            sw.Reset();
-            sw.Start();
-            WallSurroundingAlgorithm.BuildWalls(result, settings);
-            sw.Stop();
-            Console.WriteLine($"BuildWalls : {sw.ElapsedMilliseconds}");
-            return result;
-        }
-
         [Test]
         public void RoomMazeGenerator_Generate_SomeMaze()
         {
@@ -56,10 +17,15 @@
                 Width = 21,
                 Height = 21,
                 Random = new Random(0),
-                NumRoomTries = 10,
             };
 
-            var result = this.Generate(settings);
+            var result = new GeneratorResult();
+            CommonAlgorithm.GenerateField(result, settings);
+            RoomGeneratorAlgorithm.GenerateRooms(result, settings, 10, 4, true, 2, 5, 5);
+            TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 0);
+            RegionConnectorAlgorithm.GenerateConnectors(result, settings, 10);
+            DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
+            WallSurroundingAlgorithm.BuildWalls(result, settings);
 
             Assert.AreEqual(@"
 #####################
@@ -83,7 +49,7 @@
 #.###.#...#.#######.#
 #.....#...#.........#
 #####################
-", "\r\n" + StringParserAlgorithm.Stringify(result, settings));
+".Replace("\r\n", "\n"), "\n" + StringParserAlgorithm.Stringify(result, settings));
         }
 
         [Test]
@@ -94,12 +60,14 @@
                 Width = 21,
                 Height = 21,
                 Random = new Random(0),
-                AdditionalPassagesTries = 0,
-                NumRoomTries = 0,
-                WindingPercent = 100
             };
 
-            var result = this.Generate(settings, false);
+            var result = new GeneratorResult();
+            CommonAlgorithm.GenerateField(result, settings);
+            RoomGeneratorAlgorithm.GenerateRooms(result, settings, 0, 4, true, 2, 5, 5);
+            TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 100);
+            RegionConnectorAlgorithm.GenerateConnectors(result, settings, 0);
+            WallSurroundingAlgorithm.BuildWalls(result, settings);
 
             Assert.AreEqual(@"
 #####################
@@ -123,7 +91,7 @@
 #.#.###.###.#.#.###.#
 #.#.......#.....#...#
 #####################
-", "\r\n" + StringParserAlgorithm.Stringify(result, settings));
+".Replace("\r\n", "\n"), "\n" + StringParserAlgorithm.Stringify(result, settings));
         }
 
         [Test]
@@ -133,13 +101,15 @@
             {
                 Width = 11,
                 Height = 11,
-                NumRoomTries = 5,
-                MinRoomSize = 3,
-                MaxRoomSize = 3,
-                AdditionalPassagesTries = 100,
             };
 
-            var result = this.Generate(settings);
+            var result = new GeneratorResult();
+            CommonAlgorithm.GenerateField(result, settings);
+            RoomGeneratorAlgorithm.GenerateRooms(result, settings, 5, 4, true, 2, 3, 3);
+            TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 0);
+            RegionConnectorAlgorithm.GenerateConnectors(result, settings, 100);
+            DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
+            WallSurroundingAlgorithm.BuildWalls(result, settings);
 
             Assert.LessOrEqual(result.Junctions.Count, 20);
         }
@@ -152,11 +122,16 @@
                 Width = 21,
                 Height = 21,
                 Random = new Random(0),
-                AdditionalPassagesTries = 0,
-                NumRoomTries = 0,
             };
             
-            var result = this.Generate(settings);
+            var result = new GeneratorResult();
+            CommonAlgorithm.GenerateField(result, settings);
+            RoomGeneratorAlgorithm.GenerateRooms(result, settings, 0, 4, true, 2, 5, 5);
+            TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 0);
+            RegionConnectorAlgorithm.GenerateConnectors(result, settings, 0);
+            DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
+            WallSurroundingAlgorithm.BuildWalls(result, settings);
+
 
             Assert.AreEqual(@"
                      
@@ -180,7 +155,7 @@
                      
                      
                      
-", "\r\n" + StringParserAlgorithm.Stringify(result, settings));
+".Replace("\r\n", "\n"), "\n" + StringParserAlgorithm.Stringify(result, settings));
         }
     }
 }

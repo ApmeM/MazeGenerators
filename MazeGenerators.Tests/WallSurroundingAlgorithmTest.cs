@@ -14,23 +14,22 @@
             {
                 Width = 5,
                 Height = 5,
-                MazeText =
-                "     \n" +
-                " . . \n" +
-                "  .. \n" +
-                " .   \n" +
-                "     \n"
             };
             var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
-            StringParserAlgorithm.Parse(result, settings);
+            StringParserAlgorithm.Parse(result, settings, 
+"     \n" +
+" . . \n" +
+"  .. \n" +
+" .   \n" +
+"     \n");
             WallSurroundingAlgorithm.BuildWalls(result, settings);
             Assert.AreEqual(
-"#####\r\n" +
-"#.#.#\r\n" +
-"##..#\r\n" +
-"#.###\r\n" +
-"###  \r\n", StringParserAlgorithm.Stringify(result, settings));
+"#####\n" +
+"#.#.#\n" +
+"##..#\n" +
+"#.###\n" +
+"###  \n", StringParserAlgorithm.Stringify(result, settings));
             Assert.AreEqual(0, result.Junctions.Count);
         }
     }

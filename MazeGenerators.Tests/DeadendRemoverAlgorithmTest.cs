@@ -14,23 +14,22 @@
             {
                 Width = 3,
                 Height = 5,
-                MazeText = 
-                "   \n" +
-                " . \n" +
-                " . \n" +
-                " . \n" +
-                "   \n"
             };
             var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
-            StringParserAlgorithm.Parse(result, settings);
+            StringParserAlgorithm.Parse(result, settings, 
+"   \n" +
+" . \n" +
+" . \n" +
+" . \n" +
+"   \n");
             DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
             Assert.AreEqual(
-"   \r\n" +
-"   \r\n" + 
-"   \r\n" + 
-"   \r\n" + 
-"   \r\n", StringParserAlgorithm.Stringify(result, settings));
+"   \n" +
+"   \n" +
+"   \n" +
+"   \n" +
+"   \n", StringParserAlgorithm.Stringify(result, settings));
         }
 
         [Test]
@@ -40,23 +39,22 @@
             {
                 Width = 5,
                 Height = 5,
-                MazeText =
-                "     \n" +
-                " ... \n" +
-                " . . \n" +
-                " ... \n" +
-                "     \n"
             };
             var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
-            StringParserAlgorithm.Parse(result, settings);
+            StringParserAlgorithm.Parse(result, settings, 
+"     \n" +
+" ... \n" +
+" . . \n" +
+" ... \n" +
+"     \n");
             DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
             Assert.AreEqual(
-"     \r\n" +
-" ... \r\n" +
-" . . \r\n" +
-" ... \r\n" +
-"     \r\n", StringParserAlgorithm.Stringify(result, settings));
+"     \n" +
+" ... \n" +
+" . . \n" +
+" ... \n" +
+"     \n", StringParserAlgorithm.Stringify(result, settings));
         }
 
         [Test]
@@ -66,23 +64,22 @@
             {
                 Width = 5,
                 Height = 5,
-                MazeText =
-                "     \n" +
-                " ... \n" +
-                " ..  \n" +
-                " ... \n" +
-                "     \n"
             };
             var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
-            StringParserAlgorithm.Parse(result, settings);
+            StringParserAlgorithm.Parse(result, settings, 
+"     \n" +
+" ... \n" +
+" ..  \n" +
+" ... \n" +
+"     \n");
             DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
             Assert.AreEqual(
-"     \r\n" +
-" ..  \r\n" +
-" ..  \r\n" +
-" ..  \r\n" +
-"     \r\n", StringParserAlgorithm.Stringify(result, settings));
+"     \n" +
+" ..  \n" +
+" ..  \n" +
+" ..  \n" +
+"     \n", StringParserAlgorithm.Stringify(result, settings));
         }
     }
 }

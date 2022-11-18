@@ -15,30 +15,28 @@
             {
                 Width = 7,
                 Height = 7,
-                Mirror = GeneratorSettings.MirrorDirection.Horizontal,
-                MazeText =
-                "#######\n" +
-                "# #####\n" +
-                "# ### #\n" +
-                "# #   #\n" +
-                "# #-# #\n" +
-                "#   ###\n" +
-                "#######\n"
             };
             var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
-            StringParserAlgorithm.Parse(result, settings);
+            StringParserAlgorithm.Parse(result, settings,
+"#######\n" +
+"# #####\n" +
+"# ### #\n" +
+"# #   #\n" +
+"# #-# #\n" +
+"#   ###\n" +
+"#######\n");
             RoomGeneratorAlgorithm.AddRoom(result, settings, new Rectangle(3, 1, 3, 1));
-            MirroringAlgorithm.Mirror(result, settings);
+            MirroringAlgorithm.Mirror(result, settings, MirroringAlgorithm.MirrorDirection.Horizontal);
 
             Assert.AreEqual(
-"###########\r\n" +
-"# #.....# #\r\n" +
-"# ### ### #\r\n" +
-"# #     # #\r\n" +
-"# #-# #-# #\r\n" +
-"#   ###   #\r\n" +
-"###########\r\n", StringParserAlgorithm.Stringify(result, settings));
+"###########\n" +
+"# #.....# #\n" +
+"# ### ### #\n" +
+"# #     # #\n" +
+"# #-# #-# #\n" +
+"#   ###   #\n" +
+"###########\n", StringParserAlgorithm.Stringify(result, settings));
             Assert.AreEqual(11, settings.Width);
             Assert.AreEqual(7, settings.Height);
             Assert.AreEqual(new Vector2(3, 4), result.Junctions[0]);
@@ -54,34 +52,32 @@
             {
                 Width = 7,
                 Height = 7,
-                Mirror = GeneratorSettings.MirrorDirection.Vertical,
-                MazeText =
-                "#######\n" +
-                "#.#####\n" +
-                "# ### #\n" +
-                "# #   #\n" +
-                "# #-# #\n" +
-                "#   ###\n" +
-                "#######\n"
             };
             var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
-            StringParserAlgorithm.Parse(result, settings);
+            StringParserAlgorithm.Parse(result, settings,
+"#######\n" +
+"#.#####\n" +
+"# ### #\n" +
+"# #   #\n" +
+"# #-# #\n" +
+"#   ###\n" +
+"#######\n");
             RoomGeneratorAlgorithm.AddRoom(result, settings, new Rectangle(3, 1, 3, 1));
-            MirroringAlgorithm.Mirror(result, settings);
+            MirroringAlgorithm.Mirror(result, settings, MirroringAlgorithm.MirrorDirection.Vertical);
 
             Assert.AreEqual(
-"#######\r\n" +
-"#.#...#\r\n" +
-"# ### #\r\n" +
-"# #   #\r\n" +
-"# #-# #\r\n" +
-"#   ###\r\n" +
-"# #-# #\r\n" +
-"# #   #\r\n" +
-"# ### #\r\n" +
-"#.#...#\r\n" +
-"#######\r\n", StringParserAlgorithm.Stringify(result, settings));
+"#######\n" +
+"#.#...#\n" +
+"# ### #\n" +
+"# #   #\n" +
+"# #-# #\n" +
+"#   ###\n" +
+"# #-# #\n" +
+"# #   #\n" +
+"# ### #\n" +
+"#.#...#\n" +
+"#######\n", StringParserAlgorithm.Stringify(result, settings));
             Assert.AreEqual(7, settings.Width);
             Assert.AreEqual(11, settings.Height);
             Assert.AreEqual(new Vector2(3, 4), result.Junctions[0]);
@@ -97,34 +93,32 @@
             {
                 Width = 7,
                 Height = 7,
-                Mirror = GeneratorSettings.MirrorDirection.Both,
-                MazeText =
-                "#######\n" +
-                "#.#####\n" +
-                "# ### #\n" +
-                "# #   #\n" +
-                "# #-# #\n" +
-                "#   ###\n" +
-                "#######\n"
             };
             var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
-            StringParserAlgorithm.Parse(result, settings);
+            StringParserAlgorithm.Parse(result, settings, 
+"#######\n" +
+"#.#####\n" +
+"# ### #\n" +
+"# #   #\n" +
+"# #-# #\n" +
+"#   ###\n" +
+"#######\n");
             RoomGeneratorAlgorithm.AddRoom(result, settings, new Rectangle(3, 1, 3, 1));
-            MirroringAlgorithm.Mirror(result, settings);
+            MirroringAlgorithm.Mirror(result, settings, MirroringAlgorithm.MirrorDirection.Both);
 
             Assert.AreEqual(
-"###########\r\n" +
-"#.#.....#.#\r\n" +
-"# ### ### #\r\n" +
-"# #     # #\r\n" +
-"# #-# #-# #\r\n" +
-"#   ###   #\r\n" +
-"# #-# #-# #\r\n" +
-"# #     # #\r\n" +
-"# ### ### #\r\n" +
-"#.#.....#.#\r\n" +
-"###########\r\n", StringParserAlgorithm.Stringify(result, settings));
+"###########\n" +
+"#.#.....#.#\n" +
+"# ### ### #\n" +
+"# #     # #\n" +
+"# #-# #-# #\n" +
+"#   ###   #\n" +
+"# #-# #-# #\n" +
+"# #     # #\n" +
+"# ### ### #\n" +
+"#.#.....#.#\n" +
+"###########\n", StringParserAlgorithm.Stringify(result, settings));
             Assert.AreEqual(11, settings.Width);
             Assert.AreEqual(11, settings.Height);
             Assert.AreEqual(new Vector2(3, 4), result.Junctions[0]);
@@ -144,34 +138,32 @@
             {
                 Width = 7,
                 Height = 7,
-                Mirror = GeneratorSettings.MirrorDirection.Rotate,
-                MazeText =
-                "#######\n" +
-                "#.#####\n" +
-                "# ### #\n" +
-                "# #   #\n" +
-                "# #-# #\n" +
-                "#   ###\n" +
-                "#######\n"
             };
             var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
-            StringParserAlgorithm.Parse(result, settings);
+            StringParserAlgorithm.Parse(result, settings, 
+"#######\n" +
+"#.#####\n" +
+"# ### #\n" +
+"# #   #\n" +
+"# #-# #\n" +
+"#   ###\n" +
+"#######\n");
             RoomGeneratorAlgorithm.AddRoom(result, settings, new Rectangle(3, 1, 3, 1));
-            MirroringAlgorithm.Mirror(result, settings);
+            MirroringAlgorithm.Mirror(result, settings, MirroringAlgorithm.MirrorDirection.Rotate);
 
             Assert.AreEqual(
-"###########\r\n" +
-"#.#...   .#\r\n" +
-"# ### #####\r\n" +
-"# #   - #.#\r\n" +
-"# #-# # #.#\r\n" +
-"#.   #   .#\r\n" +
-"#.# # #-# #\r\n" +
-"#.# -   # #\r\n" +
-"##### ### #\r\n" +
-"#.   ...#.#\r\n" +
-"###########\r\n", StringParserAlgorithm.Stringify(result, settings));
+"###########\n" +
+"#.#...   .#\n" +
+"# ### #####\n" +
+"# #   - #.#\n" +
+"# #-# # #.#\n" +
+"#.   #   .#\n" +
+"#.# # #-# #\n" +
+"#.# -   # #\n" +
+"##### ### #\n" +
+"#.   ...#.#\n" +
+"###########\n", StringParserAlgorithm.Stringify(result, settings));
             Assert.AreEqual(11, settings.Width);
             Assert.AreEqual(11, settings.Height);
             Assert.AreEqual(new Vector2(3, 4), result.Junctions[0]);
@@ -191,21 +183,20 @@
             {
                 Width = 5,
                 Height = 5,
-                Mirror = GeneratorSettings.MirrorDirection.Rotate,
             };
             var result = new GeneratorResult();
             CommonAlgorithm.GenerateField(result, settings);
             RoomGeneratorAlgorithm.AddRoom(result, settings, new Rectangle(1, 1, 3, 3));
-            MirroringAlgorithm.Mirror(result, settings);
+            MirroringAlgorithm.Mirror(result, settings, MirroringAlgorithm.MirrorDirection.Rotate);
 
             Assert.AreEqual(
-"       \r\n" +
-" ..... \r\n" +
-" ..... \r\n" +
-" ..... \r\n" +
-" ..... \r\n" +
-" ..... \r\n" +
-"       \r\n", StringParserAlgorithm.Stringify(result, settings));
+"       \n" +
+" ..... \n" +
+" ..... \n" +
+" ..... \n" +
+" ..... \n" +
+" ..... \n" +
+"       \n", StringParserAlgorithm.Stringify(result, settings));
             Assert.AreEqual(7, settings.Width);
             Assert.AreEqual(7, settings.Height);
             Assert.AreEqual(0, result.Junctions.Count);
