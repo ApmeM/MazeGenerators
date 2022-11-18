@@ -13,7 +13,7 @@ namespace MazeGenerators
                 for (var y = 1; y < settings.Height; y += 2)
                 {
                     var pos = new Vector2(x, y);
-                    if (CommonAlgorithm.GetTile(result, pos) != settings.EmptyTileId)
+                    if (result.GetTile(pos) != settings.EmptyTileId)
                         continue;
                     GrowSingleMazeTree(result, settings, pos, windingPercent);
                 }
@@ -24,7 +24,7 @@ namespace MazeGenerators
         {
             var cells = new Stack<Vector2>();
 
-            CommonAlgorithm.SetTile(result, start, settings.MazeTileId);
+            result.SetTile(start, settings.MazeTileId);
 
             cells.Push(start);
 
@@ -54,8 +54,8 @@ namespace MazeGenerators
                         dir = unmadeCells[settings.Random.Next(unmadeCells.Count)];
                     }
 
-                    CommonAlgorithm.SetTile(result, cell + dir, settings.MazeTileId);
-                    CommonAlgorithm.SetTile(result, cell + dir * 2, settings.MazeTileId);
+                    result.SetTile(cell + dir, settings.MazeTileId);
+                    result.SetTile(cell + dir * 2, settings.MazeTileId);
 
                     cells.Push(cell + dir * 2);
                     lastDir = dir;
@@ -77,12 +77,12 @@ namespace MazeGenerators
         {
             // Must end in bounds.
             var block = pos + direction * 3;
-            if (!CommonAlgorithm.IsInRegion(result, block))
+            if (!result.IsInRegion(block))
                 return false;
 
             // Destination must not be open.
             var end = pos + direction * 2;
-            return CommonAlgorithm.GetTile(result, end) == settings.EmptyTileId;
+            return result.GetTile(end) == settings.EmptyTileId;
         }
     }
 }

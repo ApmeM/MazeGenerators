@@ -21,17 +21,17 @@ namespace MazeGenerators
                     switch (value)
                     {
                         case '-':
-                            CommonAlgorithm.SetTile(result, pos, settings.JunctionTileId);
+                            result.SetTile(pos, settings.JunctionTileId);
                             result.Junctions.Add(pos);
                             break;
                         case '.':
-                            CommonAlgorithm.SetTile(result, pos, settings.MazeTileId);
+                            result.SetTile(pos, settings.MazeTileId);
                             break;
                         case '#':
-                            CommonAlgorithm.SetTile(result, pos, settings.WallTileId);
+                            result.SetTile(pos, settings.WallTileId);
                             break;
                         case ' ':
-                            CommonAlgorithm.SetTile(result, pos, settings.EmptyTileId);
+                            result.SetTile(pos, settings.EmptyTileId);
                             break;
                         default:
                             throw new Exception("Unexpected character.");
@@ -49,7 +49,7 @@ namespace MazeGenerators
                 for (var x = 0; x < settings.Width; x++)
                 {
                     var pos = new Vector2(x, y);
-                    var tile = CommonAlgorithm.GetTile(result, pos);
+                    var tile = result.GetTile(pos);
                     if (hash.Contains(pos))
                     {
                         sb.Append("-");

@@ -58,7 +58,7 @@ namespace MazeGenerators
             for (var x = room.X; x < room.X + room.Width; x++)
                 for (var y = room.Y; y < room.Y + room.Height; y++)
                 {
-                    CommonAlgorithm.SetTile(result, new Vector2(x, y), settings.RoomTileId);
+                    result.SetTile(new Vector2(x, y), settings.RoomTileId);
                 }
 
             result.Rooms.Add(room);

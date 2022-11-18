@@ -32,7 +32,7 @@ namespace MazeGenerators
                 }
                 possibleConnectors.Remove(pos);
 
-                CommonAlgorithm.SetTile(result, pos, settings.JunctionTileId);
+                result.SetTile(pos, settings.JunctionTileId);
                 result.Junctions.Add(pos);
             }
         }
@@ -61,7 +61,7 @@ namespace MazeGenerators
                 foreach (var dir in settings.Directions)
                 {
                     var loc = pos + dir;
-                    if (!CommonAlgorithm.IsInRegion(result, loc))
+                    if (!result.IsInRegion(loc))
                     {
                         continue;
                     }
@@ -95,7 +95,7 @@ namespace MazeGenerators
                 var connector = connectors[settings.Random.Next(connectors.Count)];
 
                 // Carve the connection.
-                CommonAlgorithm.SetTile(result, connector, settings.JunctionTileId);
+                result.SetTile(connector, settings.JunctionTileId);
                 result.Junctions.Add(connector);
 
                 foreach (var dir in settings.Directions)
@@ -141,7 +141,7 @@ namespace MazeGenerators
 
         private static bool FloodFill(GeneratorResult result, GeneratorSettings settings, int?[,] regions, Vector2 pos, int color)
         {
-            if (!CommonAlgorithm.IsInRegion(result, pos))
+            if (!result.IsInRegion(pos))
             {
                 return false;
             }
@@ -173,7 +173,7 @@ namespace MazeGenerators
                 {
                     var pos = new Vector2(x, y);
 
-                    if (CommonAlgorithm.GetTile(result, pos) != settings.EmptyTileId)
+                    if (result.GetTile(pos) != settings.EmptyTileId)
                     {
                         continue;
                     }
@@ -183,13 +183,13 @@ namespace MazeGenerators
                     {
                         var loc1 = pos + dir;
                         var loc2 = pos - dir;
-                        if (!CommonAlgorithm.IsInRegion(result, loc1) || !CommonAlgorithm.IsInRegion(result, loc2))
+                        if (!result.IsInRegion(loc1) || !result.IsInRegion(loc2))
                         {
                             continue;
                         }
 
-                        var region1 = CommonAlgorithm.GetTile(result, loc1);
-                        var region2 = CommonAlgorithm.GetTile(result, loc2);
+                        var region1 = result.GetTile(loc1);
+                        var region2 = result.GetTile(loc2);
                         if (region1 != settings.EmptyTileId && region2 != settings.EmptyTileId)
                         {
                             found = true;

@@ -18,7 +18,7 @@
             };
 
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             Assert.Throws<Exception>(() =>
             {
                 RoomGeneratorAlgorithm.GenerateRooms(result, settings, 100, 4, true, 1000, 100, 20);
@@ -35,7 +35,7 @@
             };
 
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             RoomGeneratorAlgorithm.GenerateRooms(result, settings, 100, 4, true, 11, 11, 20);
 
             foreach (var r in result.Rooms)
@@ -55,7 +55,7 @@
             };
 
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             RoomGeneratorAlgorithm.GenerateRooms(result, settings, 100, 4, true, 10, 100, 20);
 
             foreach (var r in result.Rooms)
@@ -78,7 +78,7 @@
             };
 
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             RoomGeneratorAlgorithm.GenerateRooms(result, settings, 100, 2, true, 10, 11, 20);
 
             Assert.AreEqual(2, result.Rooms.Count);
@@ -94,7 +94,7 @@
             };
 
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             Assert.Throws<IndexOutOfRangeException>(() => RoomGeneratorAlgorithm.AddRoom(result, settings, new Rectangle(4, 4, 8, 8)));
         }
 
@@ -108,7 +108,7 @@
             };
 
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             RoomGeneratorAlgorithm.AddRoom(result, settings, new Rectangle(2, 2, 2, 2));
 
             Assert.AreEqual(1, result.Rooms.Count);

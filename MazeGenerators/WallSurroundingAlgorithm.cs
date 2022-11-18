@@ -12,15 +12,15 @@ namespace MazeGenerators
                 for (var y = 1; y < settings.Height - 1; y++)
                 {
                     var pos = new Vector2(x, y);
-                    if (CommonAlgorithm.GetTile(result, pos) == settings.WallTileId ||
-                        CommonAlgorithm.GetTile(result, pos) == settings.EmptyTileId)
+                    if (result.GetTile(pos) == settings.WallTileId ||
+                        result.GetTile(pos) == settings.EmptyTileId)
                         continue;
 
                     foreach (var dir in DefaultDirections.CompassDirs)
                     {
-                        if (CommonAlgorithm.GetTile(result, pos + dir) == settings.EmptyTileId)
+                        if (result.GetTile(pos + dir) == settings.EmptyTileId)
                         {
-                            CommonAlgorithm.SetTile(result, pos + dir, settings.WallTileId);
+                            result.SetTile(pos + dir, settings.WallTileId);
                         }
                     }
                 }

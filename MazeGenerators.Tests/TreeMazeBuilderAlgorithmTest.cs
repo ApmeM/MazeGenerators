@@ -18,7 +18,7 @@
                 Random = new Random(0),
             };
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 0);
             Assert.AreEqual(
 "       \n" +
@@ -40,7 +40,7 @@
                 Random = new Random(0)
             };
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 100);
             Assert.AreEqual(
 "       \n" +

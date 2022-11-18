@@ -17,7 +17,7 @@
                 Height = 5,
             };
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             StringParserAlgorithm.Parse(result, settings, 
 "   \n" +
 " . \n" +
@@ -43,7 +43,7 @@
                 Height = 5,
             };
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             StringParserAlgorithm.Parse(result, settings, 
 "   \n" +
 " . \n" +
@@ -72,7 +72,7 @@
             };
 
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             StringParserAlgorithm.Parse(result, settings, 
 "     \n" +
 " ... \n" +

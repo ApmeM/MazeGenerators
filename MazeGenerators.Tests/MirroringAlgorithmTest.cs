@@ -17,7 +17,7 @@
                 Height = 7,
             };
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             StringParserAlgorithm.Parse(result, settings,
 "#######\n" +
 "# #####\n" +
@@ -54,7 +54,7 @@
                 Height = 7,
             };
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             StringParserAlgorithm.Parse(result, settings,
 "#######\n" +
 "#.#####\n" +
@@ -95,7 +95,7 @@
                 Height = 7,
             };
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             StringParserAlgorithm.Parse(result, settings, 
 "#######\n" +
 "#.#####\n" +
@@ -140,7 +140,7 @@
                 Height = 7,
             };
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             StringParserAlgorithm.Parse(result, settings, 
 "#######\n" +
 "#.#####\n" +
@@ -185,7 +185,7 @@
                 Height = 5,
             };
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             RoomGeneratorAlgorithm.AddRoom(result, settings, new Rectangle(1, 1, 3, 3));
             MirroringAlgorithm.Mirror(result, settings, MirroringAlgorithm.MirrorDirection.Rotate);
 

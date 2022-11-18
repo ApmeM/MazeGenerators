@@ -20,7 +20,7 @@
             };
 
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             RoomGeneratorAlgorithm.GenerateRooms(result, settings, 10, 4, true, 2, 5, 5);
             TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 0);
             RegionConnectorAlgorithm.GenerateConnectors(result, settings, 10);
@@ -63,7 +63,7 @@
             };
 
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             RoomGeneratorAlgorithm.GenerateRooms(result, settings, 0, 4, true, 2, 5, 5);
             TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 100);
             RegionConnectorAlgorithm.GenerateConnectors(result, settings, 0);
@@ -104,7 +104,7 @@
             };
 
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             RoomGeneratorAlgorithm.GenerateRooms(result, settings, 5, 4, true, 2, 3, 3);
             TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 0);
             RegionConnectorAlgorithm.GenerateConnectors(result, settings, 100);
@@ -125,7 +125,7 @@
             };
             
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
             RoomGeneratorAlgorithm.GenerateRooms(result, settings, 0, 4, true, 2, 5, 5);
             TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 0);
             RegionConnectorAlgorithm.GenerateConnectors(result, settings, 0);
