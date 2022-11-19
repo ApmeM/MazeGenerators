@@ -59,6 +59,8 @@ DeadEndRemoverAlgorithm - Remove dead ends - path tiles that have less then two 
 
 FieldGeneratorAlgorithm - Create field and check input parameters for correctness.
 
+LifeGameAlgorithm - Generator based on "game of life" to create
+
 MirroringAlgorithm - Mirror existing maze Horizontally/Vertically/Both or rotate it around center
 
 RegionConnectorAlgorithm - Generate connectors between rooms and paths

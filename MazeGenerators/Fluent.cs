@@ -1,4 +1,5 @@
-﻿using MazeGenerators.Utils;
+﻿using System;
+using MazeGenerators.Utils;
 
 namespace MazeGenerators
 {
@@ -87,6 +88,12 @@ namespace MazeGenerators
         public Fluent AddPoint(Vector2 point, int tileId)
         {
             CustomDrawAlgorithm.AddPoint(result, settings, point, tileId);
+            return this;
+        }
+
+        public Fluent Life(int iterations, int liveTileId, int emptyTileId, Func<int, bool> birthCondition = null, Func<int, bool> deathCondition = null)
+        {
+            LifeGameAlgorithm.Life(result, settings, iterations, liveTileId, emptyTileId, birthCondition, deathCondition);
             return this;
         }
     }
