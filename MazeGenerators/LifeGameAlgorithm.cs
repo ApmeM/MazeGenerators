@@ -5,8 +5,8 @@ namespace MazeGenerators
 {
     public class LifeGameAlgorithm
     {
-        public static Func<int, bool> DefaultBirthCondition = (n) => n == 3;
-        public static Func<int, bool> DefaultDeathCondition = (n) => n < 3 || n > 4;
+        public static Func<int, bool> DefaultBirthCondition = (n) => n >= 6;
+        public static Func<int, bool> DefaultDeathCondition = (n) => n <= 3;
 
         public static void Life(GeneratorResult result, GeneratorSettings settings, int iterations, int liveTileId, int emptyTileId, Func<int, bool> birthCondition = null, Func<int, bool> deathCondition = null)
         {
