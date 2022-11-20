@@ -7,15 +7,22 @@ public class Main : Node2D
 {
     private Fluent fluent;
 
+    private GeneratorSettings settings = new GeneratorSettings
+    {
+        Width = 31,
+        Height = 21,
+        Random = new Random(0),
+    };
+
     public override void _Ready()
     {
-        var settings = new GeneratorSettings
-        {
-            Width = 71,
-            Height = 41,
-            Random = new Random(0),
-        };
+        this.GetNode<Button>("./Container/Base").Connect("pressed", this, nameof(BasePressed));
+        this.GetNode<Button>("./Container/Tree").Connect("pressed", this, nameof(TreePressed));
+        this.GetNode<Button>("./Container/Life").Connect("pressed", this, nameof(LifePressed));
+    }
 
+    private void BasePressed()
+    {
         fluent = Fluent
             .Build(settings)
             .GenerateField()
@@ -23,6 +30,29 @@ public class Main : Node2D
             .GrowMaze()
             .GenerateConnectors()
             .RemoveDeadEnds()
+            .BuildWalls();
+        Draw();
+    }
+
+    private void TreePressed()
+    {
+        fluent = Fluent
+            .Build(settings)
+            .GenerateField()
+            .GrowMaze()
+            .GenerateConnectors()
+            .BuildWalls();
+        Draw();
+    }
+
+    private void LifePressed()
+    {
+        fluent = Fluent
+            .Build(settings)
+            .GenerateField()
+            .GrowMaze()
+            .Life(10, settings.EmptyTileId, settings.MazeTileId)
+            .GenerateConnectors()
             .BuildWalls();
         Draw();
     }
