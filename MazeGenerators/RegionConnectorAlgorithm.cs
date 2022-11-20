@@ -90,7 +90,7 @@ namespace MazeGenerators
             }
 
             // Keep connecting regions until we're down to one.
-            while (openRegions.Count > 1)
+            while (openRegions.Count > 1 && connectors.Count > 0)
             {
                 var connector = connectors[settings.Random.Next(connectors.Count)];
 

@@ -89,5 +89,33 @@
             Assert.AreEqual(2, result.Junctions.Count);
             Assert.AreEqual(new Vector2(3, 2), result.Junctions[0]);
         }
+
+        [Test]
+        public void GenerateConnectors_UnconnectableRegions_DoNotConnect()
+        {
+            var settings = new GeneratorSettings
+            {
+                Width = 5,
+                Height = 5,
+                Random = new Random(0),
+            };
+
+            var result = new GeneratorResult();
+            FieldGeneratorAlgorithm.GenerateField(result, settings);
+            StringParserAlgorithm.Parse(result, settings, 
+" ... \n" +
+"     \n" +
+"     \n" +
+" ... \n" +
+"     \n");
+            RegionConnectorAlgorithm.GenerateConnectors(result, settings, 100);
+            Assert.AreEqual(
+" ... \n" +
+"     \n" +
+"     \n" +
+" ... \n" +
+"     \n", StringParserAlgorithm.Stringify(result, settings));
+            Assert.AreEqual(result.Junctions.Count, 0);
+        }
     }
 }
