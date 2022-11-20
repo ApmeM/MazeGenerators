@@ -6,7 +6,7 @@ namespace MazeGenerators
 {
     public class TreeMazeBuilderAlgorithm
     {
-        public static void GrowMaze(GeneratorResult result, GeneratorSettings settings, int windingPercent = 0)
+        public static void GrowMaze(GeneratorResult result, GeneratorSettings settings, int windingPercent = 50)
         {
             if (settings.Width % 2 == 0 || settings.Height % 2 == 0)
             {

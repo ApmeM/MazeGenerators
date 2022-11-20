@@ -2,6 +2,7 @@
 [Bb]in/
 [Oo]bj/
 packages/
+.mono/
 
 # User-specific files
 *.userprefs
@@ -12,6 +13,7 @@ packages/
 
 # Visual Studio profiler
 .vs/
+.vscode/
 *.psess
 *.vsp
 *.vspx
@@ -21,3 +23,7 @@ packages/
 *.nupkg
 *.nuget.props
 *.nuget.targets
+
+# Godot
+.import/
+*.import

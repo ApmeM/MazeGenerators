@@ -5,7 +5,7 @@ namespace MazeGenerators
 {
     public class RoomGeneratorAlgorithm
     {
-        public static void GenerateRooms(GeneratorResult result, GeneratorSettings settings, int numRoomTries = 100, int targetRoomCount = 4, bool preventOverlappedRooms = true, int minRoomSize = 2, int maxRoomSize = 5, int maxWidthHeightRoomSizeDifference = 5)
+        public static void GenerateRooms(GeneratorResult result, GeneratorSettings settings, int numRoomTries = 100, int targetRoomCount = 100, bool preventOverlappedRooms = true, int minRoomSize = 2, int maxRoomSize = 5, int maxWidthHeightRoomSizeDifference = 5)
         {
             minRoomSize = minRoomSize / 2 * 2 + 1;
             maxRoomSize = (maxRoomSize + 1) / 2 * 2 - 1;

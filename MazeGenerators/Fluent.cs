@@ -44,7 +44,7 @@ namespace MazeGenerators
             return this;
         }
 
-        public Fluent GenerateRooms(int numRoomTries = 100, int targetRoomCount = 4, bool preventOverlappedRooms = true, int minRoomSize = 2, int maxRoomSize = 5, int maxWidthHeightRoomSizeDifference = 5)
+        public Fluent GenerateRooms(int numRoomTries = 100, int targetRoomCount = 100, bool preventOverlappedRooms = true, int minRoomSize = 2, int maxRoomSize = 5, int maxWidthHeightRoomSizeDifference = 5)
         {
             RoomGeneratorAlgorithm.GenerateRooms(result, settings, numRoomTries, targetRoomCount, preventOverlappedRooms, minRoomSize, maxRoomSize, maxWidthHeightRoomSizeDifference);
             return this;
@@ -61,7 +61,7 @@ namespace MazeGenerators
             return StringParserAlgorithm.Stringify(result, settings);
         }
 
-        public Fluent GrowMaze(int windingPercent = 0)
+        public Fluent GrowMaze(int windingPercent = 50)
         {
             TreeMazeBuilderAlgorithm.GrowMaze(result, settings, windingPercent);
             return this;
