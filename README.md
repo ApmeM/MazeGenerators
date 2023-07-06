@@ -6,6 +6,8 @@ MazeGenerators is a set of helper classes to generate different types of mazes.
 Examples
 ==========
 
+Dynamic example can be found here: https://apmem.github.io/MazeGenerators/Godot.html
+
 Here are a few examples of mazes that can be generated:
 
 Maze that contains rooms.
