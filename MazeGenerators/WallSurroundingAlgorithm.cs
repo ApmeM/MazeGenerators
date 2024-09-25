@@ -1,19 +1,17 @@
-﻿using MazeGenerators.Utils;
-
-namespace MazeGenerators
+﻿namespace MazeGenerators
 {
-    public class WallSurroundingAlgorithm
+    public static class WallSurroundingAlgorithm
     {
-        public static void BuildWalls(GeneratorResult result, GeneratorSettings settings)
+        public static Maze BuildWalls(this Maze result)
         {
             // Fill in all of the empty space with mazes.
-            for (var x = 0; x < settings.Width; x++)
+            for (var x = 0; x < result.Width; x++)
             {
-                for (var y = 0; y < settings.Height; y++)
+                for (var y = 0; y < result.Height; y++)
                 {
                     var pos = new Vector2(x, y);
-                    if (result.GetTile(pos) == settings.WallTileId ||
-                        result.GetTile(pos) == settings.EmptyTileId)
+                    if (result.GetTile(pos) == Tile.WallTileId ||
+                        result.GetTile(pos) == Tile.EmptyTileId)
                         continue;
 
                     foreach (var dir in DefaultDirections.CompassDirs)
@@ -24,13 +22,15 @@ namespace MazeGenerators
                             continue;
                         }
 
-                        if (result.GetTile(newPos) == settings.EmptyTileId)
+                        if (result.GetTile(newPos) == Tile.EmptyTileId)
                         {
-                            result.SetTile(newPos, settings.WallTileId);
+                            result.SetTile(newPos, Tile.WallTileId);
                         }
                     }
                 }
             }
+            
+            return result;
         }
     }
 }

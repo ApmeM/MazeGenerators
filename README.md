@@ -32,12 +32,12 @@ Fill in GeneratorSettings data with required values.
         public GeneratorResult Generate(GeneratorSettings settings)
         {
             var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result, settings);
-            RoomGeneratorAlgorithm.GenerateRooms(result, settings, 0, 4, true, 2, 5, 5);
-            TreeMazeBuilderAlgorithm.GrowMaze(result, settings, 0);
-            RegionConnectorAlgorithm.GenerateConnectors(result, settings, 0);
-            DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
-            WallSurroundingAlgorithm.BuildWalls(result, settings);
+            CommonAlgorithm.GenerateField(result);
+            RoomGeneratorAlgorithm.GenerateRooms(result, 0, 4, true, 2, 5, 5);
+            TreeMazeBuilderAlgorithm.GrowMaze(result, 0);
+            RegionConnectorAlgorithm.GenerateConnectors(result, 0);
+            DeadEndRemoverAlgorithm.RemoveDeadEnds(result);
+            WallSurroundingAlgorithm.BuildWalls(result);
             return result;
         }
 

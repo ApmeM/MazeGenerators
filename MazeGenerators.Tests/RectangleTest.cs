@@ -1,7 +1,5 @@
 ﻿namespace MazeGenerators.Tests
 {
-    using MazeGenerators.Utils;
-
     using NUnit.Framework;
 
     [TestFixture]

@@ -1,11 +1,10 @@
-﻿using MazeGenerators.Utils;
-using System;
+﻿using System;
 
 namespace MazeGenerators
 {
-    public class RoomGeneratorAlgorithm
+    public static class RoomGeneratorAlgorithm
     {
-        public static void GenerateRooms(GeneratorResult result, GeneratorSettings settings, int numRoomTries = 100, int targetRoomCount = 100, bool preventOverlappedRooms = true, int minRoomSize = 2, int maxRoomSize = 5, int maxWidthHeightRoomSizeDifference = 5)
+        public static Maze GenerateRooms(this Maze result, Func<int, int> nextRandom, int numRoomTries = 100, int targetRoomCount = 100, bool preventOverlappedRooms = true, int minRoomSize = 2, int maxRoomSize = 5, int maxWidthHeightRoomSizeDifference = 5)
         {
             minRoomSize = minRoomSize / 2 * 2 + 1;
             maxRoomSize = (maxRoomSize + 1) / 2 * 2 - 1;
@@ -19,12 +18,12 @@ namespace MazeGenerators
             var roomsGemerated = 0;
             for (var i = 0; i < numRoomTries; i++)
             {
-                var width = (settings.Random.Next(roomLength + 1) + minRoomSize) / 2 * 2 + 1;
-                var maxDifference = settings.Random.Next(Math.Min(maxWidthHeightRoomSizeDifference, roomLength));
+                var width = (nextRandom(roomLength + 1) + minRoomSize) / 2 * 2 + 1;
+                var maxDifference = nextRandom(Math.Min(maxWidthHeightRoomSizeDifference, roomLength));
                 var height = Math.Min((int)maxRoomSize, Math.Max((int)minRoomSize, (int)((maxDifference - maxDifference / 2 + width) / 2 * 2 + 1)));
 
-                var x = settings.Random.Next((settings.Width - width) / 2) * 2 + 1;
-                var y = settings.Random.Next((settings.Height - height) / 2) * 2 + 1;
+                var x = nextRandom((result.Width - width) / 2) * 2 + 1;
+                var y = nextRandom((result.Height - height) / 2) * 2 + 1;
 
                 var room = new Rectangle(x, y, width, height);
 
@@ -44,7 +43,7 @@ namespace MazeGenerators
                 if (overlaps)
                     continue;
 
-                CustomDrawAlgorithm.AddFillRectangle(result, settings, room, settings.RoomTileId);
+                CustomDrawAlgorithm.AddFillRectangle(result, room, Tile.RoomTileId);
                 result.Rooms.Add(room);
                 roomsGemerated++;
                 if (roomsGemerated >= targetRoomCount)
@@ -52,6 +51,8 @@ namespace MazeGenerators
                     break;
                 }
             }
+
+            return result;
         }
     }
 }

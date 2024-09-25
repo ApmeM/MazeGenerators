@@ -1,7 +1,6 @@
 ﻿namespace MazeGenerators.Tests
 {
     using MazeGenerators;
-    using MazeGenerators.Utils;
     using NUnit.Framework;
 
     [TestFixture]
@@ -10,76 +9,55 @@
         [Test]
         public void RemoveDeadEnds_LinearMaze_AllRemoved()
         {
-            var settings = new GeneratorSettings
-            {
-                Width = 3,
-                Height = 5,
-            };
-            var result = new GeneratorResult();
-            FieldGeneratorAlgorithm.GenerateField(result, settings);
-            StringParserAlgorithm.Parse(result, settings, 
+            var result = new Maze(3,5).Parse( 
 "   \n" +
 " . \n" +
 " . \n" +
 " . \n" +
 "   \n");
-            DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
+            result.RemoveDeadEnds(DefaultDirections.CardinalDirs);
             Assert.AreEqual(
 "   \n" +
 "   \n" +
 "   \n" +
 "   \n" +
-"   \n", StringParserAlgorithm.Stringify(result, settings));
+"   \n", result.Stringify());
         }
 
         [Test]
         public void RemoveDeadEnds_NoDeadEnd_NothingChanged()
         {
-            var settings = new GeneratorSettings
-            {
-                Width = 5,
-                Height = 5,
-            };
-            var result = new GeneratorResult();
-            FieldGeneratorAlgorithm.GenerateField(result, settings);
-            StringParserAlgorithm.Parse(result, settings, 
+            var result = new Maze(5,5).Parse(
 "     \n" +
 " ... \n" +
 " . . \n" +
 " ... \n" +
 "     \n");
-            DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
+            result.RemoveDeadEnds(DefaultDirections.CardinalDirs);
             Assert.AreEqual(
 "     \n" +
 " ... \n" +
 " . . \n" +
 " ... \n" +
-"     \n", StringParserAlgorithm.Stringify(result, settings));
+"     \n", result.Stringify());
         }
 
         [Test]
         public void RemoveDeadEnds_MixedMaze_OnlyDeadendsRemoved()
         {
-            var settings = new GeneratorSettings
-            {
-                Width = 5,
-                Height = 5,
-            };
-            var result = new GeneratorResult();
-            FieldGeneratorAlgorithm.GenerateField(result, settings);
-            StringParserAlgorithm.Parse(result, settings, 
+            var result = new Maze(5,5).Parse(
 "     \n" +
 " ... \n" +
 " ..  \n" +
 " ... \n" +
 "     \n");
-            DeadEndRemoverAlgorithm.RemoveDeadEnds(result, settings);
+            result.RemoveDeadEnds(DefaultDirections.CardinalDirs);
             Assert.AreEqual(
 "     \n" +
 " ..  \n" +
 " ..  \n" +
 " ..  \n" +
-"     \n", StringParserAlgorithm.Stringify(result, settings));
+"     \n", result.Stringify());
         }
     }
 }

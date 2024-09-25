@@ -1,18 +1,10 @@
 using Godot;
 using System;
 using MazeGenerators;
-using MazeGenerators.Utils;
 
 public class Main : Node2D
 {
-    private Fluent fluent;
-
-    private GeneratorSettings settings = new GeneratorSettings
-    {
-        Width = 31,
-        Height = 21,
-        Random = new Random(0),
-    };
+    private Random r = new Random(0);
 
     public override void _Ready()
     {
@@ -23,65 +15,59 @@ public class Main : Node2D
 
     private void BasePressed()
     {
-        fluent = Fluent
-            .Build(settings)
-            .GenerateField()
-            .GenerateRooms()
-            .GrowMaze()
-            .GenerateConnectors()
-            .RemoveDeadEnds()
-            .BuildWalls();
-        Draw();
+        Draw(new Maze(31, 21)
+            .GenerateRooms((max) => r.Next(max))
+            .GrowMaze((max) => r.Next(max), DefaultDirections.CardinalDirs)
+            .GenerateConnectors((max) => r.Next(max), DefaultDirections.CardinalDirs)
+            .RemoveDeadEnds(DefaultDirections.CardinalDirs)
+            .BuildWalls()
+        );
     }
 
     private void TreePressed()
     {
-        fluent = Fluent
-            .Build(settings)
-            .GenerateField()
-            .GrowMaze()
-            .GenerateConnectors()
-            .BuildWalls();
-        Draw();
+        Draw(new Maze(31, 21)
+            .GrowMaze((max) => r.Next(max), DefaultDirections.CardinalDirs)
+            .GenerateConnectors((max) => r.Next(max), DefaultDirections.CardinalDirs)
+            .BuildWalls()
+        );
     }
 
     private void LifePressed()
     {
-        fluent = Fluent
-            .Build(settings)
-            .GenerateField()
-            .GrowMaze()
-            .Life(10, settings.EmptyTileId, settings.MazeTileId)
-            .GenerateConnectors()
-            .BuildWalls();
-        Draw();
+        Draw(new Maze(31, 21)
+            .GrowMaze((max) => r.Next(max), DefaultDirections.CardinalDirs)
+            .Life(10, Tile.EmptyTileId, Tile.MazeTileId)
+            .GenerateConnectors((max) => r.Next(max), DefaultDirections.CardinalDirs)
+            .BuildWalls()
+        );
     }
 
-    private void Draw()
+    private void Draw(Maze maze)
     {
         var tileMap = this.GetNode<TileMap>("./TileMap");
-        for (var x = 0; x < fluent.settings.Width; x++)
+        for (var x = 0; x < maze.Width; x++)
         {
-            for (var y = 0; y < fluent.settings.Height; y++)
+            for (var y = 0; y < maze.Height; y++)
             {
-                var cell = fluent.result.Paths[x, y];
-                if (cell == fluent.settings.EmptyTileId)
+                var cell = maze.Paths[x, y];
+                if (cell == Tile.EmptyTileId)
                 {
                     tileMap.SetCellv(new Godot.Vector2(x, y), 0, autotileCoord: new Godot.Vector2(0, 0));
                 }
-                else if (cell == fluent.settings.MazeTileId)
+                else if (cell == Tile.MazeTileId)
                 {
                     tileMap.SetCellv(new Godot.Vector2(x, y), 0, autotileCoord: new Godot.Vector2(1, 0));
                 }
-                else if (cell == fluent.settings.WallTileId)
+                else if (cell == Tile.WallTileId)
                 {
                     tileMap.SetCellv(new Godot.Vector2(x, y), 0, autotileCoord: new Godot.Vector2(0, 1));
                 }
-                else if (cell == fluent.settings.JunctionTileId)
+                else if (cell == Tile.JunctionTileId)
                 {
                     tileMap.SetCellv(new Godot.Vector2(x, y), 0, autotileCoord: new Godot.Vector2(5, 0));
                 }
-                else if (cell == fluent.settings.RoomTileId)
+                else if (cell == Tile.RoomTileId)
                 {
                     tileMap.SetCellv(new Godot.Vector2(x, y), 0, autotileCoord: new Godot.Vector2(14, 0));
                 }

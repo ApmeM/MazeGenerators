@@ -1,7 +1,6 @@
 ﻿namespace MazeGenerators.Tests
 {
     using MazeGenerators;
-    using MazeGenerators.Utils;
     using NUnit.Framework;
 
     [TestFixture]
@@ -10,26 +9,19 @@
         [Test]
         public void GenerateConnectors_SingleArea_NothingChanged()
         {
-            var settings = new GeneratorSettings
-            {
-                Width = 5,
-                Height = 5,
-            };
-            var result = new GeneratorResult();
-            FieldGeneratorAlgorithm.GenerateField(result, settings);
-            StringParserAlgorithm.Parse(result, settings, 
+            var result = new Maze(5, 5).Parse(
 "     \n" +
 " . . \n" +
 "  .. \n" +
 " .   \n" +
 "     \n");
-            WallSurroundingAlgorithm.BuildWalls(result, settings);
+            result.BuildWalls();
             Assert.AreEqual(
 "#####\n" +
 "#.#.#\n" +
 "##..#\n" +
 "#.###\n" +
-"###  \n", StringParserAlgorithm.Stringify(result, settings));
+"###  \n", result.Stringify());
             Assert.AreEqual(0, result.Junctions.Count);
         }
     }

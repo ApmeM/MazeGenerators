@@ -1,4 +1,4 @@
-﻿namespace MazeGenerators.Utils
+﻿namespace MazeGenerators
 {
     public class DefaultDirections
     {

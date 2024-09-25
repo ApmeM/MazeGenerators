@@ -1,6 +1,5 @@
 ﻿namespace MazeGenerators.Tests
 {
-    using MazeGenerators.Utils;
     using NUnit.Framework;
     using MazeGenerators;
     using System;
@@ -11,15 +10,7 @@
         [Test]
         public void Life_SingleIterationForPlaner_PlanerMoved()
         {
-            var settings = new GeneratorSettings
-            {
-                Width = 7,
-                Height = 7,
-                Random = new Random(0),
-            };
-            var result = new GeneratorResult();
-            FieldGeneratorAlgorithm.GenerateField(result, settings);
-            StringParserAlgorithm.Parse(result, settings,
+            var result = new Maze(7, 7).Parse(
 "       \n" +
 "  .    \n" +
 ". .    \n" +
@@ -28,7 +19,7 @@
 "       \n" +
 "       \n");
             
-            LifeGameAlgorithm.Life(result, settings, 1, settings.MazeTileId, settings.EmptyTileId, (n) => n == 3, (n) => n < 3 || n > 4);
+            result.Life(1, Tile.MazeTileId, Tile.EmptyTileId, (n) => n == 3, (n) => n < 3 || n > 4);
 
             Assert.AreEqual(
 "       \n" +
@@ -37,21 +28,13 @@
 " ..    \n" +
 "       \n" +
 "       \n" +
-"       \n", StringParserAlgorithm.Stringify(result, settings));
+"       \n", result.Stringify());
         }
 
         [Test]
         public void Life_MultipleIterationForPlaner_PlanerMoved()
         {
-            var settings = new GeneratorSettings
-            {
-                Width = 7,
-                Height = 7,
-                Random = new Random(0),
-            };
-            var result = new GeneratorResult();
-            FieldGeneratorAlgorithm.GenerateField(result, settings);
-            StringParserAlgorithm.Parse(result, settings,
+            var result = new Maze(7, 7).Parse(
 "       \n" +
 "  .    \n" +
 ". .    \n" +
@@ -60,7 +43,7 @@
 "       \n" +
 "       \n");
             
-            LifeGameAlgorithm.Life(result, settings, 4, settings.MazeTileId, settings.EmptyTileId, (n) => n == 3, (n) => n < 3 || n > 4);
+            result.Life(4, Tile.MazeTileId, Tile.EmptyTileId, (n) => n == 3, (n) => n < 3 || n > 4);
 
             Assert.AreEqual(
 "       \n" +
@@ -69,7 +52,7 @@
 " . .   \n" +
 "  ..   \n" +
 "       \n" +
-"       \n", StringParserAlgorithm.Stringify(result, settings));
+"       \n", result.Stringify());
         }
     }
 }

@@ -2,7 +2,6 @@
 {
     using System;
     using MazeGenerators;
-    using MazeGenerators.Utils;
     using NUnit.Framework;
 
     [TestFixture]
@@ -11,20 +10,12 @@
         [Test]
         public void RoomMazeGenerator_Generate_SomeMaze()
         {
-            var settings = new GeneratorSettings
-            {
-                Width = 21,
-                Height = 21,
-                Random = new Random(0),
-            };
-
-            var result = Fluent
-                .Build(settings)
-                .GenerateField()
-                .GenerateRooms(10, 4, true, 2, 5, 5)
-                .GrowMaze(0)
-                .GenerateConnectors(10)
-                .RemoveDeadEnds()
+            var r = new Random(0);
+            var result = new Maze(21, 21)
+                .GenerateRooms((max) => r.Next(max), 10, 4, true, 2, 5, 5)
+                .GrowMaze((max) => r.Next(max), DefaultDirections.CardinalDirs, 0)
+                .GenerateConnectors((max) => r.Next(max), DefaultDirections.CardinalDirs, 10)
+                .RemoveDeadEnds(DefaultDirections.CardinalDirs)
                 .BuildWalls()
                 .Stringify();
 
@@ -56,19 +47,10 @@
         [Test]
         public void RoomMazeGenerator_CustomPaint_SomeMaze()
         {
-            var settings = new GeneratorSettings
-            {
-                Width = 13,
-                Height = 9,
-                Random = new Random(0),
-            };
-
-            var result = Fluent
-                .Build(settings)
-                .GenerateField()
-                .AddFillRectangle(new Rectangle(1, 1, 3, 4), settings.RoomTileId)
-                .AddRectangle(new Rectangle(5, 1, 7, 7), settings.RoomTileId)
-                .AddPoint(new Vector2(7, 3), settings.RoomTileId)
+            var result = new Maze(13, 9)
+                .AddFillRectangle(new Rectangle(1, 1, 3, 4), Tile.RoomTileId)
+                .AddRectangle(new Rectangle(5, 1, 7, 7), Tile.RoomTileId)
+                .SetTile(new Vector2(7, 3), Tile.RoomTileId)
                 .BuildWalls()
                 .Stringify();
 
@@ -88,20 +70,11 @@
         [Test]
         public void RoomMazeGenerator_GenerateWithoutRooms_SameAsTreeMazeGenerator()
         {
-            var settings = new GeneratorSettings
-            {
-                Width = 21,
-                Height = 21,
-                Random = new Random(0),
-            };
-
-
-            var result = Fluent
-                .Build(settings)
-                .GenerateField()
-                .GenerateRooms(0, 4, true, 2, 5, 5)
-                .GrowMaze(100)
-                .GenerateConnectors(0)
+            var r = new Random(0);
+            var result = new Maze(21, 21)
+                .GenerateRooms((max) => r.Next(max), 0, 4, true, 2, 5, 5)
+                .GrowMaze((max) => r.Next(max), DefaultDirections.CardinalDirs, 100)
+                .GenerateConnectors((max) => r.Next(max), DefaultDirections.CardinalDirs, 0)
                 .BuildWalls()
                 .Stringify();
 
@@ -133,41 +106,27 @@
         [Test]
         public void RoomMazeGenerator_TooManyAdditionalPassages_NotAllJunctionsGenerated()
         {
-            var settings = new GeneratorSettings
-            {
-                Width = 11,
-                Height = 11,
-            };
-
-            var result = Fluent
-                .Build(settings)
-                .GenerateField()
-                .GenerateRooms(5, 4, true, 2, 3, 3)
-                .GrowMaze(0)
-                .GenerateConnectors(100)
-                .RemoveDeadEnds()
+            var r = new Random(0);
+            var result = new Maze(11, 11)
+                .GenerateRooms((max) => r.Next(max), 5, 4, true, 2, 3, 3)
+                .GrowMaze((max) => r.Next(max), DefaultDirections.CardinalDirs,0)
+                .GenerateConnectors((max) => r.Next(max), DefaultDirections.CardinalDirs,100)
+                .RemoveDeadEnds(DefaultDirections.CardinalDirs)
                 .BuildWalls();
 
-            Assert.LessOrEqual(result.result.Junctions.Count, 20);
+            Assert.LessOrEqual(result.Junctions.Count, 20);
         }
 
         [Test]
         public void TreeMazeGenerator_GenerateWithoutRoomsAndDeadEnds_EmptyMaze()
         {
-            var settings = new GeneratorSettings
-            {
-                Width = 21,
-                Height = 21,
-                Random = new Random(0),
-            };
+            var r = new Random(0);
 
-            var result = Fluent
-                .Build(settings)
-                .GenerateField()
-                .GenerateRooms(0, 4, true, 2, 5, 5)
-                .GrowMaze(0)
-                .GenerateConnectors(0)
-                .RemoveDeadEnds()
+            var result = new Maze(21, 21)
+                .GenerateRooms((max) => r.Next(max), 0, 4, true, 2, 5, 5)
+                .GrowMaze((max) => r.Next(max), DefaultDirections.CardinalDirs, 0)
+                .GenerateConnectors((max) => r.Next(max), DefaultDirections.CardinalDirs, 0)
+                .RemoveDeadEnds(DefaultDirections.CardinalDirs)
                 .BuildWalls()
                 .Stringify();
 

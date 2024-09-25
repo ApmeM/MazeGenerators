@@ -2,7 +2,6 @@
 {
     using System;
     using MazeGenerators;
-    using MazeGenerators.Utils;
     using NUnit.Framework;
 
     [TestFixture]
@@ -11,32 +10,16 @@
         [Test]
         public void AddFillRectangle_OutOfRange_Exception()
         {
-            var settings = new GeneratorSettings
-            {
-                Width = 7,
-                Height = 7,
-            };
-
-            var result = new GeneratorResult();
-            FieldGeneratorAlgorithm.GenerateField(result, settings);
             Assert.Throws<IndexOutOfRangeException>(() =>
             {
-                CustomDrawAlgorithm.AddFillRectangle(result, settings, new Rectangle(4, 4, 8, 8), settings.RoomTileId);
+                new Maze(7, 7).AddFillRectangle(new Rectangle(4, 4, 8, 8), Tile.RoomTileId);
             });
         }
 
         [Test]
         public void AddFillRectangle_ValidValues_PathAdded()
         {
-            var settings = new GeneratorSettings
-            {
-                Width = 7,
-                Height = 7,
-            };
-
-            var result = new GeneratorResult();
-            FieldGeneratorAlgorithm.GenerateField(result, settings);
-            CustomDrawAlgorithm.AddFillRectangle(result, settings, new Rectangle(2, 2, 3, 4), settings.RoomTileId);
+            var result = new Maze(7, 7).AddFillRectangle(new Rectangle(2, 2, 3, 4), Tile.RoomTileId);
 
             Assert.AreEqual(
 "       \n" +
@@ -45,21 +28,13 @@
 "  ...  \n" +
 "  ...  \n" +
 "  ...  \n" +
-"       \n", StringParserAlgorithm.Stringify(result, settings));
+"       \n", result.Stringify());
         }
 
         [Test]
         public void AddRectangle_ValidValues_PathAdded()
         {
-            var settings = new GeneratorSettings
-            {
-                Width = 7,
-                Height = 7,
-            };
-
-            var result = new GeneratorResult();
-            FieldGeneratorAlgorithm.GenerateField(result, settings);
-            CustomDrawAlgorithm.AddRectangle(result, settings, new Rectangle(2, 2, 3, 4), settings.RoomTileId);
+            var result = new Maze(7, 7).AddRectangle(new Rectangle(2, 2, 3, 4), Tile.RoomTileId);
 
             Assert.AreEqual(
 "       \n" +
@@ -68,21 +43,13 @@
 "  . .  \n" +
 "  . .  \n" +
 "  ...  \n" +
-"       \n", StringParserAlgorithm.Stringify(result, settings));
+"       \n", result.Stringify());
         }
 
         [Test]
         public void AddPoint_ValidValues_PathAdded()
         {
-            var settings = new GeneratorSettings
-            {
-                Width = 7,
-                Height = 7,
-            };
-
-            var result = new GeneratorResult();
-            FieldGeneratorAlgorithm.GenerateField(result, settings);
-            CustomDrawAlgorithm.AddPoint(result, settings, new Vector2(2, 2), settings.RoomTileId);
+            var result = new Maze(7,7).SetTile(new Vector2(2, 2), Tile.RoomTileId);
 
             Assert.AreEqual(
 "       \n" +
@@ -91,7 +58,7 @@
 "       \n" +
 "       \n" +
 "       \n" +
-"       \n", StringParserAlgorithm.Stringify(result, settings));
+"       \n", result.Stringify());
         }
     }
 }

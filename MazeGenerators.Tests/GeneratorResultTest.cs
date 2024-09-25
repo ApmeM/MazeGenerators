@@ -2,62 +2,55 @@
 {
     using System;
     using MazeGenerators;
-    using MazeGenerators.Utils;
     using NUnit.Framework;
 
     [TestFixture]
     public class GeneratorResultTest
     {
         [Test]
+        public void GenerateField_ValidValues_ArrayCreated()
+        {
+            var result = new Maze(3,5);
+            Assert.AreEqual(3, result.Paths.GetLength(0));
+            Assert.AreEqual(5, result.Paths.GetLength(1));
+        }
+
+        [Test]
+        public void GenerateField_NegativeWidth_ExceptionThrown()
+        {
+            Assert.Throws<OverflowException>(() => { new Maze(-3, 5); });
+        }
+
+        [Test]
+        public void GenerateField_NegativeHeight_ExceptionThrown()
+        {
+            Assert.Throws<OverflowException>(() => { new Maze(3, -5); });
+        }
+
+        [Test]
         public void GetTile_NothingSet_Null()
         {
-            var settings = new GeneratorSettings
-            {
-                Width = 3,
-                Height = 5,
-                WallTileId = 123,
-                EmptyTileId = 321
-            };
-            var result = new GeneratorResult();
-
-            FieldGeneratorAlgorithm.GenerateField(result, settings);
-
+            var result = new Maze(3, 5);
             var tile = result.GetTile(new Vector2(1, 1));
-            
-            Assert.AreEqual(tile, settings.EmptyTileId);
+            Assert.AreEqual(tile, Tile.EmptyTileId);
         }
 
         [Test]
         public void GetTile_OutsideArray_ExceptionThrown()
         {
-            var settings = new GeneratorSettings
-            {
-                Width = 3,
-                Height = 5
-            };
-            var result = new GeneratorResult();
-
-            FieldGeneratorAlgorithm.GenerateField(result, settings);
-
+            var result = new Maze(3,5);
             Assert.Throws<IndexOutOfRangeException>(() => { result.GetTile(new Vector2(10, 10)); });
         }
 
         [Test]
         public void SetTile_ValueSet_ReturnedInGetTile()
         {
-            var settings = new GeneratorSettings
-            {
-                Width = 3,
-                Height = 5
-            };
-            var result = new GeneratorResult();
-
-            FieldGeneratorAlgorithm.GenerateField(result, settings);
-            CustomDrawAlgorithm.AddPoint(result, settings, new Vector2(1, 1), 11);
+            var result = new Maze(3,5);
+            result.SetTile(new Vector2(1, 1), Tile.JunctionTileId);
 
             var tile = result.GetTile(new Vector2(1, 1));
 
-            Assert.AreEqual(11, tile);
+            Assert.AreEqual(Tile.JunctionTileId, tile);
         }
     }
 }

@@ -1,20 +1,21 @@
-﻿using MazeGenerators.Utils;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace MazeGenerators
 {
-    public class RegionConnectorAlgorithm
+    public static class RegionConnectorAlgorithm
     {
-        public static void GenerateConnectors(GeneratorResult result, GeneratorSettings settings, int additionalPassagesTries = 10)
+        public static Maze GenerateConnectors(this Maze result, Func<int, int> nextRandom, Vector2[] directions, int additionalPassagesTries = 10)
         {
-            var possibleConnectors = GetPossibleConnectorPositions(result, settings);
+            var possibleConnectors = GetPossibleConnectorPositions(result, directions);
 
-            ConnectRegions(result, settings, possibleConnectors);
-            AddRandomConnectors(result, settings, possibleConnectors, additionalPassagesTries);
+            ConnectRegions(result, nextRandom, possibleConnectors, directions);
+            AddRandomConnectors(result, nextRandom, possibleConnectors, additionalPassagesTries, directions);
+            return result;
         }
 
-        private static void AddRandomConnectors(GeneratorResult result, GeneratorSettings settings, HashSet<Vector2> possibleConnectors, int additionalPassagesTries)
+        private static void AddRandomConnectors(Maze result, Func<int, int> nextRandom, HashSet<Vector2> possibleConnectors, int additionalPassagesTries, Vector2[] directions)
         {
             for (var i = 0; i < additionalPassagesTries; i++)
             {
@@ -23,8 +24,8 @@ namespace MazeGenerators
                     break;
                 }
 
-                var pos = possibleConnectors.Skip(settings.Random.Next(possibleConnectors.Count)).First();
-                foreach (var dir in settings.Directions)
+                var pos = possibleConnectors.Skip(nextRandom(possibleConnectors.Count)).First();
+                foreach (var dir in directions)
                 {
                     var loc = pos + dir;
                     // Do not allow 2 connectors next to each other.
@@ -32,21 +33,21 @@ namespace MazeGenerators
                 }
                 possibleConnectors.Remove(pos);
 
-                result.SetTile(pos, settings.JunctionTileId);
+                result.SetTile(pos, Tile.JunctionTileId);
                 result.Junctions.Add(pos);
             }
         }
 
-        private static void ConnectRegions(GeneratorResult result, GeneratorSettings settings, HashSet<Vector2> possibleConnectors)
+        private static void ConnectRegions(Maze result, Func<int, int> nextRandom, HashSet<Vector2> possibleConnectors, Vector2[] directions)
         {
-            var regions = new int?[settings.Width, settings.Height];
+            var regions = new int?[result.Width, result.Height];
             var regionId = 0;
 
             // Find all unconnected regions and assign numbers to them.
-            for (var x = 0; x < settings.Width; x++)
-                for (var y = 0; y < settings.Height; y++)
+            for (var x = 0; x < result.Width; x++)
+                for (var y = 0; y < result.Height; y++)
                 {
-                    var colored = FloodFill(result, settings, regions, new Vector2(x, y), regionId);
+                    var colored = FloodFill(result, regions, new Vector2(x, y), regionId, directions);
                     if (colored)
                     {
                         regionId++;
@@ -58,7 +59,7 @@ namespace MazeGenerators
             foreach (var pos in possibleConnectors)
             {
                 var tmpRegions = new HashSet<int>();
-                foreach (var dir in settings.Directions)
+                foreach (var dir in directions)
                 {
                     var loc = pos + dir;
                     if (!result.IsInRegion(loc))
@@ -92,13 +93,13 @@ namespace MazeGenerators
             // Keep connecting regions until we're down to one.
             while (openRegions.Count > 1 && connectors.Count > 0)
             {
-                var connector = connectors[settings.Random.Next(connectors.Count)];
+                var connector = connectors[nextRandom(connectors.Count)];
 
                 // Carve the connection.
-                result.SetTile(connector, settings.JunctionTileId);
+                result.SetTile(connector, Tile.JunctionTileId);
                 result.Junctions.Add(connector);
 
-                foreach (var dir in settings.Directions)
+                foreach (var dir in directions)
                 {
                     var loc = connector + dir;
                     // Do not allow 2 connectors next to each other.
@@ -139,7 +140,7 @@ namespace MazeGenerators
             }
         }
 
-        private static bool FloodFill(GeneratorResult result, GeneratorSettings settings, int?[,] regions, Vector2 pos, int color)
+        private static bool FloodFill(Maze result, int?[,] regions, Vector2 pos, int color, Vector2[] directions)
         {
             if (!result.IsInRegion(pos))
             {
@@ -151,35 +152,35 @@ namespace MazeGenerators
                 return false;
             }
 
-            if (result.Paths[pos.X, pos.Y] == settings.EmptyTileId)
+            if (result.Paths[pos.X, pos.Y] == Tile.EmptyTileId)
             {
                 return false;
             }
 
             regions[pos.X, pos.Y] = color;
-            foreach (var dir in settings.Directions)
+            foreach (var dir in directions)
             {
-                FloodFill(result, settings, regions, pos + dir, color);
+                FloodFill(result, regions, pos + dir, color, directions);
             }
 
             return true;
         }
 
-        private static HashSet<Vector2> GetPossibleConnectorPositions(GeneratorResult result, GeneratorSettings settings)
+        private static HashSet<Vector2> GetPossibleConnectorPositions(Maze result, Vector2[] directions)
         {
             var connectorRegions = new HashSet<Vector2>();
-            for (var x = 0; x < settings.Width; x++)
-                for (var y = 0; y < settings.Height; y++)
+            for (var x = 0; x < result.Width; x++)
+                for (var y = 0; y < result.Height; y++)
                 {
                     var pos = new Vector2(x, y);
 
-                    if (result.GetTile(pos) != settings.EmptyTileId)
+                    if (result.GetTile(pos) != Tile.EmptyTileId)
                     {
                         continue;
                     }
 
                     var found = false;
-                    foreach (var dir in settings.Directions)
+                    foreach (var dir in directions)
                     {
                         var loc1 = pos + dir;
                         var loc2 = pos - dir;
@@ -190,7 +191,7 @@ namespace MazeGenerators
 
                         var region1 = result.GetTile(loc1);
                         var region2 = result.GetTile(loc2);
-                        if (region1 != settings.EmptyTileId && region2 != settings.EmptyTileId)
+                        if (region1 != Tile.EmptyTileId && region2 != Tile.EmptyTileId)
                         {
                             found = true;
                         }

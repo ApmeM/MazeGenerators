@@ -1,8 +1,6 @@
-﻿using MazeGenerators.Utils;
-
-namespace MazeGenerators
+﻿namespace MazeGenerators
 {
-    public class MirroringAlgorithm
+    public static class MirroringAlgorithm
     {
         public enum MirrorDirection
         {
@@ -12,7 +10,7 @@ namespace MazeGenerators
             Rotate
         }
 
-        public static void Mirror(GeneratorResult result, GeneratorSettings settings, MirrorDirection mirror)
+        public static Maze Mirror(this Maze result, MirrorDirection mirror)
         {
             var oldPath = result.Paths;
             var oldRoomsCount = result.Rooms.Count;
@@ -21,8 +19,7 @@ namespace MazeGenerators
             {
                 case MirrorDirection.Horizontal:
                     {
-                        settings.Width = settings.Width * 2 - 3;
-                        result.Paths = new int[result.Paths.GetLength(0) * 2 - 3, result.Paths.GetLength(1)];
+                        result.Paths = new Tile[result.Width * 2 - 3, result.Height];
                         for (var x = 0; x < oldPath.GetLength(0) - 1; x++)
                             for (var y = 0; y < oldPath.GetLength(1); y++)
                             {
@@ -42,8 +39,7 @@ namespace MazeGenerators
                     }
                 case MirrorDirection.Vertical:
                     {
-                        settings.Height = settings.Height * 2 - 3;
-                        result.Paths = new int[result.Paths.GetLength(0), result.Paths.GetLength(1) * 2 - 3];
+                        result.Paths = new Tile[result.Width, result.Height * 2 - 3];
                         for (var x = 0; x < oldPath.GetLength(0); x++)
                             for (var y = 0; y < oldPath.GetLength(1) - 1; y++)
                             {
@@ -63,9 +59,7 @@ namespace MazeGenerators
                     }
                 case MirrorDirection.Both:
                     {
-                        settings.Width = settings.Width * 2 - 3;
-                        settings.Height = settings.Height * 2 - 3;
-                        result.Paths = new int[result.Paths.GetLength(0) * 2 - 3, result.Paths.GetLength(1) * 2 - 3];
+                        result.Paths = new Tile[result.Width * 2 - 3, result.Height * 2 - 3];
                         for (var x = 0; x < oldPath.GetLength(0) - 1; x++)
                             for (var y = 0; y < oldPath.GetLength(1) - 1; y++)
                             {
@@ -74,7 +68,7 @@ namespace MazeGenerators
                                 result.Paths[result.Paths.GetLength(0) - x - 1, y] = oldPath[x, y];
                                 result.Paths[result.Paths.GetLength(0) - x - 1, result.Paths.GetLength(1) - y - 1] = oldPath[x, y];
                             }
-                        
+
                         for (var i = 0; i < oldRoomsCount; i++)
                         {
                             result.Rooms.Add(new Rectangle(result.Rooms[i].X, result.Paths.GetLength(1) - result.Rooms[i].Y - result.Rooms[i].Height, result.Rooms[i].Width, result.Rooms[i].Height));
@@ -98,9 +92,7 @@ namespace MazeGenerators
                             throw new System.Exception("Can't rotate non-square maze");
                         }
 
-                        settings.Width = settings.Width * 2 - 3;
-                        settings.Height = settings.Height * 2 - 3;
-                        result.Paths = new int[result.Paths.GetLength(0) * 2 - 3, result.Paths.GetLength(1) * 2 - 3];
+                        result.Paths = new Tile[result.Width * 2 - 3, result.Height * 2 - 3];
                         for (var x = 0; x < oldPath.GetLength(0) - 1; x++)
                             for (var y = 0; y < oldPath.GetLength(1) - 1; y++)
                             {
@@ -127,6 +119,7 @@ namespace MazeGenerators
                         break;
                     }
             }
+            return result;
         }
     }
 }

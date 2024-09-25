@@ -1,36 +1,37 @@
-﻿using MazeGenerators.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace MazeGenerators
 {
-    public class TreeMazeBuilderAlgorithm
+    public static class TreeMazeBuilderAlgorithm
     {
-        public static void GrowMaze(GeneratorResult result, GeneratorSettings settings, int windingPercent = 50)
+        public static Maze GrowMaze(this Maze result, Func<int, int> nextRandom, Vector2[] directions, int windingPercent = 50)
         {
-            if (settings.Width % 2 == 0 || settings.Height % 2 == 0)
+            if (result.Width % 2 == 0 || result.Height % 2 == 0)
             {
                 throw new Exception("The map must be odd-sized.");
             }
 
             // Fill in all of the empty space with mazes.
-            for (var x = 1; x < settings.Width; x += 2)
+            for (var x = 1; x < result.Width; x += 2)
             {
-                for (var y = 1; y < settings.Height; y += 2)
+                for (var y = 1; y < result.Height; y += 2)
                 {
                     var pos = new Vector2(x, y);
-                    if (result.GetTile(pos) != settings.EmptyTileId)
+                    if (result.GetTile(pos) != Tile.EmptyTileId)
                         continue;
-                    GrowSingleMazeTree(result, settings, pos, windingPercent);
+                    GrowSingleMazeTree(result, pos, windingPercent, directions, nextRandom);
                 }
             }
+            
+            return result;
         }
 
-        private static void GrowSingleMazeTree(GeneratorResult result, GeneratorSettings settings, Vector2 start, int windingPercent)
+        private static void GrowSingleMazeTree(Maze result, Vector2 start, int windingPercent, Vector2[] directions, Func<int, int> nextRandom)
         {
             var cells = new Stack<Vector2>();
 
-            result.SetTile(start, settings.MazeTileId);
+            result.SetTile(start, Tile.MazeTileId);
 
             cells.Push(start);
 
@@ -42,26 +43,26 @@ namespace MazeGenerators
 
                 var unmadeCells = new List<Vector2>();
 
-                foreach (var dir in settings.Directions)
+                foreach (var dir in directions)
                 {
-                    if (CanCarve(result, settings, cell, dir))
+                    if (CanCarve(result, cell, dir))
                         unmadeCells.Add(dir);
                 }
 
                 if (unmadeCells.Count != 0)
                 {
                     Vector2 dir;
-                    if (lastDir != null && unmadeCells.Contains(lastDir.Value) && settings.Random.Next(100) > windingPercent)
+                    if (lastDir != null && unmadeCells.Contains(lastDir.Value) && nextRandom(100) > windingPercent)
                     {
                         dir = lastDir.Value;
                     }
                     else
                     {
-                        dir = unmadeCells[settings.Random.Next(unmadeCells.Count)];
+                        dir = unmadeCells[nextRandom(unmadeCells.Count)];
                     }
 
-                    result.SetTile(cell + dir, settings.MazeTileId);
-                    result.SetTile(cell + dir * 2, settings.MazeTileId);
+                    result.SetTile(cell + dir, Tile.MazeTileId);
+                    result.SetTile(cell + dir * 2, Tile.MazeTileId);
 
                     cells.Push(cell + dir * 2);
                     lastDir = dir;
@@ -79,7 +80,7 @@ namespace MazeGenerators
         /// [Cell] at [pos] to the adjacent Cell facing [direction]. Returns `true`
         /// if the starting Cell is in bounds and the destination Cell is filled
         /// (or out of bounds).
-        private static bool CanCarve(GeneratorResult result, GeneratorSettings settings, Vector2 pos, Vector2 direction)
+        private static bool CanCarve(Maze result, Vector2 pos, Vector2 direction)
         {
             // Must end in bounds.
             var block = pos + direction * 3;
@@ -88,7 +89,7 @@ namespace MazeGenerators
 
             // Destination must not be open.
             var end = pos + direction * 2;
-            return result.GetTile(end) == settings.EmptyTileId;
+            return result.GetTile(end) == Tile.EmptyTileId;
         }
     }
 }

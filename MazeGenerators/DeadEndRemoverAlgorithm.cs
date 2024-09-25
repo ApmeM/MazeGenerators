@@ -1,16 +1,14 @@
-﻿using MazeGenerators.Utils;
-
-namespace MazeGenerators
+﻿namespace MazeGenerators
 {
-    public class DeadEndRemoverAlgorithm
+    public static class DeadEndRemoverAlgorithm
     {
-        public static void RemoveDeadEnds(GeneratorResult result, GeneratorSettings settings)
+        public static Maze RemoveDeadEnds(this Maze result, Vector2[] directions)
         {
-            for (var x = 0; x < settings.Width; x++)
-                for (var y = 0; y < settings.Height; y++)
+            for (var x = 0; x < result.Width; x++)
+                for (var y = 0; y < result.Height; y++)
                 {
                     var pos = new Vector2(x, y);
-                    if (result.GetTile(pos) == settings.EmptyTileId)
+                    if (result.GetTile(pos) == Tile.EmptyTileId)
                     {
                         continue;
                     }
@@ -21,14 +19,14 @@ namespace MazeGenerators
                     {
                         exits = 0;
                         var lastExitPosition = new Vector2(0, 0);
-                        foreach (var dir in settings.Directions)
+                        foreach (var dir in directions)
                         {
                             if (!result.IsInRegion(pos + dir))
                             {
                                 continue;
                             }
 
-                            if (result.GetTile(pos + dir) == settings.EmptyTileId)
+                            if (result.GetTile(pos + dir) == Tile.EmptyTileId)
                             {
                                 continue;
                             }
@@ -39,15 +37,17 @@ namespace MazeGenerators
 
                         if (exits == 0)
                         {
-                            result.SetTile(pos, settings.EmptyTileId);
+                            result.SetTile(pos, Tile.EmptyTileId);
                         }
                         else if (exits == 1)
                         {
-                            result.SetTile(pos, settings.EmptyTileId);
+                            result.SetTile(pos, Tile.EmptyTileId);
                             pos = lastExitPosition;
                         }
                     } while (exits == 1);
                 }
+            
+            return result;
         }
     }
 }
