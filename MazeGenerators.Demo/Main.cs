@@ -5,6 +5,7 @@ using MazeGenerators;
 public class Main : Node2D
 {
     private Random r = new Random(0);
+    private Maze m = new Maze(31,21);
 
     public override void _Ready()
     {
@@ -16,46 +17,47 @@ public class Main : Node2D
 
     private void BasePressed()
     {
-        Draw(new Maze(31, 21)
+        m.Clear()
             .GenerateRooms((max) => r.Next(max))
             .GrowMaze((max) => r.Next(max), DefaultDirections.CardinalDirs)
             .GenerateConnectors((max) => r.Next(max), DefaultDirections.CardinalDirs)
             .RemoveDeadEnds(DefaultDirections.CardinalDirs)
-            .BuildWalls()
-        );
+            .BuildWalls();
+        Draw();
     }
 
     private void TreePressed()
     {
-        Draw(new Maze(31, 21)
+        m.Clear()
             .GrowMaze((max) => r.Next(max), DefaultDirections.CardinalDirs)
             .GenerateConnectors((max) => r.Next(max), DefaultDirections.CardinalDirs)
-            .BuildWalls()
-        );
+            .BuildWalls();
+        Draw();
     }
 
     private void LifePressed()
     {
-        Draw(new Maze(31, 21)
+        m.Clear()
             .Randomize((max) => r.Next(max), 50)
             .Life(10, Tile.EmptyTileId, Tile.MazeTileId)
             .GenerateConnectors((max) => r.Next(max), DefaultDirections.CardinalDirs)
-            .BuildWalls()
-        );
+            .BuildWalls();
+        Draw();
     }
 
     private void CavePressed()
     {
-        Draw(new Maze(31, 21)
+        m.Clear()
             .Randomize((max) => r.Next(max), 50)
             .Smooth()
             .GenerateConnectors((max) => r.Next(max), DefaultDirections.CardinalDirs)
-            .BuildWalls()
-        );
+            .BuildWalls();
+        Draw();
     }
 
-    private void Draw(Maze maze)
+    private void Draw()
     {
+        var maze = m;
         var tileMap = this.GetNode<TileMap>("./TileMap");
         for (var x = 0; x < maze.Width; x++)
         {

@@ -13,11 +13,6 @@ namespace MazeGenerators
         public Maze(int width, int height)
         {
             this.Paths = new Tile[width, height];
-            for (var x = 0; x < width; x++)
-                for (var y = 0; y < height; y++)
-                {
-                    this.SetTile(new Vector2(x, y), Tile.EmptyTileId);
-                }
         }
 
         public Tile GetTile(Vector2 pos)

@@ -2,7 +2,7 @@
 {
     public enum Tile{
         EmptyTileId,
-        WallTileId,
-        MazeTileId
+        MazeTileId,
+        WallTileId
     }
 }
