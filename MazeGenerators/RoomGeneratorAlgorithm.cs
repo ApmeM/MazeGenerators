@@ -43,7 +43,7 @@ namespace MazeGenerators
                 if (overlaps)
                     continue;
 
-                CustomDrawAlgorithm.AddFillRectangle(result, room, Tile.RoomTileId);
+                CustomDrawAlgorithm.AddFillRectangle(result, room, Tile.MazeTileId);
                 result.Rooms.Add(room);
                 roomsGemerated++;
                 if (roomsGemerated >= targetRoomCount)

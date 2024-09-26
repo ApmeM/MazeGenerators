@@ -48,9 +48,9 @@
         public void RoomMazeGenerator_CustomPaint_SomeMaze()
         {
             var result = new Maze(13, 9)
-                .AddFillRectangle(new Rectangle(1, 1, 3, 4), Tile.RoomTileId)
-                .AddRectangle(new Rectangle(5, 1, 7, 7), Tile.RoomTileId)
-                .SetTile(new Vector2(7, 3), Tile.RoomTileId)
+                .AddFillRectangle(new Rectangle(1, 1, 3, 4), Tile.MazeTileId)
+                .AddRectangle(new Rectangle(5, 1, 7, 7), Tile.MazeTileId)
+                .SetTile(new Vector2(7, 3), Tile.MazeTileId)
                 .BuildWalls()
                 .Stringify();
 

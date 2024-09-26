@@ -68,19 +68,22 @@ public class Main : Node2D
                 }
                 else if (cell == Tile.MazeTileId)
                 {
-                    tileMap.SetCellv(new Godot.Vector2(x, y), 0, autotileCoord: new Godot.Vector2(1, 0));
+                    if (maze.Junctions.Contains(new MazeGenerators.Vector2(x, y)))
+                    {
+                        tileMap.SetCellv(new Godot.Vector2(x, y), 0, autotileCoord: new Godot.Vector2(5, 0));
+                    }
+                    else
+                    // if (cell == Tile.RoomTileId)
+                    // {
+                    //     tileMap.SetCellv(new Godot.Vector2(x, y), 0, autotileCoord: new Godot.Vector2(14, 0));
+                    // } else
+                    {
+                        tileMap.SetCellv(new Godot.Vector2(x, y), 0, autotileCoord: new Godot.Vector2(1, 0));
+                    }
                 }
                 else if (cell == Tile.WallTileId)
                 {
                     tileMap.SetCellv(new Godot.Vector2(x, y), 0, autotileCoord: new Godot.Vector2(0, 1));
-                }
-                else if (cell == Tile.JunctionTileId)
-                {
-                    tileMap.SetCellv(new Godot.Vector2(x, y), 0, autotileCoord: new Godot.Vector2(5, 0));
-                }
-                else if (cell == Tile.RoomTileId)
-                {
-                    tileMap.SetCellv(new Godot.Vector2(x, y), 0, autotileCoord: new Godot.Vector2(14, 0));
                 }
             }
         }

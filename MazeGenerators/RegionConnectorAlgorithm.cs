@@ -33,7 +33,7 @@ namespace MazeGenerators
                 }
                 possibleConnectors.Remove(pos);
 
-                result.SetTile(pos, Tile.JunctionTileId);
+                result.SetTile(pos, Tile.MazeTileId);
                 result.Junctions.Add(pos);
             }
         }
@@ -96,7 +96,7 @@ namespace MazeGenerators
                 var connector = connectors[nextRandom(connectors.Count)];
 
                 // Carve the connection.
-                result.SetTile(connector, Tile.JunctionTileId);
+                result.SetTile(connector, Tile.MazeTileId);
                 result.Junctions.Add(connector);
 
                 foreach (var dir in directions)

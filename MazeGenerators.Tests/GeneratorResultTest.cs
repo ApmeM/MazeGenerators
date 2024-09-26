@@ -46,11 +46,11 @@
         public void SetTile_ValueSet_ReturnedInGetTile()
         {
             var result = new Maze(3,5);
-            result.SetTile(new Vector2(1, 1), Tile.JunctionTileId);
+            result.SetTile(new Vector2(1, 1), Tile.MazeTileId);
 
             var tile = result.GetTile(new Vector2(1, 1));
 
-            Assert.AreEqual(Tile.JunctionTileId, tile);
+            Assert.AreEqual(Tile.MazeTileId, tile);
         }
     }
 }

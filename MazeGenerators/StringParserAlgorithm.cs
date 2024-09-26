@@ -20,7 +20,7 @@ namespace MazeGenerators
                     switch (value)
                     {
                         case '-':
-                            result.SetTile(pos, Tile.JunctionTileId);
+                            result.SetTile(pos, Tile.MazeTileId);
                             result.Junctions.Add(pos);
                             break;
                         case '.':

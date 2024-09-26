@@ -17,7 +17,7 @@
 "# #-# #\n" +
 "#   ###\n" +
 "#######\n");
-            CustomDrawAlgorithm.AddFillRectangle(result, new Rectangle(3, 1, 3, 1), Tile.RoomTileId);
+            CustomDrawAlgorithm.AddFillRectangle(result, new Rectangle(3, 1, 3, 1), Tile.MazeTileId);
             result.Rooms.Add(new Rectangle(3, 1, 3, 1));
             MirroringAlgorithm.Mirror(result, MirroringAlgorithm.MirrorDirection.Horizontal);
 
@@ -48,7 +48,7 @@
 "# #-# #\n" +
 "#   ###\n" +
 "#######\n");
-            result.AddFillRectangle(new Rectangle(3, 1, 3, 1), Tile.RoomTileId);
+            result.AddFillRectangle(new Rectangle(3, 1, 3, 1), Tile.MazeTileId);
             result.Rooms.Add(new Rectangle(3, 1, 3, 1));
             result.Mirror(MirroringAlgorithm.MirrorDirection.Vertical);
 
@@ -83,7 +83,7 @@
 "# #-# #\n" +
 "#   ###\n" +
 "#######\n");
-            result.AddFillRectangle(new Rectangle(3, 1, 3, 1), Tile.RoomTileId);
+            result.AddFillRectangle(new Rectangle(3, 1, 3, 1), Tile.MazeTileId);
             result.Rooms.Add(new Rectangle(3, 1, 3, 1));
             result.Mirror(MirroringAlgorithm.MirrorDirection.Both);
 
@@ -122,7 +122,7 @@
 "# #-# #\n" +
 "#   ###\n" +
 "#######\n");
-            result.AddFillRectangle(new Rectangle(3, 1, 3, 1), Tile.RoomTileId);
+            result.AddFillRectangle(new Rectangle(3, 1, 3, 1), Tile.MazeTileId);
             result.Rooms.Add(new Rectangle(3, 1, 3, 1));
             result.Mirror(MirroringAlgorithm.MirrorDirection.Rotate);
 
@@ -154,7 +154,7 @@
         public void Mirror_FullMazeIsRoom_Mirrored()
         {
             var result = new Maze(5, 5);
-            result.AddFillRectangle(new Rectangle(1, 1, 3, 3), Tile.RoomTileId);
+            result.AddFillRectangle(new Rectangle(1, 1, 3, 3), Tile.MazeTileId);
             result.Rooms.Add(new Rectangle(1, 1, 3, 3));
             MirroringAlgorithm.Mirror(result, MirroringAlgorithm.MirrorDirection.Rotate);
 
