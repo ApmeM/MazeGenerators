@@ -56,3 +56,9 @@ margin_top = 48.0
 margin_right = 71.0
 margin_bottom = 68.0
 text = "Life"
+
+[node name="Cave" type="Button" parent="Container"]
+margin_top = 72.0
+margin_right = 71.0
+margin_bottom = 92.0
+text = "Cave"
