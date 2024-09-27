@@ -11,6 +11,8 @@
                     result.SetTile(new Vector2(x, y), tileType);
                 }
             }
+            result.Junctions.Clear();
+            result.Rooms.Clear();
 
             return result;
         }

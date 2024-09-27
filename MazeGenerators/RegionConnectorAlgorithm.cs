@@ -6,8 +6,14 @@ namespace MazeGenerators
 {
     public static class RegionConnectorAlgorithm
     {
-        public static Maze GenerateConnectors(this Maze result, Func<int, int> nextRandom, Vector2[] directions, int additionalPassagesTries = 10)
+        private static readonly Random r = new Random();
+        private static readonly Func<int, int> defaultRandomizer = (max) => r.Next(max);
+
+        public static Maze GenerateConnectors(this Maze result, Func<int, int> nextRandom = null, Vector2[] directions = null, int additionalPassagesTries = 0)
         {
+            nextRandom = nextRandom ?? defaultRandomizer;
+            directions = directions ?? DefaultDirections.CardinalDirs;
+
             var possibleConnectors = GetPossibleConnectorPositions(result, directions);
 
             ConnectRegions(result, nextRandom, possibleConnectors, directions);

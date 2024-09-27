@@ -2,8 +2,10 @@
 {
     public static class DeadEndRemoverAlgorithm
     {
-        public static Maze RemoveDeadEnds(this Maze result, Vector2[] directions)
+        public static Maze RemoveDeadEnds(this Maze result, Vector2[] directions = null)
         {
+            directions = directions ?? DefaultDirections.CardinalDirs;
+            
             for (var x = 0; x < result.Width; x++)
                 for (var y = 0; y < result.Height; y++)
                 {

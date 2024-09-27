@@ -4,8 +4,13 @@ namespace MazeGenerators
 {
     public static class RoomGeneratorAlgorithm
     {
-        public static Maze GenerateRooms(this Maze result, Func<int, int> nextRandom, int numRoomTries = 100, int targetRoomCount = 100, bool preventOverlappedRooms = true, int minRoomSize = 2, int maxRoomSize = 5, int maxWidthHeightRoomSizeDifference = 5)
+        private static readonly Random r = new Random();
+        private static readonly Func<int, int> defaultRandomizer = (max) => r.Next(max);
+
+        public static Maze GenerateRooms(this Maze result, Func<int, int> nextRandom = null, int numRoomTries = 100, int targetRoomCount = 100, bool preventOverlappedRooms = true, int minRoomSize = 2, int maxRoomSize = 5, int maxWidthHeightRoomSizeDifference = 5)
         {
+            nextRandom = nextRandom ?? defaultRandomizer;
+
             minRoomSize = minRoomSize / 2 * 2 + 1;
             maxRoomSize = (maxRoomSize + 1) / 2 * 2 - 1;
             var roomLength = maxRoomSize - minRoomSize;

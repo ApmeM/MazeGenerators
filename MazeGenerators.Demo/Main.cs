@@ -1,57 +1,40 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using MazeGenerators;
 
 public class Main : Node2D
 {
     private Random r = new Random(0);
-    private Maze m = new Maze(31,21);
+    private Maze m = new Maze(31, 21);
 
+    private Dictionary<string, Action<Main>> OnClick = new Dictionary<string, Action<Main>>{
+        {"Clear",(main)=>{ main.m.Clear(); }},
+        {"Random",(main)=>{ main.m.Randomize(); }},
+        {"Life",(main)=>{ main.m.Life(); }},
+        {"Smooth",(main)=>{ main.m.Smooth(); }},
+        {"Rooms",(main)=>{ main.m.GenerateRooms(); }},
+        {"GrowMaze",(main)=>{ main.m.GrowMaze(); }},
+        {"Connectors",(main)=>{ main.m.GenerateConnectors(); }},
+        {"RemoveDeadEnds",(main)=>{ main.m.RemoveDeadEnds(); }},
+        {"BuildWalls",(main)=>{ main.m.BuildWalls(); }},
+    };
     public override void _Ready()
     {
-        this.GetNode<Button>("./Container/Base").Connect("pressed", this, nameof(BasePressed));
-        this.GetNode<Button>("./Container/Tree").Connect("pressed", this, nameof(TreePressed));
-        this.GetNode<Button>("./Container/Life").Connect("pressed", this, nameof(LifePressed));
-        this.GetNode<Button>("./Container/Cave").Connect("pressed", this, nameof(CavePressed));
+        var container = this.GetNode<Container>("./Container");
+        foreach (var a in OnClick)
+        {
+            var b = new Button();
+            b.Text = a.Key;
+            b.Connect("pressed", this, nameof(OnClickPressed), new Godot.Collections.Array { a.Key });
+
+            container.AddChild(b);
+        }
     }
 
-    private void BasePressed()
+    private void OnClickPressed(string name)
     {
-        m.Clear()
-            .GenerateRooms((max) => r.Next(max))
-            .GrowMaze((max) => r.Next(max), DefaultDirections.CardinalDirs)
-            .GenerateConnectors((max) => r.Next(max), DefaultDirections.CardinalDirs)
-            .RemoveDeadEnds(DefaultDirections.CardinalDirs)
-            .BuildWalls();
-        Draw();
-    }
-
-    private void TreePressed()
-    {
-        m.Clear()
-            .GrowMaze((max) => r.Next(max), DefaultDirections.CardinalDirs)
-            .GenerateConnectors((max) => r.Next(max), DefaultDirections.CardinalDirs)
-            .BuildWalls();
-        Draw();
-    }
-
-    private void LifePressed()
-    {
-        m.Clear()
-            .Randomize((max) => r.Next(max), 50)
-            .Life(10, Tile.EmptyTileId, Tile.MazeTileId)
-            .GenerateConnectors((max) => r.Next(max), DefaultDirections.CardinalDirs)
-            .BuildWalls();
-        Draw();
-    }
-
-    private void CavePressed()
-    {
-        m.Clear()
-            .Randomize((max) => r.Next(max), 50)
-            .Smooth()
-            .GenerateConnectors((max) => r.Next(max), DefaultDirections.CardinalDirs)
-            .BuildWalls();
+        OnClick[name](this);
         Draw();
     }
 

@@ -7,7 +7,7 @@ namespace MazeGenerators
         public static Func<int, bool> DefaultBirthCondition = (n) => n >= 6;
         public static Func<int, bool> DefaultDeathCondition = (n) => n <= 3;
 
-        public static Maze Life(this Maze result, int iterations, Tile liveTileId, Tile emptyTileId, Func<int, bool> birthCondition = null, Func<int, bool> deathCondition = null)
+        public static Maze Life(this Maze result, int iterations = 1, Tile liveTileId = Tile.MazeTileId, Tile emptyTileId = Tile.EmptyTileId, Func<int, bool> birthCondition = null, Func<int, bool> deathCondition = null)
         {
             birthCondition = birthCondition ?? DefaultBirthCondition;
             deathCondition = deathCondition ?? DefaultDeathCondition;
@@ -39,7 +39,6 @@ namespace MazeGenerators
                                     numberOfNeighbours++;
                                 }
                             }
-
                         if (prevGen[x, y] == emptyTileId)
                         {
                             newGen[x, y] = birthCondition(numberOfNeighbours) ? liveTileId : emptyTileId;

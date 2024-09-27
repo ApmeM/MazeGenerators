@@ -1,6 +1,7 @@
 ﻿namespace MazeGenerators
 {
-    public enum Tile{
+    public enum Tile
+    {
         EmptyTileId,
         MazeTileId,
         WallTileId

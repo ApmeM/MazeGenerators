@@ -5,12 +5,18 @@ namespace MazeGenerators
 {
     public static class TreeMazeBuilderAlgorithm
     {
-        public static Maze GrowMaze(this Maze result, Func<int, int> nextRandom, Vector2[] directions, int windingPercent = 50)
+        private static readonly Random r = new Random();
+        private static readonly Func<int, int> defaultRandomizer = (max) => r.Next(max);
+
+        public static Maze GrowMaze(this Maze result, Func<int, int> nextRandom = null, Vector2[] directions = null, int windingPercent = 50)
         {
             if (result.Width % 2 == 0 || result.Height % 2 == 0)
             {
                 throw new Exception("The map must be odd-sized.");
             }
+
+            nextRandom = nextRandom ?? defaultRandomizer;
+            directions = directions ?? DefaultDirections.CardinalDirs;
 
             // Fill in all of the empty space with mazes.
             for (var x = 1; x < result.Width; x += 2)
@@ -23,7 +29,7 @@ namespace MazeGenerators
                     GrowSingleMazeTree(result, pos, windingPercent, directions, nextRandom);
                 }
             }
-            
+
             return result;
         }
 
