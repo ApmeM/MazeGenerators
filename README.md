@@ -28,33 +28,15 @@ Usage
 Fill in GeneratorSettings data with required values.
 
 ```
-        // Call different maze generator algorithms in a required order:
-        public GeneratorResult Generate(GeneratorSettings settings)
-        {
-            var result = new GeneratorResult();
-            CommonAlgorithm.GenerateField(result);
-            RoomGeneratorAlgorithm.GenerateRooms(result, 0, 4, true, 2, 5, 5);
-            TreeMazeBuilderAlgorithm.GrowMaze(result, 0);
-            RegionConnectorAlgorithm.GenerateConnectors(result, 0);
-            DeadEndRemoverAlgorithm.RemoveDeadEnds(result);
-            WallSurroundingAlgorithm.BuildWalls(result);
-            return result;
-        }
-
-        // Or usimg fluent syntax
-        public GeneratorResult GenerateFluent(GeneratorSettings settings)
-        {
-            
-            return Fluent
-                .Build(settings)
-                .GenerateField()
-                .GenerateRooms(0, 4, true, 2, 5, 5)
-                .GrowMaze(0)
-                .GenerateConnectors(0)
-                .RemoveDeadEnds()
-                .BuildWalls()
-                .result;
-        }
+    var maze = new Maze(10,10)
+        .TryAddRoom(true, 2, 5, 5)
+        .TryAddRoom(true, 2, 5, 5)
+        .TryAddRoom(true, 2, 5, 5)
+        .TryAddRoom(true, 2, 5, 5)
+        .GrowMaze()
+        .GenerateConnectors()
+        .RemoveDeadEnds()
+        .BuildWalls();
 ```
 
 Algorithms
