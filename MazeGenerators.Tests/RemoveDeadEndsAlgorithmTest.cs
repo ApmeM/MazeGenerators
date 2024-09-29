@@ -4,7 +4,7 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class DeadendRemoverAlgorithmTest
+    public class RemoveDeadEndsAlgorithmTest
     {
         [Test]
         public void RemoveDeadEnds_LinearMaze_AllRemoved()

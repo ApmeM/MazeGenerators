@@ -2,10 +2,9 @@
 {
     using NUnit.Framework;
     using MazeGenerators;
-    using System;
 
     [TestFixture]
-    public class LifeGameAlgorithmTest
+    public class LifeAlgorithmTest
     {
         [Test]
         public void Life_SingleIterationForPlaner_PlanerMoved()
@@ -19,7 +18,7 @@
 "       \n" +
 "       \n");
             
-            result.Life(1, Tile.MazeTileId, Tile.EmptyTileId, (n) => n == 3, (n) => n < 3 || n > 4);
+            result.Life((n) => n == 3, (n) => n < 3 || n > 4);
 
             Assert.AreEqual(
 "       \n" +
@@ -43,7 +42,10 @@
 "       \n" +
 "       \n");
             
-            result.Life(4, Tile.MazeTileId, Tile.EmptyTileId, (n) => n == 3, (n) => n < 3 || n > 4);
+            result.Life((n) => n == 3, (n) => n < 3 || n > 4);
+            result.Life((n) => n == 3, (n) => n < 3 || n > 4);
+            result.Life((n) => n == 3, (n) => n < 3 || n > 4);
+            result.Life((n) => n == 3, (n) => n < 3 || n > 4);
 
             Assert.AreEqual(
 "       \n" +

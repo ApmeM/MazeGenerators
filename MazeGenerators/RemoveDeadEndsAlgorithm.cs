@@ -1,6 +1,6 @@
 ﻿namespace MazeGenerators
 {
-    public static class DeadEndRemoverAlgorithm
+    public static class RemoveDeadEndsAlgorithm
     {
         public static Maze RemoveDeadEnds(this Maze result, Vector2[] directions = null)
         {
@@ -10,7 +10,7 @@
                 for (var y = 0; y < result.Height; y++)
                 {
                     var pos = new Vector2(x, y);
-                    if (result.GetTile(pos) == Tile.EmptyTileId)
+                    if (result.GetTile(pos) != Tile.MazeTileId)
                     {
                         continue;
                     }
@@ -28,7 +28,7 @@
                                 continue;
                             }
 
-                            if (result.GetTile(pos + dir) == Tile.EmptyTileId)
+                            if (result.GetTile(pos + dir) != Tile.MazeTileId)
                             {
                                 continue;
                             }

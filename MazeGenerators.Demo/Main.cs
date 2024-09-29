@@ -9,11 +9,11 @@ public class Main : Node2D
     private Maze m = new Maze(31, 21);
 
     private Dictionary<string, Action<Main>> OnClick = new Dictionary<string, Action<Main>>{
-        {"Clear",(main)=>{ main.m.Clear(); }},
+        {"Reset",(main)=>{ main.m.Reset(); }},
         {"Random",(main)=>{ main.m.Randomize(); }},
         {"Life",(main)=>{ main.m.Life(); }},
         {"Smooth",(main)=>{ main.m.Smooth(); }},
-        {"Rooms",(main)=>{ main.m.GenerateRooms(); }},
+        {"Rooms",(main)=>{ main.m.TryAddRoom(); }},
         {"GrowMaze",(main)=>{ main.m.GrowMaze(); }},
         {"Connectors",(main)=>{ main.m.GenerateConnectors(); }},
         {"RemoveDeadEnds",(main)=>{ main.m.RemoveDeadEnds(); }},
