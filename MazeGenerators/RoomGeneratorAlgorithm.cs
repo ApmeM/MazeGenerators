@@ -29,29 +29,24 @@ namespace MazeGenerators
 
             var width = (nextRandom(roomLength + 1) + minRoomSize) / 2 * 2 + 1;
             var maxDifference = nextRandom(Math.Min(maxWidthHeightRoomSizeDifference, roomLength));
-            var height = Math.Min((int)maxRoomSize, Math.Max((int)minRoomSize, (int)((maxDifference - maxDifference / 2 + width) / 2 * 2 + 1)));
+            var height = Math.Min(maxRoomSize, Math.Max(minRoomSize, (maxDifference - maxDifference / 2 + width) / 2 * 2 + 1));
 
-            var x = nextRandom((result.Width - width) / 2) * 2 + 1;
-            var y = nextRandom((result.Height - height) / 2) * 2 + 1;
+            var room = new Rectangle(
+                nextRandom((result.Width - width) / 2) * 2 + 1, 
+                nextRandom((result.Height - height) / 2) * 2 + 1, 
+                width, 
+                height);
 
-            var room = new Rectangle(x, y, width, height);
-
-            var overlaps = false;
             if (preventOverlap)
             {
-                foreach (var other in result.Rooms)
-                {
-                    if (room.Intersects(other))
+                for (var x = room.X; x < room.X + room.Width; x++)
+                    for (var y = room.Y; y < room.Y + room.Height; y++)
                     {
-                        overlaps = true;
-                        break;
+                        if (result.Paths[x, y] == Tile.MazeTileId)
+                        {
+                            return result;
+                        }
                     }
-                }
-            }
-
-            if (overlaps)
-            {
-                return result;
             }
 
             result.DrawFullRect(room, Tile.MazeTileId);
