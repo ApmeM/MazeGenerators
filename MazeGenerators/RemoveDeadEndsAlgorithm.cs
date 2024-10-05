@@ -2,10 +2,8 @@
 {
     public static class RemoveDeadEndsAlgorithm
     {
-        public static Maze RemoveDeadEnds(this Maze result, Vector2[] directions = null)
+        public static Maze RemoveDeadEnds(this Maze result)
         {
-            directions = directions ?? DefaultDirections.CardinalDirs;
-            
             for (var x = 0; x < result.Width; x++)
                 for (var y = 0; y < result.Height; y++)
                 {
@@ -21,7 +19,7 @@
                     {
                         exits = 0;
                         var lastExitPosition = new Vector2(0, 0);
-                        foreach (var dir in directions)
+                        foreach (var dir in result.Directions)
                         {
                             if (!result.IsInRegion(pos + dir))
                             {

@@ -9,6 +9,13 @@ namespace MazeGenerators
         public int Height => this.Paths.GetLength(1);
         public List<Vector2> Junctions { get; } = new List<Vector2>();
 
+        public Vector2[] Directions = new[]{
+            new Vector2( 1, 0 ),
+            new Vector2( 0, -1 ),
+            new Vector2( -1, 0 ),
+            new Vector2( 0, 1 ),
+        };
+
         private bool roomsDirty = true;
         private Dictionary<Vector2, int> cellToRoom = new Dictionary<Vector2, int>();
         private FingerMath.Collections.Lookup<int, Vector2> roomToCells = new FingerMath.Collections.Lookup<int, Vector2>();
@@ -76,7 +83,7 @@ namespace MazeGenerators
             roomToCells.Add(color, pos);
             cellToRoom.Add(pos, color);
 
-            foreach (var dir in DefaultDirections.CardinalDirs)
+            foreach (var dir in this.Directions)
             {
                 FloodFill(pos + dir, color);
             }

@@ -17,7 +17,7 @@
 " . \n" +
 " . \n" +
 "   \n");
-            result.GenerateConnectors((max) => r.Next(max), DefaultDirections.CardinalDirs, 10);
+            result.GenerateConnectors((max) => r.Next(max), 10);
             Assert.AreEqual(
 "   \n" +
 " . \n" +
@@ -37,7 +37,7 @@
 "   \n" +
 " . \n" +
 "   \n");
-            result.GenerateConnectors((max) => r.Next(max), DefaultDirections.CardinalDirs, 10);
+            result.GenerateConnectors((max) => r.Next(max), 10);
             Assert.AreEqual(
 "   \n" +
 " . \n" +
@@ -58,7 +58,7 @@
 "     \n" +
 " ... \n" +
 "     \n");
-            result.GenerateConnectors((max) => r.Next(max), DefaultDirections.CardinalDirs, 100);
+            result.GenerateConnectors((max) => r.Next(max), 100);
             Assert.AreEqual(
 "     \n" +
 " ... \n" +
@@ -79,7 +79,7 @@
 "     \n" +
 " ... \n" +
 "     \n");
-            result.GenerateConnectors((max) => r.Next(max), DefaultDirections.CardinalDirs, 100);
+            result.GenerateConnectors((max) => r.Next(max), 100);
             Assert.AreEqual(
 " ... \n" +
 "     \n" +

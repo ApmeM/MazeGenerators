@@ -2,6 +2,17 @@
 {
     public static class WallSurroundingAlgorithm
     {
+        private static readonly Vector2[] CompassDirs = {
+            new Vector2( 1, 0 ),
+            new Vector2( 1, -1 ),
+            new Vector2( 0, -1 ),
+            new Vector2( -1, -1 ),
+            new Vector2( -1, 0 ),
+            new Vector2( -1, 1 ),
+            new Vector2( 0, 1 ),
+            new Vector2( 1, 1 ),
+        };
+
         public static Maze BuildWalls(this Maze result)
         {
             // Fill in all of the empty space with mazes.
@@ -14,7 +25,7 @@
                         result.GetTile(pos) == Tile.EmptyTileId)
                         continue;
 
-                    foreach (var dir in DefaultDirections.CompassDirs)
+                    foreach (var dir in CompassDirs)
                     {
                         var newPos = pos + dir;
                         if (!result.IsInRegion(newPos))

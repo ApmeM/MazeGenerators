@@ -9,19 +9,18 @@ namespace MazeGenerators
         private static readonly Random r = new Random();
         private static readonly Func<int, int> defaultRandomizer = (max) => r.Next(max);
 
-        public static Maze GenerateConnectors(this Maze result, Func<int, int> nextRandom = null, Vector2[] directions = null, int additionalPassagesTries = 0)
+        public static Maze GenerateConnectors(this Maze result, Func<int, int> nextRandom = null, int additionalPassagesTries = 0)
         {
             nextRandom = nextRandom ?? defaultRandomizer;
-            directions = directions ?? DefaultDirections.CardinalDirs;
 
-            var possibleConnectors = GetPossibleConnectorPositions(result, directions);
+            var possibleConnectors = GetPossibleConnectorPositions(result);
 
-            ConnectRegions(result, nextRandom, possibleConnectors, directions);
-            AddRandomConnectors(result, nextRandom, possibleConnectors, additionalPassagesTries, directions);
+            ConnectRegions(result, nextRandom, possibleConnectors);
+            AddRandomConnectors(result, nextRandom, possibleConnectors, additionalPassagesTries);
             return result;
         }
 
-        private static void AddRandomConnectors(Maze result, Func<int, int> nextRandom, HashSet<Vector2> possibleConnectors, int additionalPassagesTries, Vector2[] directions)
+        private static void AddRandomConnectors(Maze result, Func<int, int> nextRandom, HashSet<Vector2> possibleConnectors, int additionalPassagesTries)
         {
             for (var i = 0; i < additionalPassagesTries; i++)
             {
@@ -31,7 +30,7 @@ namespace MazeGenerators
                 }
 
                 var pos = possibleConnectors.Skip(nextRandom(possibleConnectors.Count)).First();
-                foreach (var dir in directions)
+                foreach (var dir in result.Directions)
                 {
                     var loc = pos + dir;
                     // Do not allow 2 connectors next to each other.
@@ -44,7 +43,7 @@ namespace MazeGenerators
             }
         }
 
-        private static void ConnectRegions(Maze result, Func<int, int> nextRandom, HashSet<Vector2> possibleConnectors, Vector2[] directions)
+        private static void ConnectRegions(Maze result, Func<int, int> nextRandom, HashSet<Vector2> possibleConnectors)
         {
             var regions = result.CellToRoom;
             var roomsCount = result.RoomToCells.Count;
@@ -53,7 +52,7 @@ namespace MazeGenerators
             foreach (var pos in possibleConnectors)
             {
                 var tmpRegions = new HashSet<int>();
-                foreach (var dir in directions)
+                foreach (var dir in result.Directions)
                 {
                     var loc = pos + dir;
                     if (!result.IsInRegion(loc))
@@ -92,7 +91,7 @@ namespace MazeGenerators
                 result.SetTile(connector, Tile.MazeTileId);
                 result.Junctions.Add(connector);
 
-                foreach (var dir in directions)
+                foreach (var dir in result.Directions)
                 {
                     var loc = connector + dir;
                     // Do not allow 2 connectors next to each other.
@@ -133,7 +132,7 @@ namespace MazeGenerators
             }
         }
 
-        private static HashSet<Vector2> GetPossibleConnectorPositions(Maze result, Vector2[] directions)
+        private static HashSet<Vector2> GetPossibleConnectorPositions(Maze result)
         {
             var connectorRegions = new HashSet<Vector2>();
             for (var x = 0; x < result.Width; x++)
@@ -147,7 +146,7 @@ namespace MazeGenerators
                     }
 
                     var found = false;
-                    foreach (var dir in directions)
+                    foreach (var dir in result.Directions)
                     {
                         var loc1 = pos + dir;
                         var loc2 = pos - dir;

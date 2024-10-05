@@ -8,7 +8,7 @@ namespace MazeGenerators
         private static readonly Random r = new Random();
         private static readonly Func<int, int> defaultRandomizer = (max) => r.Next(max);
 
-        public static Maze GrowMaze(this Maze result, Func<int, int> nextRandom = null, Vector2[] directions = null, int windingPercent = 50)
+        public static Maze GrowMaze(this Maze result, Func<int, int> nextRandom = null, int windingPercent = 50)
         {
             if (result.Width % 2 == 0 || result.Height % 2 == 0)
             {
@@ -16,7 +16,6 @@ namespace MazeGenerators
             }
 
             nextRandom = nextRandom ?? defaultRandomizer;
-            directions = directions ?? DefaultDirections.CardinalDirs;
 
             // Fill in all of the empty space with mazes.
             for (var x = 1; x < result.Width; x += 2)
@@ -26,14 +25,14 @@ namespace MazeGenerators
                     var pos = new Vector2(x, y);
                     if (result.GetTile(pos) != Tile.EmptyTileId)
                         continue;
-                    GrowSingleMazeTree(result, pos, windingPercent, directions, nextRandom);
+                    GrowSingleMazeTree(result, pos, windingPercent, nextRandom);
                 }
             }
 
             return result;
         }
 
-        private static void GrowSingleMazeTree(Maze result, Vector2 start, int windingPercent, Vector2[] directions, Func<int, int> nextRandom)
+        private static void GrowSingleMazeTree(Maze result, Vector2 start, int windingPercent, Func<int, int> nextRandom)
         {
             var cells = new Stack<Vector2>();
 
@@ -49,7 +48,7 @@ namespace MazeGenerators
 
                 var unmadeCells = new List<Vector2>();
 
-                foreach (var dir in directions)
+                foreach (var dir in result.Directions)
                 {
                     if (CanCarve(result, cell, dir))
                         unmadeCells.Add(dir);

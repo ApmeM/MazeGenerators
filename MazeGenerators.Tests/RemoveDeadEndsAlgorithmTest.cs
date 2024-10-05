@@ -15,7 +15,7 @@
 " . \n" +
 " . \n" +
 "   \n");
-            result.RemoveDeadEnds(DefaultDirections.CardinalDirs);
+            result.RemoveDeadEnds();
             Assert.AreEqual(
 "   \n" +
 "   \n" +
@@ -33,7 +33,7 @@
 " . . \n" +
 " ... \n" +
 "     \n");
-            result.RemoveDeadEnds(DefaultDirections.CardinalDirs);
+            result.RemoveDeadEnds();
             Assert.AreEqual(
 "     \n" +
 " ... \n" +
@@ -51,7 +51,7 @@
 " ..  \n" +
 " ... \n" +
 "     \n");
-            result.RemoveDeadEnds(DefaultDirections.CardinalDirs);
+            result.RemoveDeadEnds();
             Assert.AreEqual(
 "     \n" +
 " ..  \n" +
