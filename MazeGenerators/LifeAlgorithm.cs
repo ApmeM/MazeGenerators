@@ -19,7 +19,7 @@ namespace MazeGenerators
             birthCondition = birthCondition ?? DefaultBirthCondition;
             deathCondition = deathCondition ?? DefaultDeathCondition;
 
-            var prevGen = (Tile[,])result.Paths.Clone();
+            var prevGen = result.GetPathsClone();
 
             for (var x = 0; x < result.Width; x++)
                 for (var y = 0; y < result.Height; y++)
@@ -41,11 +41,11 @@ namespace MazeGenerators
                         }
                     if (prevGen[x, y] == Tile.EmptyTileId)
                     {
-                        result.Paths[x, y] = birthCondition(numberOfNeighbours) ? Tile.MazeTileId : Tile.EmptyTileId;
+                        result.SetTile(new Vector2(x, y), birthCondition(numberOfNeighbours) ? Tile.MazeTileId : Tile.EmptyTileId);
                     }
                     else
                     {
-                        result.Paths[x, y] = deathCondition(numberOfNeighbours) ? Tile.EmptyTileId : Tile.MazeTileId;
+                        result.SetTile(new Vector2(x, y), deathCondition(numberOfNeighbours) ? Tile.EmptyTileId : Tile.MazeTileId);
                     }
                 }
             return result;

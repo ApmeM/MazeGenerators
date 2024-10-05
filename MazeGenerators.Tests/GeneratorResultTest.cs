@@ -11,8 +11,8 @@
         public void GenerateField_ValidValues_ArrayCreated()
         {
             var result = new Maze(3,5);
-            Assert.AreEqual(3, result.Paths.GetLength(0));
-            Assert.AreEqual(5, result.Paths.GetLength(1));
+            Assert.AreEqual(3, result.Width);
+            Assert.AreEqual(5, result.Height);
         }
 
         [Test]

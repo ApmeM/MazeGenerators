@@ -12,108 +12,86 @@
 
         public static Maze Mirror(this Maze result, MirrorDirection mirror)
         {
-            var oldPath = result.Paths;
-            var oldRoomsCount = result.Rooms.Count;
             var oldJunctionsCount = result.Junctions.Count;
             switch (mirror)
             {
                 case MirrorDirection.Horizontal:
                     {
-                        result.Paths = new Tile[result.Width * 2 - 3, result.Height];
-                        for (var x = 0; x < oldPath.GetLength(0) - 1; x++)
-                            for (var y = 0; y < oldPath.GetLength(1); y++)
+                        var newPath = new Tile[result.Width * 2 - 3, result.Height];
+                        for (var x = 0; x < result.Width - 1; x++)
+                            for (var y = 0; y < result.Height; y++)
                             {
-                                result.Paths[x, y] = oldPath[x, y];
-                                result.Paths[result.Paths.GetLength(0) - x - 1, y] = oldPath[x, y];
+                                newPath[x, y] = result.GetTile(new Vector2(x, y));
+                                newPath[newPath.GetLength(0) - x - 1, y] = result.GetTile(new Vector2(x, y));
                             }
-                        for (var i = 0; i < oldRoomsCount; i++)
-                        {
-                            result.Rooms.Add(new Rectangle(result.Paths.GetLength(0) - result.Rooms[i].X - result.Rooms[i].Width, result.Rooms[i].Y, result.Rooms[i].Width, result.Rooms[i].Height));
-                        }
+                        result.SetPaths(newPath);
                         for (var i = 0; i < oldJunctionsCount; i++)
                         {
-                            result.Junctions.Add(new Vector2(result.Paths.GetLength(0) - result.Junctions[i].X - 1, result.Junctions[i].Y));
+                            result.Junctions.Add(new Vector2(result.Width - result.Junctions[i].X - 1, result.Junctions[i].Y));
                         }
 
                         break;
                     }
                 case MirrorDirection.Vertical:
                     {
-                        result.Paths = new Tile[result.Width, result.Height * 2 - 3];
-                        for (var x = 0; x < oldPath.GetLength(0); x++)
-                            for (var y = 0; y < oldPath.GetLength(1) - 1; y++)
+                        var newPath = new Tile[result.Width, result.Height * 2 - 3];
+                        for (var x = 0; x < result.Width; x++)
+                            for (var y = 0; y < result.Height - 1; y++)
                             {
-                                result.Paths[x, y] = oldPath[x, y];
-                                result.Paths[x, result.Paths.GetLength(1) - y - 1] = oldPath[x, y];
+                                newPath[x, y] = result.GetTile(new Vector2(x,y));
+                                newPath[x, newPath.GetLength(1) - y - 1] = result.GetTile(new Vector2(x,y));
                             }
-                        for (var i = 0; i < oldRoomsCount; i++)
-                        {
-                            result.Rooms.Add(new Rectangle(result.Rooms[i].X, result.Paths.GetLength(1) - result.Rooms[i].Y - result.Rooms[i].Height, result.Rooms[i].Width, result.Rooms[i].Height));
-                        }
+                        result.SetPaths(newPath);
                         for (var i = 0; i < oldJunctionsCount; i++)
                         {
-                            result.Junctions.Add(new Vector2(result.Junctions[i].X, result.Paths.GetLength(1) - result.Junctions[i].Y - 1));
+                            result.Junctions.Add(new Vector2(result.Junctions[i].X, result.Height - result.Junctions[i].Y - 1));
                         }
 
                         break;
                     }
                 case MirrorDirection.Both:
                     {
-                        result.Paths = new Tile[result.Width * 2 - 3, result.Height * 2 - 3];
-                        for (var x = 0; x < oldPath.GetLength(0) - 1; x++)
-                            for (var y = 0; y < oldPath.GetLength(1) - 1; y++)
+                        var newPath = new Tile[result.Width * 2 - 3, result.Height * 2 - 3];
+                        for (var x = 0; x < result.Width - 1; x++)
+                            for (var y = 0; y < result.Height - 1; y++)
                             {
-                                result.Paths[x, y] = oldPath[x, y];
-                                result.Paths[x, result.Paths.GetLength(1) - y - 1] = oldPath[x, y];
-                                result.Paths[result.Paths.GetLength(0) - x - 1, y] = oldPath[x, y];
-                                result.Paths[result.Paths.GetLength(0) - x - 1, result.Paths.GetLength(1) - y - 1] = oldPath[x, y];
+                                newPath[x, y] = result.GetTile(new Vector2(x,y));
+                                newPath[x, newPath.GetLength(1) - y - 1] = result.GetTile(new Vector2(x,y));
+                                newPath[newPath.GetLength(0) - x - 1, y] = result.GetTile(new Vector2(x,y));
+                                newPath[newPath.GetLength(0) - x - 1, newPath.GetLength(1) - y - 1] = result.GetTile(new Vector2(x,y));
                             }
-
-                        for (var i = 0; i < oldRoomsCount; i++)
-                        {
-                            result.Rooms.Add(new Rectangle(result.Rooms[i].X, result.Paths.GetLength(1) - result.Rooms[i].Y - result.Rooms[i].Height, result.Rooms[i].Width, result.Rooms[i].Height));
-                            result.Rooms.Add(new Rectangle(result.Paths.GetLength(0) - result.Rooms[i].X - result.Rooms[i].Width, result.Rooms[i].Y, result.Rooms[i].Width, result.Rooms[i].Height));
-                            result.Rooms.Add(new Rectangle(result.Paths.GetLength(0) - result.Rooms[i].X - result.Rooms[i].Width, result.Paths.GetLength(1) - result.Rooms[i].Y - result.Rooms[i].Height, result.Rooms[i].Width, result.Rooms[i].Height));
-                        }
-
+                        result.SetPaths(newPath);
                         for (var i = 0; i < oldJunctionsCount; i++)
                         {
-                            result.Junctions.Add(new Vector2(result.Junctions[i].X, result.Paths.GetLength(1) - result.Junctions[i].Y - 1));
-                            result.Junctions.Add(new Vector2(result.Paths.GetLength(0) - result.Junctions[i].X - 1, result.Junctions[i].Y));
-                            result.Junctions.Add(new Vector2(result.Paths.GetLength(0) - result.Junctions[i].X - 1, result.Paths.GetLength(1) - result.Junctions[i].Y - 1));
+                            result.Junctions.Add(new Vector2(result.Junctions[i].X, result.Height - result.Junctions[i].Y - 1));
+                            result.Junctions.Add(new Vector2(result.Width - result.Junctions[i].X - 1, result.Junctions[i].Y));
+                            result.Junctions.Add(new Vector2(result.Width - result.Junctions[i].X - 1, result.Height - result.Junctions[i].Y - 1));
                         }
 
                         break;
                     }
                 case MirrorDirection.Rotate:
                     {
-                        if (result.Paths.GetLength(0) != result.Paths.GetLength(1))
+                        if (result.Width != result.Height)
                         {
                             throw new System.Exception("Can't rotate non-square maze");
                         }
 
-                        result.Paths = new Tile[result.Width * 2 - 3, result.Height * 2 - 3];
-                        for (var x = 0; x < oldPath.GetLength(0) - 1; x++)
-                            for (var y = 0; y < oldPath.GetLength(1) - 1; y++)
+                        var newPath = new Tile[result.Width * 2 - 3, result.Height * 2 - 3];
+                        for (var x = 0; x < result.Width - 1; x++)
+                            for (var y = 0; y < result.Height - 1; y++)
                             {
-                                result.Paths[x, y] = oldPath[x, y];
-                                result.Paths[result.Paths.GetLength(1) - y - 1, x] = oldPath[x, y];
-                                result.Paths[result.Paths.GetLength(0) - x - 1, result.Paths.GetLength(1) - y - 1] = oldPath[x, y];
-                                result.Paths[y, result.Paths.GetLength(0) - x - 1] = oldPath[x, y];
+                                newPath[x, y] = result.GetTile(new Vector2(x,y));
+                                newPath[newPath.GetLength(1) - y - 1, x] = result.GetTile(new Vector2(x,y));
+                                newPath[newPath.GetLength(0) - x - 1, newPath.GetLength(1) - y - 1] = result.GetTile(new Vector2(x,y));
+                                newPath[y, newPath.GetLength(0) - x - 1] = result.GetTile(new Vector2(x,y));
                             }
-
-                        for (var i = 0; i < oldRoomsCount; i++)
-                        {
-                            result.Rooms.Add(new Rectangle(result.Paths.GetLength(1) - result.Rooms[i].Y - result.Rooms[i].Height, result.Rooms[i].X, result.Rooms[i].Height, result.Rooms[i].Width));
-                            result.Rooms.Add(new Rectangle(result.Paths.GetLength(0) - result.Rooms[i].X - result.Rooms[i].Width, result.Paths.GetLength(1) - result.Rooms[i].Y - result.Rooms[i].Height, result.Rooms[i].Width, result.Rooms[i].Height));
-                            result.Rooms.Add(new Rectangle(result.Rooms[i].Y, result.Paths.GetLength(0) - result.Rooms[i].X - result.Rooms[i].Width, result.Rooms[i].Height, result.Rooms[i].Width));
-                        }
-
+                        result.SetPaths(newPath);
                         for (var i = 0; i < oldJunctionsCount; i++)
                         {
-                            result.Junctions.Add(new Vector2(result.Paths.GetLength(1) - result.Junctions[i].Y - 1, result.Junctions[i].X));
-                            result.Junctions.Add(new Vector2(result.Paths.GetLength(0) - result.Junctions[i].X - 1, result.Paths.GetLength(1) - result.Junctions[i].Y - 1));
-                            result.Junctions.Add(new Vector2(result.Junctions[i].Y, result.Paths.GetLength(0) - result.Junctions[i].X - 1));
+                            result.Junctions.Add(new Vector2(result.Height - result.Junctions[i].Y - 1, result.Junctions[i].X));
+                            result.Junctions.Add(new Vector2(result.Width - result.Junctions[i].X - 1, result.Height - result.Junctions[i].Y - 1));
+                            result.Junctions.Add(new Vector2(result.Junctions[i].Y, result.Width - result.Junctions[i].X - 1));
                         }
 
                         break;

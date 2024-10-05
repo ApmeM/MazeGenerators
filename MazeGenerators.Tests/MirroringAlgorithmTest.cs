@@ -18,7 +18,6 @@
 "#   ###\n" +
 "#######\n");
             result.DrawFullRect(new Rectangle(3, 1, 3, 1), Tile.MazeTileId);
-            result.Rooms.Add(new Rectangle(3, 1, 3, 1));
             MirroringAlgorithm.Mirror(result, MirroringAlgorithm.MirrorDirection.Horizontal);
 
             Assert.AreEqual(
@@ -33,8 +32,6 @@
             Assert.AreEqual(7, result.Height);
             Assert.AreEqual(new Vector2(3, 4), result.Junctions[0]);
             Assert.AreEqual(new Vector2(7, 4), result.Junctions[1]);
-            Assert.AreEqual(new Rectangle(3, 1, 3, 1), result.Rooms[0]);
-            Assert.AreEqual(new Rectangle(5, 1, 3, 1), result.Rooms[1]);
         }
 
         [Test]
@@ -49,7 +46,6 @@
 "#   ###\n" +
 "#######\n");
             result.DrawFullRect(new Rectangle(3, 1, 3, 1), Tile.MazeTileId);
-            result.Rooms.Add(new Rectangle(3, 1, 3, 1));
             result.Mirror(MirroringAlgorithm.MirrorDirection.Vertical);
 
             Assert.AreEqual(
@@ -68,8 +64,6 @@
             Assert.AreEqual(11, result.Height);
             Assert.AreEqual(new Vector2(3, 4), result.Junctions[0]);
             Assert.AreEqual(new Vector2(3, 6), result.Junctions[1]);
-            Assert.AreEqual(new Rectangle(3, 1, 3, 1), result.Rooms[0]);
-            Assert.AreEqual(new Rectangle(3, 9, 3, 1), result.Rooms[1]);
         }
 
         [Test]
@@ -84,7 +78,6 @@
 "#   ###\n" +
 "#######\n");
             result.DrawFullRect(new Rectangle(3, 1, 3, 1), Tile.MazeTileId);
-            result.Rooms.Add(new Rectangle(3, 1, 3, 1));
             result.Mirror(MirroringAlgorithm.MirrorDirection.Both);
 
             Assert.AreEqual(
@@ -105,10 +98,6 @@
             Assert.AreEqual(new Vector2(3, 6), result.Junctions[1]);
             Assert.AreEqual(new Vector2(7, 4), result.Junctions[2]);
             Assert.AreEqual(new Vector2(7, 6), result.Junctions[3]);
-            Assert.AreEqual(new Rectangle(3, 1, 3, 1), result.Rooms[0]);
-            Assert.AreEqual(new Rectangle(3, 9, 3, 1), result.Rooms[1]);
-            Assert.AreEqual(new Rectangle(5, 1, 3, 1), result.Rooms[2]);
-            Assert.AreEqual(new Rectangle(5, 9, 3, 1), result.Rooms[3]);
         }
 
         [Test]
@@ -123,7 +112,6 @@
 "#   ###\n" +
 "#######\n");
             result.DrawFullRect(new Rectangle(3, 1, 3, 1), Tile.MazeTileId);
-            result.Rooms.Add(new Rectangle(3, 1, 3, 1));
             result.Mirror(MirroringAlgorithm.MirrorDirection.Rotate);
 
             Assert.AreEqual(
@@ -144,10 +132,6 @@
             Assert.AreEqual(new Vector2(6, 3), result.Junctions[1]);
             Assert.AreEqual(new Vector2(7, 6), result.Junctions[2]);
             Assert.AreEqual(new Vector2(4, 7), result.Junctions[3]);
-            Assert.AreEqual(new Rectangle(3, 1, 3, 1), result.Rooms[0]);
-            Assert.AreEqual(new Rectangle(9, 3, 1, 3), result.Rooms[1]);
-            Assert.AreEqual(new Rectangle(5, 9, 3, 1), result.Rooms[2]);
-            Assert.AreEqual(new Rectangle(1, 5, 1, 3), result.Rooms[3]);
         }
 
         [Test]
@@ -155,7 +139,6 @@
         {
             var result = new Maze(5, 5);
             result.DrawFullRect(new Rectangle(1, 1, 3, 3), Tile.MazeTileId);
-            result.Rooms.Add(new Rectangle(1, 1, 3, 3));
             MirroringAlgorithm.Mirror(result, MirroringAlgorithm.MirrorDirection.Rotate);
 
             Assert.AreEqual(
@@ -169,11 +152,6 @@
             Assert.AreEqual(7, result.Width);
             Assert.AreEqual(7, result.Height);
             Assert.AreEqual(0, result.Junctions.Count);
-            Assert.AreEqual(4, result.Rooms.Count);
-            Assert.AreEqual(new Rectangle(1, 1, 3, 3), result.Rooms[0]);
-            Assert.AreEqual(new Rectangle(3, 1, 3, 3), result.Rooms[1]);
-            Assert.AreEqual(new Rectangle(3, 3, 3, 3), result.Rooms[2]);
-            Assert.AreEqual(new Rectangle(1, 3, 3, 3), result.Rooms[3]);
         }
 
 

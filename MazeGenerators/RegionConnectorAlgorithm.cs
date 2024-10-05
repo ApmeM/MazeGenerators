@@ -46,20 +46,8 @@ namespace MazeGenerators
 
         private static void ConnectRegions(Maze result, Func<int, int> nextRandom, HashSet<Vector2> possibleConnectors, Vector2[] directions)
         {
-            var regions = new int?[result.Width, result.Height];
-            var regionId = 0;
-
-            // Find all unconnected regions and assign numbers to them.
-            for (var x = 0; x < result.Width; x++)
-                for (var y = 0; y < result.Height; y++)
-                {
-                    var colored = FloodFill(result, regions, new Vector2(x, y), regionId, directions);
-                    if (colored)
-                    {
-                        regionId++;
-                    }
-                }
-
+            var regions = result.CellToRoom;
+            var roomsCount = result.RoomToCells.Count;
             // Find all of the tiles that can connect two (or more) regions.
             var regionConnectors = new Dictionary<Vector2, HashSet<int>>();
             foreach (var pos in possibleConnectors)
@@ -73,9 +61,8 @@ namespace MazeGenerators
                         continue;
                     }
 
-                    var region = regions[loc.X, loc.Y];
-                    if (region != null)
-                        tmpRegions.Add(region.Value);
+                    if (regions.ContainsKey(loc))
+                        tmpRegions.Add(regions[loc]);
                 }
 
                 if (tmpRegions.Count < 2)
@@ -88,9 +75,9 @@ namespace MazeGenerators
 
             // Keep track of which regions have been merged. This maps an original
             // region index to the one it has been merged to.
-            var merged = new int[regionId];
+            var merged = new int[roomsCount];
             var openRegions = new HashSet<int>();
-            for (var i = 0; i < regionId; i++)
+            for (var i = 0; i < roomsCount; i++)
             {
                 merged[i] = i;
                 openRegions.Add(i);
@@ -122,7 +109,7 @@ namespace MazeGenerators
                 // Merge all of the affected regions. We have to look at *all* of the
                 // regions because other regions may have previously been merged with
                 // some of the ones we're merging now.
-                for (var i = 0; i < regionId; i++)
+                for (var i = 0; i < roomsCount; i++)
                 {
                     if (sources.Contains(merged[i]))
                     {
@@ -144,32 +131,6 @@ namespace MazeGenerators
                         return regionConnectors[pos].Select((region) => merged[region]).ToLookup(a => a, a => a).Count <= 1;
                     });
             }
-        }
-
-        private static bool FloodFill(Maze result, int?[,] regions, Vector2 pos, int color, Vector2[] directions)
-        {
-            if (!result.IsInRegion(pos))
-            {
-                return false;
-            }
-
-            if (regions[pos.X, pos.Y].HasValue)
-            {
-                return false;
-            }
-
-            if (result.Paths[pos.X, pos.Y] == Tile.EmptyTileId)
-            {
-                return false;
-            }
-
-            regions[pos.X, pos.Y] = color;
-            foreach (var dir in directions)
-            {
-                FloodFill(result, regions, pos + dir, color, directions);
-            }
-
-            return true;
         }
 
         private static HashSet<Vector2> GetPossibleConnectorPositions(Maze result, Vector2[] directions)

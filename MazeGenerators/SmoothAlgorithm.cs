@@ -4,8 +4,8 @@ namespace MazeGenerators
     {
         public static Maze Smooth(this Maze result, int iterations = 5, int smoothingThreshold = 4)
         {
-            var currentMap = result.Paths;
-            var smoothedMap = (Tile[,])result.Paths.Clone();
+            var currentMap = result.GetPathsClone();
+            var smoothedMap = result.GetPathsClone();
             for (int i = 0; i < iterations; i++)
             {
                 for (var x = 0; x < result.Width; x++)
@@ -23,7 +23,7 @@ namespace MazeGenerators
                 smoothedMap = temp;
                 currentMap = smoothedMap;
             }
-
+            result.SetPaths(currentMap);
             return result;
         }
 

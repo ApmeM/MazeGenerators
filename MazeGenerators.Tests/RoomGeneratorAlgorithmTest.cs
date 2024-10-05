@@ -8,7 +8,7 @@
     public class RoomGeneratorAlgorithmTest
     {
         [Test]
-        public void GenerateRooms_RoomSizeValuesInvalid_ThrowsException()
+        public void GenerateRooms_MinRoomSizeMoreThenMaxRoomSize_ThrowsException()
         {
             var r = new Random(0);
             Assert.Throws<Exception>(() =>
@@ -23,10 +23,9 @@
             var r = new Random(0);
             var result = new Maze(201, 201).TryAddRoom((max) => r.Next(max), true, 11, 11, 20);
 
-            foreach (var room in result.Rooms)
+            foreach (var room in result.RoomToCells)
             {
-                Assert.AreEqual(room.Width, 11);
-                Assert.AreEqual(room.Height, 11);
+                Assert.AreEqual(room.Count, 121);
             }
         }
 
@@ -36,13 +35,10 @@
             var r = new Random(0);
             var result = new Maze(201, 201).TryAddRoom((max) => r.Next(max), true, 10, 100, 20);
 
-            foreach (var room in result.Rooms)
+            foreach (var room in result.RoomToCells)
             {
-                Assert.LessOrEqual(room.Width, 100);
-                Assert.LessOrEqual(room.Height, 100);
-                Assert.GreaterOrEqual(room.Width, 10);
-                Assert.GreaterOrEqual(room.Height, 10);
-                Assert.LessOrEqual(Math.Abs(room.Height - room.Width), 20);
+                Assert.LessOrEqual(room.Count, 100*100);
+                Assert.GreaterOrEqual(room.Count, 10*10);
             }
         }
 
@@ -54,7 +50,7 @@
                 .TryAddRoom((max) => r.Next(max), true, 10, 11, 20)
                 .TryAddRoom((max) => r.Next(max), true, 10, 11, 20);
 
-            Assert.AreEqual(2, result.Rooms.Count);
+            Assert.AreEqual(2, result.RoomToCells.Count);
         }
     }
 }

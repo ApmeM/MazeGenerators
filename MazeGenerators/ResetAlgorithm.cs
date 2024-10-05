@@ -14,12 +14,11 @@
 
             if (result.Width != newWidth || result.Height != newHeight)
             {
-                result.Paths = new Tile[newWidth, newHeight];
+                result.Init(newWidth, newHeight);
             }
 
             result.DrawFullRect(new Rectangle(0, 0, result.Width, result.Height), Tile.EmptyTileId);
             result.Junctions.Clear();
-            result.Rooms.Clear();
             return result;
         }
     }

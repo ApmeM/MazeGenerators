@@ -24,7 +24,6 @@ namespace MazeGenerators
                 }
             }
             result.Junctions.Clear();
-            result.Rooms.Clear();
             return result;
         }
     }

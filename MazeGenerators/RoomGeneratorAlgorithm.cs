@@ -18,22 +18,21 @@ namespace MazeGenerators
         {
             nextRandom = nextRandom ?? defaultRandomizer;
 
-            minRoomSize = minRoomSize / 2 * 2 + 1;
-            maxRoomSize = (maxRoomSize + 1) / 2 * 2 - 1;
-            var roomLength = maxRoomSize - minRoomSize;
-
-            if (roomLength < 0)
+            if (maxRoomSize < minRoomSize)
             {
                 throw new Exception("MaxRoomSize cant be less then MinRoomSize.");
             }
 
-            var width = (nextRandom(roomLength + 1) + minRoomSize) / 2 * 2 + 1;
-            var maxDifference = nextRandom(Math.Min(maxWidthHeightRoomSizeDifference, roomLength));
-            var height = Math.Min(maxRoomSize, Math.Max(minRoomSize, (maxDifference - maxDifference / 2 + width) / 2 * 2 + 1));
+            var width = nextRandom(maxRoomSize - minRoomSize) + minRoomSize;
+            
+            var minHeightSize = Math.Max(width - maxWidthHeightRoomSizeDifference, minRoomSize);
+            var maxHeightSize = Math.Min(width + maxWidthHeightRoomSizeDifference, maxRoomSize);
+
+            var height = nextRandom(maxHeightSize - minHeightSize) + minHeightSize;
 
             var room = new Rectangle(
-                nextRandom((result.Width - width) / 2) * 2 + 1, 
-                nextRandom((result.Height - height) / 2) * 2 + 1, 
+                nextRandom(result.Width - width), 
+                nextRandom(result.Height - height), 
                 width, 
                 height);
 
@@ -42,7 +41,7 @@ namespace MazeGenerators
                 for (var x = room.X; x < room.X + room.Width; x++)
                     for (var y = room.Y; y < room.Y + room.Height; y++)
                     {
-                        if (result.Paths[x, y] == Tile.MazeTileId)
+                        if (result.GetTile(new Vector2(x, y)) == Tile.MazeTileId)
                         {
                             return result;
                         }
@@ -50,7 +49,6 @@ namespace MazeGenerators
             }
 
             result.DrawFullRect(room, Tile.MazeTileId);
-            result.Rooms.Add(room);
 
             return result;
         }
