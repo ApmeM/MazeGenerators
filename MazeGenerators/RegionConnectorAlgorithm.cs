@@ -140,7 +140,7 @@ namespace MazeGenerators
                 {
                     var pos = new Vector2(x, y);
 
-                    if (result.GetTile(pos) != Tile.EmptyTileId)
+                    if (result.GetTile(pos) == Tile.MazeTileId)
                     {
                         continue;
                     }
@@ -157,7 +157,7 @@ namespace MazeGenerators
 
                         var region1 = result.GetTile(loc1);
                         var region2 = result.GetTile(loc2);
-                        if (region1 != Tile.EmptyTileId && region2 != Tile.EmptyTileId)
+                        if (region1 == Tile.MazeTileId && region2 == Tile.MazeTileId)
                         {
                             found = true;
                         }

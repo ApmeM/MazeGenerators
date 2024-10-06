@@ -31,7 +31,6 @@ namespace MazeGenerators
         {
             if (x < 0 || y < 0 || x >= map.GetLength(0) || y >= map.GetLength(1)) return 1;
             return (map[x, y] == Tile.WallTileId || map[x, y] == Tile.EmptyTileId) ? 1 : 0;
-
         }
     }
 }

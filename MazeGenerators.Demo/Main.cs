@@ -15,6 +15,7 @@ public class Main : Node2D
         {"Smooth",(main)=>{ main.m.Smooth(); }},
         {"Rooms",(main)=>{ main.m.TryAddRoom(); }},
         {"GrowMaze",(main)=>{ main.m.GrowMaze(); }},
+        {"GrowRandomMaze",(main)=>{ main.m.GrowRandomMaze(); }},
         {"Connectors",(main)=>{ main.m.GenerateConnectors(); }},
         {"RemoveDeadEnds",(main)=>{ main.m.RemoveDeadEnds(); }},
         {"BuildWalls",(main)=>{ main.m.BuildWalls(); }},
@@ -46,7 +47,7 @@ public class Main : Node2D
         {
             for (var y = 0; y < maze.Height; y++)
             {
-                var cell = maze.Paths[x, y];
+                var cell = maze.GetTile(new MazeGenerators.Vector2(x, y));
                 if (cell == Tile.EmptyTileId)
                 {
                     tileMap.SetCellv(new Godot.Vector2(x, y), 0, autotileCoord: new Godot.Vector2(0, 0));
