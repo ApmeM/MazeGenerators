@@ -19,7 +19,7 @@ namespace MazeGenerators
         private bool roomsDirty = true;
         private Dictionary<Vector2, int> cellToRoom = new Dictionary<Vector2, int>();
         private FingerMath.Collections.Lookup<int, Vector2> roomToCells = new FingerMath.Collections.Lookup<int, Vector2>();
-        public Dictionary<Vector2, int> CellToRoom
+        public Dictionary<Vector2, int> CellToRegion
         {
             get
             {
@@ -32,7 +32,7 @@ namespace MazeGenerators
             }
         }
 
-        public FingerMath.Collections.Lookup<int, Vector2> RoomToCells
+        public FingerMath.Collections.Lookup<int, Vector2> RegionToCells
         {
             get
             {

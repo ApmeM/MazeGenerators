@@ -23,7 +23,7 @@
             var r = new Random(0);
             var result = new Maze(201, 201).TryAddRoom((max) => r.Next(max), true, 11, 11, 20);
 
-            foreach (var room in result.RoomToCells)
+            foreach (var room in result.RegionToCells)
             {
                 Assert.AreEqual(room.Count, 121);
             }
@@ -35,7 +35,7 @@
             var r = new Random(0);
             var result = new Maze(201, 201).TryAddRoom((max) => r.Next(max), true, 10, 100, 20);
 
-            foreach (var room in result.RoomToCells)
+            foreach (var room in result.RegionToCells)
             {
                 Assert.LessOrEqual(room.Count, 100*100);
                 Assert.GreaterOrEqual(room.Count, 10*10);
@@ -50,7 +50,7 @@
                 .TryAddRoom((max) => r.Next(max), true, 10, 11, 20)
                 .TryAddRoom((max) => r.Next(max), true, 10, 11, 20);
 
-            Assert.AreEqual(2, result.RoomToCells.Count);
+            Assert.AreEqual(2, result.RegionToCells.Count);
         }
     }
 }

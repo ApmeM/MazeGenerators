@@ -45,8 +45,8 @@ namespace MazeGenerators
 
         private static void ConnectRegions(Maze result, Func<int, int> nextRandom, HashSet<Vector2> possibleConnectors)
         {
-            var regions = result.CellToRoom;
-            var roomsCount = result.RoomToCells.Count;
+            var regions = result.CellToRegion;
+            var roomsCount = result.RegionToCells.Count;
             // Find all of the tiles that can connect two (or more) regions.
             var regionConnectors = new Dictionary<Vector2, HashSet<int>>();
             foreach (var pos in possibleConnectors)
