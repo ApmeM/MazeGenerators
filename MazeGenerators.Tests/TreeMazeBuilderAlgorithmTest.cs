@@ -21,7 +21,7 @@
 " ..... \n" +
 "       \n", result.Stringify());
         }
-/*
+
         [Test]
         public void GrowMaze_WindingAlways_TreeMaze()
         {
@@ -36,6 +36,5 @@
 " ... . \n" +
 "       \n", result.Stringify());
         }
-*/
     }
 }
