@@ -65,17 +65,12 @@ namespace MazeGenerators
 
         private bool FloodFill(Vector2 pos, int color)
         {
-            if (!this.IsInRegion(pos))
+            if (this.GetTile(new Vector2(pos.X, pos.Y)) != Tile.MazeTileId)
             {
                 return false;
             }
 
             if (this.cellToRoom.ContainsKey(pos))
-            {
-                return false;
-            }
-
-            if (this.GetTile(new Vector2(pos.X, pos.Y)) != Tile.MazeTileId)
             {
                 return false;
             }
@@ -99,11 +94,20 @@ namespace MazeGenerators
 
         public Tile GetTile(Vector2 pos)
         {
+            if (!IsInRegion(pos))
+            {
+                return Tile.WallTileId;
+            }
             return Paths[pos.X, pos.Y];
         }
 
         public Maze SetTile(Vector2 pos, Tile tileId)
         {
+            if (!IsInRegion(pos))
+            {
+                return this;
+            }
+
             this.Paths[pos.X, pos.Y] = tileId;
             this.roomsDirty = true;
             return this;

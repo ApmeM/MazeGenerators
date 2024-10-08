@@ -40,7 +40,7 @@ namespace MazeGenerators
             {
                 return;
             }
-            
+
             var cells = new Stack<Vector2>();
 
             result.SetTile(start, Tile.MazeTileId);
@@ -89,7 +89,9 @@ namespace MazeGenerators
         {
             // Must end in bounds.
             if (!result.IsInRegion(block))
+            {
                 return false;
+            }
 
             if (result.GetTile(block) == Tile.MazeTileId)
             {

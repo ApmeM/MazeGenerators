@@ -23,7 +23,7 @@ namespace MazeGenerators
                 for (var y = 1; y < result.Height; y += 2)
                 {
                     var pos = new Vector2(x, y);
-                    if (result.GetTile(pos) != Tile.EmptyTileId)
+                    if (result.GetTile(pos) == Tile.MazeTileId)
                         continue;
                     GrowSingleMazeTree(result, pos, windingPercent, nextRandom);
                 }
@@ -51,7 +51,9 @@ namespace MazeGenerators
                 foreach (var dir in result.Directions)
                 {
                     if (CanCarve(result, cell, dir))
+                    {
                         unmadeCells.Add(dir);
+                    }
                 }
 
                 if (unmadeCells.Count != 0)
@@ -80,11 +82,6 @@ namespace MazeGenerators
             }
         }
 
-
-        /// Gets whether or not an opening can be carved from the given starting
-        /// [Cell] at [pos] to the adjacent Cell facing [direction]. Returns `true`
-        /// if the starting Cell is in bounds and the destination Cell is filled
-        /// (or out of bounds).
         private static bool CanCarve(Maze result, Vector2 pos, Vector2 direction)
         {
             // Must end in bounds.

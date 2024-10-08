@@ -28,11 +28,6 @@
                     foreach (var dir in CompassDirs)
                     {
                         var newPos = pos + dir;
-                        if (!result.IsInRegion(newPos))
-                        {
-                            continue;
-                        }
-
                         if (result.GetTile(newPos) == Tile.EmptyTileId)
                         {
                             result.SetTile(newPos, Tile.WallTileId);

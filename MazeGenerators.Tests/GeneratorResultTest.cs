@@ -36,10 +36,11 @@
         }
 
         [Test]
-        public void GetTile_OutsideArray_ExceptionThrown()
+        public void GetTile_OutsideArray_Wall()
         {
             var result = new Maze(3,5);
-            Assert.Throws<IndexOutOfRangeException>(() => { result.GetTile(new Vector2(10, 10)); });
+            var tile =  result.GetTile(new Vector2(10, 10));
+            Assert.AreEqual(tile, Tile.WallTileId);
         }
 
         [Test]

@@ -1,6 +1,5 @@
 ﻿namespace MazeGenerators.Tests
 {
-    using System;
     using MazeGenerators;
     using NUnit.Framework;
 
@@ -8,12 +7,18 @@
     public class MazeTest
     {
         [Test]
-        public void DrawFullRect_OutOfRange_Exception()
+        public void DrawFullRect_OutOfRange_DrawOnlyPart()
         {
-            Assert.Throws<IndexOutOfRangeException>(() =>
-            {
-                new Maze(7, 7).DrawFullRect(new Rectangle(4, 4, 8, 8), Tile.MazeTileId);
-            });
+            var result = new Maze(7, 7).DrawFullRect(new Rectangle(4, 4, 8, 8), Tile.MazeTileId);
+
+            Assert.AreEqual(
+"       \n" +
+"       \n" +
+"       \n" +
+"       \n" +
+"    ...\n" +
+"    ...\n" +
+"    ...\n", result.Stringify());
         }
 
         [Test]

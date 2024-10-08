@@ -9,7 +9,7 @@ namespace MazeGenerators
         private static readonly Random r = new Random();
         private static readonly Func<int, int> defaultRandomizer = (max) => r.Next(max);
 
-        public static Maze GenerateConnectors(this Maze result, Func<int, int> nextRandom = null, int additionalPassagesTries = 0)
+        public static Maze GenerateConnectors(this Maze result, Func<int, int> nextRandom = null, int additionalPassagesTries = 5)
         {
             nextRandom = nextRandom ?? defaultRandomizer;
 
@@ -55,11 +55,6 @@ namespace MazeGenerators
                 foreach (var dir in result.Directions)
                 {
                     var loc = pos + dir;
-                    if (!result.IsInRegion(loc))
-                    {
-                        continue;
-                    }
-
                     if (regions.ContainsKey(loc))
                         tmpRegions.Add(regions[loc]);
                 }
@@ -148,15 +143,8 @@ namespace MazeGenerators
                     var found = false;
                     foreach (var dir in result.Directions)
                     {
-                        var loc1 = pos + dir;
-                        var loc2 = pos - dir;
-                        if (!result.IsInRegion(loc1) || !result.IsInRegion(loc2))
-                        {
-                            continue;
-                        }
-
-                        var region1 = result.GetTile(loc1);
-                        var region2 = result.GetTile(loc2);
+                        var region1 = result.GetTile(pos + dir);
+                        var region2 = result.GetTile(pos - dir);
                         if (region1 == Tile.MazeTileId && region2 == Tile.MazeTileId)
                         {
                             found = true;

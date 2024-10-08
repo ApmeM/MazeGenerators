@@ -21,11 +21,6 @@
                         var lastExitPosition = new Vector2(0, 0);
                         foreach (var dir in result.Directions)
                         {
-                            if (!result.IsInRegion(pos + dir))
-                            {
-                                continue;
-                            }
-
                             if (result.GetTile(pos + dir) != Tile.MazeTileId)
                             {
                                 continue;

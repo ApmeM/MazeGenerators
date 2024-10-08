@@ -24,22 +24,22 @@ namespace MazeGenerators
             }
 
             var width = nextRandom(maxRoomSize - minRoomSize) + minRoomSize;
-            
+
             var minHeightSize = Math.Max(width - maxWidthHeightRoomSizeDifference, minRoomSize);
             var maxHeightSize = Math.Min(width + maxWidthHeightRoomSizeDifference, maxRoomSize);
 
             var height = nextRandom(maxHeightSize - minHeightSize) + minHeightSize;
 
             var room = new Rectangle(
-                nextRandom(result.Width - width), 
-                nextRandom(result.Height - height), 
-                width, 
+                nextRandom(result.Width - width),
+                nextRandom(result.Height - height),
+                width,
                 height);
 
             if (preventOverlap)
             {
-                for (var x = room.X; x < room.X + room.Width; x++)
-                    for (var y = room.Y; y < room.Y + room.Height; y++)
+                for (var x = room.X - 1; x < room.X + room.Width + 1; x++)
+                    for (var y = room.Y - 1; y < room.Y + room.Height + 1; y++)
                     {
                         if (result.GetTile(new Vector2(x, y)) == Tile.MazeTileId)
                         {
