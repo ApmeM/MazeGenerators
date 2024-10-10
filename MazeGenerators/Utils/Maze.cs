@@ -17,18 +17,18 @@ namespace MazeGenerators
         };
 
         private bool roomsDirty = true;
-        private Dictionary<Vector2, int> cellToRoom = new Dictionary<Vector2, int>();
-        private FingerMath.Collections.Lookup<int, Vector2> roomToCells = new FingerMath.Collections.Lookup<int, Vector2>();
+        private Dictionary<Vector2, int> cellToRegion = new Dictionary<Vector2, int>();
+        private FingerMath.Collections.Lookup<int, Vector2> regionToCells = new FingerMath.Collections.Lookup<int, Vector2>();
         public Dictionary<Vector2, int> CellToRegion
         {
             get
             {
                 if (!roomsDirty)
                 {
-                    return cellToRoom;
+                    return cellToRegion;
                 }
-                RefreshRooms();
-                return cellToRoom;
+                RefreshRegions();
+                return cellToRegion;
             }
         }
 
@@ -38,17 +38,17 @@ namespace MazeGenerators
             {
                 if (!roomsDirty)
                 {
-                    return roomToCells;
+                    return regionToCells;
                 }
-                RefreshRooms();
-                return roomToCells;
+                RefreshRegions();
+                return regionToCells;
             }
         }
 
-        private void RefreshRooms()
+        private void RefreshRegions()
         {
-            this.roomToCells.Clear();
-            this.cellToRoom.Clear();
+            this.regionToCells.Clear();
+            this.cellToRegion.Clear();
 
             // Find all unconnected regions and assign numbers to them.
             int regionId = 0;
@@ -70,13 +70,13 @@ namespace MazeGenerators
                 return false;
             }
 
-            if (this.cellToRoom.ContainsKey(pos))
+            if (this.cellToRegion.ContainsKey(pos))
             {
                 return false;
             }
 
-            roomToCells.Add(color, pos);
-            cellToRoom.Add(pos, color);
+            regionToCells.Add(color, pos);
+            cellToRegion.Add(pos, color);
 
             foreach (var dir in this.Directions)
             {
@@ -111,34 +111,6 @@ namespace MazeGenerators
             this.Paths[pos.X, pos.Y] = tileId;
             this.roomsDirty = true;
             return this;
-        }
-
-        public Maze DrawFullRect(Rectangle rect, Tile tileId)
-        {
-            var result = this;
-            for (var x = rect.X; x < rect.X + rect.Width; x++)
-                for (var y = rect.Y; y < rect.Y + rect.Height; y++)
-                {
-                    result.SetTile(new Vector2(x, y), tileId);
-                }
-            return result;
-        }
-
-        public Maze DrawRect(Rectangle rect, Tile tileId)
-        {
-            var result = this;
-            for (var x = rect.X; x < rect.X + rect.Width; x++)
-            {
-                result.SetTile(new Vector2(x, rect.Y), tileId);
-                result.SetTile(new Vector2(x, rect.Y + rect.Height - 1), tileId);
-            }
-            for (var y = rect.Y; y < rect.Y + rect.Height; y++)
-            {
-                result.SetTile(new Vector2(rect.X, y), tileId);
-                result.SetTile(new Vector2(rect.X + rect.Width - 1, y), tileId);
-            }
-
-            return result;
         }
 
         public bool IsInRegion(Vector2 loc)

@@ -35,7 +35,14 @@ public class Main : Node2D
 
     private void OnClickPressed(string name)
     {
-        OnClick[name](this);
+        try
+        {
+            OnClick[name](this);
+        }
+        catch (System.Exception ex)
+        {
+            GD.Print(ex);
+        }
         Draw();
     }
 
